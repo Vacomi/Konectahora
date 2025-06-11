@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Konecta Control</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Saira:wght@500;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+  <main class="container">
+
+    <div id="time" class="clock">
+      <div id="hour" class="clock__item">00</div>
+      <div id="minutes" class="clock__item">00</div>
+      <div id="seconds" class="clock__item">00</div>
+      <div id="ampm" class="clock__item">AM</div>
+    </div>
+
+    <div class="actions">
+      <button id="btnBreak" class="actions__btn" data-type="Break" data-text-start="Marcar Break" data-text-end="Regresar Break">Marcar Break</button>
+      <button id="btnLunch" class="actions__btn" data-type="Lunch" data-text-start="Marcar Lunch" data-text-end="Regresar Lunch">Marcar Lunch</button>
+    </div>
+
+    <div class="registro" id="registro"></div>
+
+  </main>
+  <script src="app.js"></script>
+</body>
+
+</html>
