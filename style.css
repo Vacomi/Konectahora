@@ -16,12 +16,30 @@
 }
 
 body {
-  display: flex;
+  /* display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: center; */
   height: 100vh;
   background-color: var(--primary-color);
   font-family: "Saira", Arial, sans-serif;
+}
+.header {
+  background-color: var(--secondary-color);
+  color: #fff;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.header__logo {
+  cursor: pointer;
+}
+.header__nav {
+  display: flex;
+  gap: 25px;
+}
+.header__link {
+  color: white;
 }
 
 .container {
@@ -150,3 +168,4 @@ body {
 .text-success { color: var(--success-color); }
 .text-info { color: #dee2e6; }
 .text-highlight { color: var(--highlight-color); }
+
