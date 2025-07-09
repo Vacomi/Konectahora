@@ -107,3 +107,97 @@ elements.btnLunch.addEventListener('click', () => handleMarking('Lunch'));
 // Iniciar el reloj y la UI
 setInterval(updateClock, 1000);
 resetUI(); // Llama para establecer el estado inicial
+
+// Temporizador
+// let pomodoro = document.getElementById('pomodoro-timer');
+let short = document.getElementById('short-timer');
+let long = document.getElementById('long-timer');
+let timers = document.querySelectorAll('.timer-display');
+let shortBreak = document.getElementById('short-break');
+let longBreak = document.getElementById('long-break');
+let startBtn = document.getElementById('start');
+let stopBtn = document.getElementById('stop');
+let timerMsg = document.getElementById('timer-message');
+let button = document.querySelector('.boton');
+
+let currentTimer = null;
+let myInterval = null;
+
+//
+function showDefaultTimer() {
+    short.style.display = "block";
+    long.style.display = "none";
+}
+
+showDefaultTimer();
+
+function hideAll() {
+    timers.forEach( timer => {
+        timer.style.display = "none"; 
+    });
+}
+shortBreak.addEventListener("click", () => {
+    hideAll();
+    short.style.display = "block";
+
+    shortBreak.classList.add("active");
+    longBreak.classList.remove("active");
+
+    currentTimer = short;
+});
+
+longBreak.addEventListener("click", () => {
+    hideAll();
+    long.style.display = "block";
+
+    shortBreak.classList.remove("active");
+    longBreak.classList.add("active");
+
+    currentTimer = long;
+});
+
+function startTimer (timerDisplay) {
+    if(myInterval) {
+        clearInterval(myInterval)
+    }
+
+    timerDuration = timerDisplay.getAttribute('data-duration').split(':')[0];
+
+    let durationMiliseconds = timerDuration * 60 * 1000; 
+    let endTimestamp = Date.now() + durationMiliseconds;
+    myInterval = setInterval( ()=> {
+        const timeRemaining = new Date(endTimestamp - Date.now());
+
+        if(timeRemaining <= 0 ) {
+            clearInterval(myInterval);
+            timerDisplay.textContent = '00:00';
+
+            const alarm = new Audio("https://www.freespecialeffects.co.uk/soundfx/scifi/electronic.wav");
+             alarm.play();
+        }  else {
+          const minutes = Math.floor(timeRemaining / 60000);
+          const seconds = ((timeRemaining % 60000) / 1000).toFixed(0);
+          const formattedTime = `${minutes}:${seconds
+            .toString()
+            .padStart(2, "0")}`;
+          timerDisplay.textContent = formattedTime;
+        }
+
+    }, 1000 )
+}
+
+startBtn.addEventListener('click', () => {
+    if(currentTimer) {
+        startTimer(currentTimer);
+        timerMsg.style.display = 'none';
+    } else {
+        timerMsg.style.display = 'block';
+    }
+})
+
+stopBtn.addEventListener("click", () => {
+    if(currentTimer) {
+        clearInterval(myInterval)
+    }
+})
+

@@ -170,124 +170,118 @@ body {
 .text-highlight { color: var(--highlight-color); }
 
 /* Temporizador */
-.card {
-  position: relative;
-  width: 250px;
-  height: 250px;
-}
-.temporizador {
-  position: relative;
-  background-color: var(--secondary-color);
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
-}
-.temporizador svg {
-  position: relative;
-  width: 150px;
-  height: 150px;
-  transform: rotate(270deg);
-}
-.temporizador svg circle {
+.contenedor {
+  text-align: center;
   width: 100%;
-  height: 100%;
-  fill: none;
-  stroke: #191919;
-  stroke-width: 2;
-  transform: translate(5px, 5px);
+  padding: 10px 0;
 }
-.temporizador svg circle:nth-child(2) {
-  stroke: #00ff43;
-  stroke-dasharray: 440;
-  stroke-dashoffset: 440;
-  animation: animate 60s linear infinite;
+
+.timer {
+  display: inline-block;
+  padding: 10px;
+  width: 600px;
 }
-@keyframes animate {
-  0% {
-    stroke-dashoffset: 440;
-  }
-  0% {
-    stroke-dashoffset: 0;
-  }
-}
-.dot {
-  position: absolute;
-  inset: 5px;
-  /* background-color: #f00; */
-  z-index: 100;
+main {
+  width: 25rem;
+  height: 25rem;
   border-radius: 50%;
-  animation: animateDot 60s linear infinite;
+  text-align: center;
+  margin: 0 auto;
+  margin-bottom: 2rem;
 }
-.dot::before {
-  content: '';
-  position: absolute;
-  top: -5px;
-  left: 50%;
-  width: 10px;
-  height: 10px;
-  background-color: #00ff43;
-  transform: translate(-50%);
-  border-radius: 50%;
-  box-shadow: 0 0 10px #00ff43,
-  0 0 30px #00ff43;
+h5 {
+  font-size: 2rem;
+  margin: 20px auto;
 }
-@keyframes animateDot {
-  0% {
-    transform: rotate(0deg);
-  }
-  0% {
-    transform: rotate(360deg);
-  }
-}
-.numero {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+.boton-contenedor {
+  margin-top: 20px;
   display: flex;
   justify-content: center;
+}
+.pomodoro {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  margin: 2.5rem 0;
+  text-align: center;
+  border-radius: 50%;
+  background-color: #151932;
+  box-shadow: 20px 20px 42px #0e1021,
+   -20px -20px 42px #1c2244;
 }
-.numero div {
-  display: flex;
+.pomodoro::before {
+  content: "";
+  position: absolute;
+  border: 10px solid royalblue;
+  border-radius: 50%;
+  width: 22rem;
+  height: 22rem;
 }
-.numero h2 {
+.contenedor .timer h1 {
+  font-size: 3rem;
+  margin: 20px auto;
+}
+.timer {
+  font-size: 5rem;
+  margin: 20px auto;
+}
+.boton-contendor {
+  margin-top: 20px;
   display: flex;
-  flex-direction: column;
+  justify-content: center;
+}
+.boton { 
+  background-color: #2e325a;
   color: #fff;
-  font-weight: 700;
-  font-size: 2.5em;
-  height: 45px;
-  overflow: hidden;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  margin: 5px;
+  cursor: pointer;
+  transition: all .2s ease-in;
 }
-.numero h2 span {
-  height: 50px;
-  line-height: 50px;
-  animation: animateNumber1 60s steps(6) infinite;
+.boton:active, .boton:hover {
+  background-color: #020323;
 }
-@keyframes animateNumber1 {
-  0% {
-    transform: translateY(0px);
-  }
-  100% {
-    transform: translateY(-300px);
-  }
+.hiden {
+  display: block;
 }
-.numero h2:nth-child(2) span {
-  animation: animateNumber2 10s steps(10) infinite;
+.timer-display { 
+  font-size: 5rem;
+  margin-top: 20px;
+  font-weight: bold;
+  color: white;
 }
-@keyframes animateNumber2 {
-  0% {
-    transform: translateY(0px);
-  }
-  100% {
-    transform: translateY(-500px);
-  }
+.botones {
+  margin-top: 20px;
 }
-.numero p {
-  font-weight: 300;
-  font-size: 0.75em;
-  color: rgba(255, 255, 255, 0.5);
+#start, #stop {
+  background-color: #2e325a;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  margin: 10px;
+  cursor: pointer;
+  transition: all .2s ease-in;
+}
+#stop:hover {
+  background-color: tomato;
+}
+#start:hover {
+  background-color: #219a52;
+}
+#timer--message {
+  color: white;
+  background-color: tomato;
+  display: none;
+  padding: .5rem;
+  font-size: 1rem;
+  text-align: center;
+  border-radius: 1rem;
+
 }

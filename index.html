@@ -36,40 +36,31 @@
 
     <div class="registro" id="registro"></div>
 <!------------------ CONTADORES - CRONÓMETRO ------------------>
-    <div class="card">
-      <div class="temporizador">
-        <div class="dot"></div>
-        <svg>
-          <circle cx="70" cy="70" r="70"></circle>
-          <circle cx="70" cy="70" r="70"></circle>
-        </svg>
-        <div class="numero">
-          <div>
-            <h2>
-              <span>0</span>
-              <span>1</span>
-              <span>2</span>
-              <span>3</span>
-              <span>4</span>
-              <span>5</span>
-            </h2>
-            <h2>
-              <span>0</span>
-              <span>1</span>
-              <span>2</span>
-              <span>3</span>
-              <span>4</span>
-              <span>5</span>
-              <span>6</span>
-              <span>7</span>
-              <span>8</span>
-              <span>9</span>
-            </h2>
-          </div>
-          <p>Segundos</p>
-        </div>
+    <div id="timer-message">Please select a timer before starting.</div>
+    <div class="contenedor">
+      <h1>Pomoro Timer</h1>
+      <div class="boton-contenedor">
+        <div class="boton" id="short-break">1 Minuto</div>
+        <div class="boton" id="long-break">3 Minutos</div>
       </div>
-    </div>
+
+      <main>
+        <div class="pomodoro"> 
+          <div id="short-timer" class="timer-display" data-duration="01:00">
+            <h5 class="time">01:00</h5>
+          </div>
+          <div id="long-timer" class="timer-display" data-duration="03:00">
+            <h5 class="time">03:00</h5>
+          </div>
+        </div>
+      </main>
+
+      <div class="botones">
+        <button id="start">Start</button>
+        <button id="stop">Stop</button>
+      </div>
+
+    </div> <!-- Fin de contenedor-->
   </main>
   <script src="app.js"></script>
 </body>
