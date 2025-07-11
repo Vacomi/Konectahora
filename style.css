@@ -46,7 +46,7 @@ body {
   display: flex;
   flex-direction: column; 
   align-items: center; 
-  gap: 20px;
+  gap: 15px;
 }
 
 .actions {
@@ -169,7 +169,77 @@ body {
 .text-info { color: #dee2e6; }
 .text-highlight { color: var(--highlight-color); }
 
-/* Temporizador */
+/****************************** Temporizador ***********************************/
+.contenedor-util {
+  width: 90%;
+  max-width: 960px;
+  margin: 0 auto;
+}
+.temporizador {
+  width: 100%;
+  background-color: var(--secondary-color);
+  color: var(--text-color);
+  margin-top: 20px;
+  padding: 20px 0;
+}
+.temporizador__opciones {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  list-style: none;
+  justify-content: space-evenly;
+}
+.temporizador__opcion {
+  /* list-style: none; */
+  padding: 5px 15px;
+  border-radius: 10px;
+}
+.temporizador__opcion:hover {
+  cursor: pointer;
+}
+.temporizador__opcion--seleccionado {
+  background-color: rgba(218, 218, 218, 0.15);
+}
+.temporizador__tiempo {
+  margin: 0 auto;
+  width: 200px;
+  height: 200px;
+  background-color: #1a1a1a;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
+}
+.temporizador__pantalla {
+  font-family: 'monospace', sans-serif;
+  font-size: 2.5em;
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-shadow: 0 0 10px rgba(0, 255, 67, 0.4);
+}
+.temporizador__tiempo .temporizador__control {
+  cursor: pointer;
+  font-size: 45px;
+  /* color: var(--success-color); */
+  transition: transform 0.1s ease, color 0.3s ease;
+}
+.temporizador__tiempo .temporizador__control:hover {
+    transform: scale(1.1); /* Efecto de escala al pasar el mouse */
+}
+/* Estilo específico para el botón Stop (oculto por defecto) */
+#stop {
+    display: none; /* Oculto inicialmente */
+    color: var(--highlight-color); /* Color rojo/naranja */
+}
+
+/* Estilo específico para el botón Play */
+#play {
+    color: var(--success-color); /* Color verde */
+}
+
+/*  */
 .contenedor {
   text-align: center;
   width: 100%;
@@ -180,108 +250,4 @@ body {
   display: inline-block;
   padding: 10px;
   width: 600px;
-}
-main {
-  width: 25rem;
-  height: 25rem;
-  border-radius: 50%;
-  text-align: center;
-  margin: 0 auto;
-  margin-bottom: 2rem;
-}
-h5 {
-  font-size: 2rem;
-  margin: 20px auto;
-}
-.boton-contenedor {
-  margin-top: 20px;
-  display: flex;
-  justify-content: center;
-}
-.pomodoro {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-  position: relative;
-  margin: 2.5rem 0;
-  text-align: center;
-  border-radius: 50%;
-  background-color: #151932;
-  box-shadow: 20px 20px 42px #0e1021,
-   -20px -20px 42px #1c2244;
-}
-.pomodoro::before {
-  content: "";
-  position: absolute;
-  border: 10px solid royalblue;
-  border-radius: 50%;
-  width: 22rem;
-  height: 22rem;
-}
-.contenedor .timer h1 {
-  font-size: 3rem;
-  margin: 20px auto;
-}
-.timer {
-  font-size: 5rem;
-  margin: 20px auto;
-}
-.boton-contendor {
-  margin-top: 20px;
-  display: flex;
-  justify-content: center;
-}
-.boton { 
-  background-color: #2e325a;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  padding: 10px 20px;
-  margin: 5px;
-  cursor: pointer;
-  transition: all .2s ease-in;
-}
-.boton:active, .boton:hover {
-  background-color: #020323;
-}
-.hiden {
-  display: block;
-}
-.timer-display { 
-  font-size: 5rem;
-  margin-top: 20px;
-  font-weight: bold;
-  color: white;
-}
-.botones {
-  margin-top: 20px;
-}
-#start, #stop {
-  background-color: #2e325a;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  padding: 10px 20px;
-  margin: 10px;
-  cursor: pointer;
-  transition: all .2s ease-in;
-}
-#stop:hover {
-  background-color: tomato;
-}
-#start:hover {
-  background-color: #219a52;
-}
-#timer--message {
-  color: white;
-  background-color: tomato;
-  display: none;
-  padding: .5rem;
-  font-size: 1rem;
-  text-align: center;
-  border-radius: 1rem;
-
 }

@@ -4,23 +4,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Konecta Control</title>
+  <title>VCK</title>
+  <link rel="icon" href="./img/faviKVC.png" type="image/png">
   <link rel="stylesheet" href="style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Saira:wght@500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
 </head>
 
 <body>
   <header class="header">
-      <h1 class="header__logo">VCK</h1>
-      <nav class="header__nav">
-      <a href="https://obiwan.netflix.com/" class="header__link">Obiwan</a>
-      <a href="https://netflix.teleopticloud.com/Web/Authentication" class="header__link">Calabrio</a>
-      <a href="https://2mares.grupokonecta.corp/CMI360/Pages/LoginCentratel.aspx" class="header__link">2 Mares</a>
-      <a href="https://streamu.netflix.net" class="header__link">Stream University</a>
+    <h1 class="header__logo">VCK</h1>
+    <nav class="header__nav">
+      <a href="https://obiwan.netflix.com/" target="_blank" class="header__link">Obiwan</a>
+      <a href="https://netflix.teleopticloud.com/Web/Authentication" target="_blank" class="header__link">Calabrio</a>
+      <a href="https://2mares.grupokonecta.corp/CMI360/Pages/LoginCentratel.aspx" target="_blank" class="header__link">2 Mares</a>
+      <a href="https://streamu.netflix.net" target="_blank" class="header__link">Stream University</a>
     </nav>
-    </header>
+  </header>
   <main class="container">
     <div id="time" class="clock">
       <div id="hour" class="clock__item">00</div>
@@ -30,38 +32,33 @@
     </div>
 
     <div class="actions">
-      <button id="btnBreak" class="actions__btn" data-type="Break" data-text-start="Marcar Break" data-text-end="Regresar Break">Marcar Break</button>
-      <button id="btnLunch" class="actions__btn" data-type="Lunch" data-text-start="Marcar Lunch" data-text-end="Regresar Lunch">Marcar Lunch</button>
+      <button id="btnBreak" class="actions__btn" data-type="Break" data-text-start="Marcar Break"
+        data-text-end="Regresar Break">Marcar Break</button>
+      <button id="btnLunch" class="actions__btn" data-type="Lunch" data-text-start="Marcar Lunch"
+        data-text-end="Regresar Lunch">Marcar Lunch</button>
     </div>
 
     <div class="registro" id="registro"></div>
-<!------------------ CONTADORES - CRONÓMETRO ------------------>
-    <div id="timer-message">Please select a timer before starting.</div>
-    <div class="contenedor">
-      <h1>Pomoro Timer</h1>
-      <div class="boton-contenedor">
-        <div class="boton" id="short-break">1 Minuto</div>
-        <div class="boton" id="long-break">3 Minutos</div>
-      </div>
-
-      <main>
-        <div class="pomodoro"> 
-          <div id="short-timer" class="timer-display" data-duration="01:00">
-            <h5 class="time">01:00</h5>
-          </div>
-          <div id="long-timer" class="timer-display" data-duration="03:00">
-            <h5 class="time">03:00</h5>
-          </div>
-        </div>
-      </main>
-
-      <div class="botones">
-        <button id="start">Start</button>
-        <button id="stop">Stop</button>
-      </div>
-
-    </div> <!-- Fin de contenedor-->
   </main>
+  <!------------------ TEMPORIZADOR - CRONÓMETRO ------------------>
+  <section class="temporizador">
+    <div class="contenedor-util">
+      <ul class="temporizador__opciones">
+        <li class="temporizador__opcion temporizador__opcion--seleccionado" id="opcion1m">1 Minuto</li>
+        <li class="temporizador__opcion" id="opcion3m">3 Minutos</li>
+      </ul>
+
+      <div class="temporizador__tiempo">
+        <div class="temporizador__pantalla" id="tiempoDisplay">01:00</div>
+        <!-- <div class="temporizador__pantalla" id="tiempo3">03:00</div> -->
+      
+        <span class="temporizador__control material-symbols-outlined" id="play">play_circle</span>
+        <span class="temporizador__control material-symbols-outlined" id="stop">stop_circle</span>
+      </div>
+    </div> <!-- FIN DE CONTENEDOR UTIL-->
+  </section>
+  <!-- Elemento de audio para la alarma -->
+  <audio id="alarmSound" src="./sounds/Sound1.mp3" preload="auto"></audio>
   <script src="app.js"></script>
 </body>
 
