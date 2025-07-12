@@ -193,6 +193,7 @@ body {
   /* list-style: none; */
   padding: 5px 15px;
   border-radius: 10px;
+  font-size: 14px;
 }
 .temporizador__opcion:hover {
   cursor: pointer;
@@ -202,8 +203,8 @@ body {
 }
 .temporizador__tiempo {
   margin: 0 auto;
-  width: 200px;
-  height: 200px;
+  width: 150px;
+  height: 150px;
   background-color: #1a1a1a;
   border-radius: 50%;
   display: flex;
@@ -214,14 +215,14 @@ body {
 }
 .temporizador__pantalla {
   font-family: 'monospace', sans-serif;
-  font-size: 2.5em;
+  font-size: 2em;
   font-weight: bold;
   margin-bottom: 10px;
   text-shadow: 0 0 10px rgba(0, 255, 67, 0.4);
 }
 .temporizador__tiempo .temporizador__control {
   cursor: pointer;
-  font-size: 45px;
+  font-size: 40px;
   /* color: var(--success-color); */
   transition: transform 0.1s ease, color 0.3s ease;
 }
