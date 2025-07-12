@@ -22,14 +22,29 @@ body {
   height: 100vh;
   background-color: var(--primary-color);
   font-family: "Saira", Arial, sans-serif;
+  transition: background-color 0.5s ease;
 }
+
+/* Tema Rosa (Pink Theme) */
+body.pink-theme {
+    --primary-color: #FFC0CB; /* Pink claro */
+    --secondary-color: #8B008B; /* Dark Magenta */
+    --text-color: #F8F8F8; /* Blanco casi puro */
+    --disabled-color: #FFD1DC; /* Pink muy claro */
+    --success-color: #FF69B4; /* Hot Pink */
+    --info-color: #FFB6C1; /* Light Pink */
+    --highlight-color: #DC143C; /* Crimson */
+}
+
+
 .header {
   background-color: var(--secondary-color);
-  color: #fff;
+  color: var(--text-color);
   display: flex;
   justify-content: space-around;
   align-items: center;
   margin-bottom: 20px;
+  transition: background-color 0.5s ease, color 0.5s ease;
 }
 .header__logo {
   cursor: pointer;
@@ -206,12 +221,13 @@ body {
   width: 150px;
   height: 150px;
   background-color: #1a1a1a;
+  background-color: var(--secondary-color);
   border-radius: 50%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.7);
 }
 .temporizador__pantalla {
   font-family: 'monospace', sans-serif;

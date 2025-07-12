@@ -204,6 +204,17 @@ document.addEventListener('DOMContentLoaded', () => {
     initializeTimer(60); // El temporizador empieza mostrando "01:00" y está listo para Play
 });
 
+// Lógica para el cambio de tema
+const applyTheme = (theme) => {
+    elements.body.dataset.theme = theme;
+    localStorage.setItem('selectedTheme', theme); // Guardar la preferencia
+    if (theme === 'pink') {
+        elements.body.classList.add('pink-theme');
+    } else {
+        elements.body.classList.remove('pink-theme');
+    }
+};
+
 
 // VACOMI IDEA
 // function verTiempoDefecto() {
