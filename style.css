@@ -6,6 +6,8 @@
   --success-color: #04fc43; /* Green */
   --info-color: #fee800; /* Yellow */
   --highlight-color: #ff2972; /* Pink */
+  --marcaagua: rgba(218, 218, 218, 0.2);
+  --opacidadgeneral: rgba(218, 218, 218, 0.15);
 }
 
 /* Práctica recomendada: aplicar box-sizing globalmente */
@@ -21,19 +23,43 @@ body {
   align-items: center; */
   height: 100vh;
   background-color: var(--primary-color);
+  /* background-color: #ffbcc5; */
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23f28297' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+/* background-color: #ffe4e6; */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%23f28297' fill-opacity='0.4' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E");
   font-family: "Saira", Arial, sans-serif;
   transition: background-color 0.5s ease;
 }
 
 /* Tema Rosa (Pink Theme) */
 body.pink-theme {
-    --primary-color: #FFC0CB; /* Pink claro */
+    /* --primary-color: #FFC0CB;  */
+    /* --primary-color: #ffe4e6; */
     --secondary-color: #8B008B; /* Dark Magenta */
+    /* --secondary-color: rgb(255, 188, 197, 0.6); */
+    /* --secondary-color: #f78fa4; */
+    /* --secondary-color: #f54367; */
+    --secondary-color: #a80828;
+
+    /* --secondary-color: rgba(255,188, 197); */
     --text-color: #F8F8F8; /* Blanco casi puro */
     --disabled-color: #FFD1DC; /* Pink muy claro */
-    --success-color: #FF69B4; /* Hot Pink */
-    --info-color: #FFB6C1; /* Light Pink */
-    --highlight-color: #DC143C; /* Crimson */
+
+    --success-color: #93ff4b; /* Limón */
+    --info-color: #fee800; /* Amarillo*/
+    --highlight-color: #a8cbfd; /* Azul blanco */
+    --marcaagua: rgba(253, 230, 230, 0.568);
+    --opacidadgeneral: rgba(0, 0, 0, 0.15);
+    
+    --rosaclaro: #ffe4e6;
+    --rosaclaro-blanco: #ffeaea;
+    --rosaborde: #f28297; 
+    --rosatenue: #ffbcc5;
+    --rosatenue2: #f78fa4;
+    --Rosatenue-fuerte: #f97392;
+}
+button:nth-of-type(7) {
+  background-color: #ffeaeb;
 }
 
 
@@ -104,7 +130,7 @@ body.pink-theme {
   top: 1px;
   left: 35px;
   font-size: 14px;
-  color: rgba(218, 218, 218, 0.2);
+  color: var(--marcaagua)
 }
 
 .clock__item { 
@@ -214,7 +240,8 @@ body.pink-theme {
   cursor: pointer;
 }
 .temporizador__opcion--seleccionado {
-  background-color: rgba(218, 218, 218, 0.15);
+  /* background-color: rgba(218, 218, 218, 0.15); */
+  background-color: var(--opacidadgeneral);
 }
 .temporizador__tiempo {
   margin: 0 auto;

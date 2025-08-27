@@ -7,6 +7,16 @@ const elements = {
     registroDiv: document.getElementById('registro'),
     btnBreak: document.getElementById('btnBreak'),
     btnLunch: document.getElementById('btnLunch'),
+
+    // Nuevos elementos para el temporizador
+    // btn1m: document.getElementById('opcion1m'),
+    // btn3m: document.getElementById('opcion3m'),
+    // tiempoDisplay: document.getElementById('tiempoDisplay'),
+    // btnplay: document.getElementById('play'),
+    // btnstop: document.getElementById('stop'),
+    // alarmSound: document.getElementById('alarmSound'),
+    themeSwitcher: document.getElementById('themeSwitcher'), // Nuevo botón de tema
+    body: document.body, // Referencia al body para cambiar el tema
 };
 
 // 2. Objeto para mantener el estado de la aplicación
@@ -200,9 +210,9 @@ btnplay.addEventListener('click', startCountdown);
 btnstop.addEventListener('click', stopCountdown);
 
 // Inicializar el temporizador con 1 minuto por defecto al cargar la página
-document.addEventListener('DOMContentLoaded', () => {
-    initializeTimer(60); // El temporizador empieza mostrando "01:00" y está listo para Play
-});
+// document.addEventListener('DOMContentLoaded', () => {
+//     initializeTimer(60); 
+// });
 
 // Lógica para el cambio de tema
 const applyTheme = (theme) => {
@@ -214,6 +224,26 @@ const applyTheme = (theme) => {
         elements.body.classList.remove('pink-theme');
     }
 };
+
+elements.themeSwitcher.addEventListener('click', () => {
+    const currentTheme = elements.body.dataset.theme;
+    const newTheme = currentTheme === 'default' ? 'pink' : 'default';
+    applyTheme(newTheme);
+});
+
+// Inicializar la aplicación al cargar la página
+document.addEventListener('DOMContentLoaded', () => {
+    // Cargar tema guardado o usar por defecto
+    const savedTheme = localStorage.getItem('selectedTheme');
+    if (savedTheme) {
+        applyTheme(savedTheme);
+    } else {
+        applyTheme('default'); // Aplicar el tema por defecto si no hay nada guardado
+    }
+
+    // Inicializar el temporizador con 1 minuto por defecto
+    initializeTimer(60);
+});
 
 
 // VACOMI IDEA
