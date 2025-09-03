@@ -14,13 +14,15 @@
 </head>
 
 <body>
-  <header class="header">
+   <header class="header">
     <h1 class="header__logo">VCK</h1>
     <nav class="header__nav">
       <a href="https://obiwan.netflix.com/" target="_blank" class="header__link">Obiwan</a>
       <a href="https://netflix.teleopticloud.com/Web/Authentication" target="_blank" class="header__link">Calabrio</a>
-      <a href="https://2mares.grupokonecta.corp/CMI360/Pages/LoginCentratel.aspx" target="_blank" class="header__link">2 Mares</a>
+      <a href="https://2mares.grupokonecta.corp/CMI360/Pages/LoginCentratel.aspx" target="_blank"
+        class="header__link">2 Mares</a>
       <a href="https://streamu.netflix.net" target="_blank" class="header__link">Stream University</a>
+      <button class="material-symbols-outlined" id="themeSwitcher">invert_colors</button>
     </nav>
   </header>
   <main class="container">
@@ -39,8 +41,28 @@
     </div>
 
     <div class="registro" id="registro"></div>
+
+    <!-- NUEVA SECCIÓN DE ALARMA AÑADIDA -->
+    <div class="alarm">
+      <button class="alarm__btn" id="abrirModal">Editar horario</button>
+      <section class="alarm__section">
+        <div class="alarm__item">
+          <p class="alarm__description">Primer Break:</p>
+          <p class="alarm__time" id="tiempoBreak1">Sin definir</p>
+        </div>
+        <div class="alarm__item alarmab2">
+          <p class="alarm__description">Segundo Break:</p>
+          <p class="alarm__time" id="tiempoBreak2">Sin definir</p>
+        </div>
+        <div class="alarm__item alarmalunch">
+          <p class="alarm__description">Hora de Lunch:</p>
+          <p class="alarm__time" id="tiempoLunch">Sin definir</p>
+        </div>
+      </section>
+    </div>
+
   </main>
-  <!------------------ TEMPORIZADOR - CRONÓMETRO ------------------>
+  <!--------TEMPORIZADOR - CRONÓMETRO ----------->
   <section class="temporizador">
     <div class="contenedor-util">
       <ul class="temporizador__opciones">
@@ -50,15 +72,42 @@
 
       <div class="temporizador__tiempo">
         <div class="temporizador__pantalla" id="tiempoDisplay">01:00</div>
-        <!-- <div class="temporizador__pantalla" id="tiempo3">03:00</div> -->
-      
         <span class="temporizador__control material-symbols-outlined" id="play">play_circle</span>
         <span class="temporizador__control material-symbols-outlined" id="stop">stop_circle</span>
       </div>
     </div> <!-- FIN DE CONTENEDOR UTIL-->
   </section>
+
   <!-- Elemento de audio para la alarma -->
   <audio id="alarmSound" src="./sounds/Sound1.mp3" preload="auto"></audio>
+
+  <!-- MODALES AÑADIDOS -->
+  <div id="myModal" class="modal">
+    <form class="modal-content">
+      <span class="modal__close" id="cerrarModal">&times;</span>
+      <h2 class="modal__title">Horarios</h2>
+      <div class="modal__element">
+        <p>Añade tu hora de Break:</p>
+        <input type="time" id="breakTime">
+      </div>
+      <div class="modal__element">
+        <p>Añade tu segundo Break:</p>
+        <input type="time" id="breakTime2">
+      </div>
+      <div class="modal__element">
+        <p>Añade tu hora de Lunch:</p>
+        <input type="time" id="lunchTime">
+      </div>
+      <button type="button" class="modal__save" id="guardarHorarios">Guardar</button>
+    </form>
+  </div>
+
+  <dialog class="alert" id="alertaModal">
+    <p class="alert__msj" id="alertaMensaje"></p>
+    <p class="alert__msj--default"> Por favor márcalo en el Obiwan.</p>
+    <button id="alertaAceptarBtn">Aceptar</button>
+  </dialog>
+
   <script src="app.js"></script>
 </body>
 
