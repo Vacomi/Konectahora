@@ -441,6 +441,7 @@ input[type="time"] {
   border-radius: 5px;
   cursor: pointer;
   font-size: 16px;
+  font-weight: bold;
   transition: background-color 0.3s ease;
 }
 
@@ -458,9 +459,13 @@ input[type="time"] {
 
 .alarm__description {
   font-size: 16px;
-  font-weight: bold;
+  /* font-weight: bold; */
 }
-
+.alarm__time {
+  font-size: 16px;
+  font-weight: bold;
+  color: var(--highlight-color);
+}
 .alert {
   border: none;
   border-radius: 10px;
