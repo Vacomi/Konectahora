@@ -56,8 +56,8 @@ body.dark-theme {
 
 /* Overrides para el tema oscuro para un acento rojo mínimo */
 body.dark-theme .actions__btn {
-  background-color: var(--highlight-color);
-  color: #FFFFFF;
+  /* background-color: var(--highlight-color);
+  color: #FFFFFF; */
 }
 body.dark-theme .alarm__btn {
     background-color: transparent;
@@ -85,7 +85,7 @@ body.dark-theme .header {
 }
 
 body.dark-theme .text-info {
-  color: var(--info-color);
+  /* color: var(--info-color); */
   /* Adjust text color utility class */
     }
 
