@@ -265,33 +265,42 @@
   
 
 
-    // Reemplazo para los iconos y el formarto 12h
-    if (listHora.hbreak1 && listHora.hbreak1 !== "00:00") {
-      
-      visualBreak.textContent = formatHoraConIcono(listHora.hbreak1);
-        // Comparar si la hora que se ingresa es igual a la hora registrada.
-        if (listHoraAntes.hbreak1 !== listHora.hbreak1) {
-          console.log('La hora del primer break ha cambiado.');
-        
-          alarmasDisparadas.hbreak1 = false;
-          visualBreak.classList.remove('alarm__time--used');
-        } 
+      // Para cada horario, si está vacío o "00:00", reinicia el estado de la alarma
+  if (!listHora.hbreak1 || listHora.hbreak1 === "00:00") {
+    alarmasDisparadas.hbreak1 = false;
+    visualBreak.textContent = "Sin definir";
+    visualBreak.classList.remove('alarm__time--used');
+  } else {
+    visualBreak.textContent = formatHoraConIcono(listHora.hbreak1);
+    if (listHoraAntes.hbreak1 !== listHora.hbreak1) {
+      alarmasDisparadas.hbreak1 = false;
+      visualBreak.classList.remove('alarm__time--used');
+    }
+  }
 
+  if (!listHora.hbreak2 || listHora.hbreak2 === "00:00") {
+    alarmasDisparadas.hbreak2 = false;
+    visualBreak2.textContent = "Sin definir";
+    visualBreak2.classList.remove('alarm__time--used');
+  } else {
+    visualBreak2.textContent = formatHoraConIcono(listHora.hbreak2);
+    if (listHoraAntes.hbreak2 !== listHora.hbreak2) {
+      alarmasDisparadas.hbreak2 = false;
+      visualBreak2.classList.remove('alarm__time--used');
     }
-    if (listHora.hbreak2 && listHora.hbreak2 !== "00:00") {
-        visualBreak2.textContent = formatHoraConIcono(listHora.hbreak2);
-        if (listHoraAntes.hbreak2 !== listHora.hbreak2) {
-            alarmasDisparadas.hbreak2 = false;  
-            visualBreak2.classList.remove('alarm__time--used');
-        }
+  }
+
+  if (!listHora.hlunch || listHora.hlunch === "00:00") {
+    alarmasDisparadas.hlunch = false;
+    visualLunch.textContent = "Sin definir";
+    visualLunch.classList.remove('alarm__time--used');
+  } else {
+    visualLunch.textContent = formatHoraConIcono(listHora.hlunch);
+    if (listHoraAntes.hlunch !== listHora.hlunch) {
+      alarmasDisparadas.hlunch = false;
+      visualLunch.classList.remove('alarm__time--used');
     }
-    if (listHora.hlunch && listHora.hlunch !== "00:00") {
-        visualLunch.textContent = formatHoraConIcono(listHora.hlunch);
-        if (listHoraAntes.hlunch !== listHora.hlunch) {
-            alarmasDisparadas.hlunch = false;
-            visualLunch.classList.remove('alarm__time--used');
-        } 
-    }
+  }
 
     guardarEstadoAlarmas();
     closeModal();
