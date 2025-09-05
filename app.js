@@ -187,22 +187,22 @@
     btnplay.addEventListener('click', startCountdown);
     btnstop.addEventListener('click', stopCountdown);
 
-    // Lógica para el cambio de tema
-    const applyTheme = (theme) => {
-      elements.body.dataset.theme = theme;
-      localStorage.setItem('selectedTheme', theme); // Guardar la preferencia
-      if (theme === 'pink') {
-        elements.body.classList.add('pink-theme');
-      } else {
-        elements.body.classList.remove('pink-theme');
-      }
-    };
+  // Lógica para el cambio de tema
+  const applyTheme = (theme) => {
+    elements.body.dataset.theme = theme;
+    localStorage.setItem('selectedTheme', theme); // Guardar la preferencia
+    if (theme === 'dark') {
+      elements.body.classList.add('dark-theme');
+    } else {
+      elements.body.classList.remove('dark-theme');
+    }
+  };
 
-    elements.themeSwitcher.addEventListener('click', () => {
-      const currentTheme = elements.body.dataset.theme;
-      const newTheme = currentTheme === 'default' ? 'pink' : 'default';
-      applyTheme(newTheme);
-    });
+  elements.themeSwitcher.addEventListener('click', () => {
+    const currentTheme = elements.body.dataset.theme;
+    const newTheme = currentTheme === 'default' ? 'dark' : 'default';
+    applyTheme(newTheme);
+  });
 
 
     /******************ZONA ALARMA Y MODAL ****************/
@@ -221,7 +221,7 @@
     const alertaModal = document.getElementById('alertaModal');
     const alertaMensaje = document.getElementById('alertaMensaje');
     const alertaAceptarBtn = document.getElementById('alertaAceptarBtn');
-    let alarmaSonido = new Audio('./sounds/Sound_ES.mp3'); 
+    let alarmaSonido = new Audio('./sounds/FreshStart.mp3'); 
 
     const btnOpenModal = document.getElementById('abrirModal');
     const btnCloseModal = document.getElementById('cerrarModal');
@@ -254,44 +254,47 @@
     }
 
 
-    function saveHorarios() {
-      horarios.hbreak1 = document.getElementById('breakTime').value;
-      horarios.hbreak2 = document.getElementById('breakTime2').value;
-      horarios.hlunch = document.getElementById('lunchTime').value;
+  function saveHorarios() {
+     horarios.hbreak1 = document.getElementById('breakTime').value;
+     horarios.hbreak2 = document.getElementById('breakTime2').value;
+     horarios.hlunch = document.getElementById('lunchTime').value;
 
-      localStorage.setItem('horarios', JSON.stringify(horarios));
-      let listHora = JSON.parse(localStorage.getItem('horarios'));
-    //   if (listHora.hbreak1 && listHora.hbreak1 !== "00:00") {
-    //     visualBreak.textContent = listHora.hbreak1;
-    //     alarmasDisparadas.hbreak1 = false;
-    //   }
-    //   if (listHora.hbreak2 && listHora.hbreak2 !== "00:00") {
-    //     visualBreak2.textContent = listHora.hbreak2;
-    //     alarmasDisparadas.hbreak2 = false;
-    //   }
-    //   if (listHora.hlunch && listHora.hlunch !== "00:00") {
-    //     visualLunch.textContent = listHora.hlunch;
-    //     alarmasDisparadas.hlunch = false;
-    //   }
+    let listHoraAntes = JSON.parse(localStorage.getItem('horarios'));
+    localStorage.setItem('horarios', JSON.stringify(horarios));
+    let listHora = JSON.parse(localStorage.getItem('horarios'));
+  
 
-      // Reemplazo para los iconos y el formarto 12h
+
+    // Reemplazo para los iconos y el formarto 12h
     if (listHora.hbreak1 && listHora.hbreak1 !== "00:00") {
-    visualBreak.textContent = formatHoraConIcono(listHora.hbreak1);
-    alarmasDisparadas.hbreak1 = false;
+      
+      visualBreak.textContent = formatHoraConIcono(listHora.hbreak1);
+        // Comparar si la hora que se ingresa es igual a la hora registrada.
+        if (listHoraAntes.hbreak1 !== listHora.hbreak1) {
+          console.log('La hora del primer break ha cambiado.');
+        
+          alarmasDisparadas.hbreak1 = false;
+          visualBreak.classList.remove('alarm__time--used');
+        } 
+
     }
     if (listHora.hbreak2 && listHora.hbreak2 !== "00:00") {
-    visualBreak2.textContent = formatHoraConIcono(listHora.hbreak2);
-    alarmasDisparadas.hbreak2 = false;
+        visualBreak2.textContent = formatHoraConIcono(listHora.hbreak2);
+        if (listHoraAntes.hbreak2 !== listHora.hbreak2) {
+            alarmasDisparadas.hbreak2 = false;  
+            visualBreak2.classList.remove('alarm__time--used');
+        }
     }
     if (listHora.hlunch && listHora.hlunch !== "00:00") {
-    visualLunch.textContent = formatHoraConIcono(listHora.hlunch);
-    alarmasDisparadas.hlunch = false;
+        visualLunch.textContent = formatHoraConIcono(listHora.hlunch);
+        if (listHoraAntes.hlunch !== listHora.hlunch) {
+            alarmasDisparadas.hlunch = false;
+            visualLunch.classList.remove('alarm__time--used');
+        } 
     }
 
-      
-
-      guardarEstadoAlarmas();
-      closeModal();
+    guardarEstadoAlarmas();
+    closeModal();
     }
 
     function mostrarAlerta(mensaje) {
@@ -320,12 +323,16 @@
       if (horaActual === listHora.hbreak1 && !alarmasDisparadas.hbreak1) {
         mostrarAlerta('¡Es hora de tu primer Break! ☕️');
         alarmasDisparadas.hbreak1 = true;
+        // Añadiendo por si acaso
+        visualBreak.classList.add('alarm__time--used');
       } else if (horaActual === listHora.hbreak2 && !alarmasDisparadas.hbreak2) {
         mostrarAlerta('¡Es hora de tu segundo Break! 🍎');
         alarmasDisparadas.hbreak2 = true;
+        visualBreak2.classList.add('alarm__time--used');
       } else if (horaActual === listHora.hlunch && !alarmasDisparadas.hlunch) {
         mostrarAlerta('¡Es hora de tu Lunch! 🍲');
         alarmasDisparadas.hlunch = true;
+        visualLunch.classList.add('alarm__time--used');
       }
     }
 
@@ -372,17 +379,7 @@
       // 3. Cargar horarios y estado de alarmas
       const listHora = JSON.parse(localStorage.getItem('horarios'));
       const estadoGuardado = JSON.parse(localStorage.getItem('alarmasDisparadas'));
-    // if (listHora) {
-    //     if (listHora.hbreak1) {
-    //       visualBreak.textContent = listHora.hbreak1;
-    //     }
-    //     if (listHora.hbreak2) {
-    //       visualBreak2.textContent = listHora.hbreak2;
-    //     }
-    //     if (listHora.hlunch) {
-    //       visualLunch.textContent = listHora.hlunch;
-    //     }
-    // }
+
     if (listHora) {
         if (listHora.hbreak1) {
             visualBreak.textContent = formatHoraConIcono(listHora.hbreak1);
@@ -396,7 +393,20 @@
     }
 
       if (estadoGuardado) {
+        console.log("Estado de alarmas cargado:", estadoGuardado);
+        
         alarmasDisparadas = estadoGuardado;
+        for (let element in alarmasDisparadas) {
+          if (alarmasDisparadas.hbreak1) {
+            visualBreak.classList.add('alarm__time--used');
+          }
+          if (alarmasDisparadas.hbreak2) {
+            visualBreak2.classList.add('alarm__time--used');
+          }
+          if (alarmasDisparadas.hlunch) {
+            visualLunch.classList.add('alarm__time--used');
+          }
+        }
       }
       
       // 4. Lógica para reiniciar las alarmas al inicio de un nuevo día
