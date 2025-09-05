@@ -7,6 +7,7 @@
   --text-color: #DCDCDC;
   /*gris blanco*/
   --disabled-color: #cccccc;
+  /* --disabled-color: #8a8a8a; */
   /* Light Gray */
   --success-color: #04fc43;
   /* Green */
@@ -36,28 +37,57 @@ body {
   transition: background-color 0.5s ease;
 }
 
-/* Tema Rosa (Pink Theme) */
-body.pink-theme {
-  --secondary-color: #a80828;
-  --text-color: #F8F8F8;
-  /* Blanco casi puro */
-  --disabled-color: #FFD1DC;
-  /* Pink muy claro */
-  --success-color: #93ff4b;
-  /* Limón */
-  --info-color: #fee800;
-  /* Amarillo*/
-  --highlight-color: #a8cbfd;
-  /* Azul blanco */
-  --marcaagua: rgba(253, 230, 230, 0.568);
-  --opacidadgeneral: rgba(0, 0, 0, 0.15);
-  --rosaclaro: #ffe4e6;
-  --rosaclaro-blanco: #ffeaea;
-  --rosaborde: #f28297;
-  --rosatenue: #ffbcc5;
-  --rosatenue2: #f78fa4;
-  --Rosatenue-fuerte: #f97392;
+/* Tema Oscuro Elegante */
+body.dark-theme {
+  --primary-color: #121212;      /* Elegant Black */
+  --secondary-color: #1E1E1E;    /* Dark Panel Background */
+  --text-color: #E0E0E0;         /* Soft White */
+  --disabled-color: #424242;     /* Darker Gray */
+  --success-color: #2E7D32;      /* Deep Green */
+  --info-color: #BDBDBD;         /* Lighter Gray for text */
+  --info-color: #c9b800;         /* Lighter Gray for text */
+
+  --highlight-color: #C62828;    /* Elegant Deep Red */
+  --marcaagua: rgba(255, 255, 255, 0.1);
+  --opacidadgeneral: rgba(255, 255, 255, 0.05);
+  background-image: none;
+  /* Remove the light theme background pattern */
 }
+
+/* Overrides para el tema oscuro para un acento rojo mínimo */
+body.dark-theme .actions__btn {
+  background-color: var(--highlight-color);
+  color: #FFFFFF;
+}
+body.dark-theme .alarm__btn {
+    background-color: transparent;
+    border: 1px solid var(--highlight-color);
+    color: var(--highlight-color);
+}
+
+body.dark-theme .actions__btn:hover {
+    background-color: #9A0000;
+}
+body.dark-theme .alarm__btn:hover {
+  background-color: var(--highlight-color);
+  color: #FFFFFF;
+}
+
+body.dark-theme #seconds {
+  /* color: var(--info-color); */
+  /* Use a subtle gray for seconds */
+}
+
+body.dark-theme .header {
+  /* background-color: #171717; */
+  /* background-color: #333333; */
+  /* Make header slightly different */
+}
+
+body.dark-theme .text-info {
+  color: var(--info-color);
+  /* Adjust text color utility class */
+    }
 
 button:nth-of-type(7) {
   background-color: #ffeaeb;
@@ -395,7 +425,7 @@ button:nth-of-type(7) {
   margin: 0 auto;
   display: block;
   background-color: var(--secondary-color);
-  color: var(--primary-color);
+  color: var(--text-color);
   border: none;
   padding: 10px 20px;
   border-radius: 5px;
@@ -466,6 +496,12 @@ input[type="time"] {
   font-weight: bold;
   color: var(--highlight-color);
 }
+
+.alarm__time--used {
+  color: var(--disabled-color);
+  text-decoration: line-through;
+}
+
 .alert {
   border: none;
   border-radius: 10px;
@@ -525,7 +561,8 @@ input[type="time"] {
 /* Estilo personalizado para el botón de cambio de tema */
 #themeSwitcher {
   background-color: var(--secondary-color);
-  color: var(--primary-color);
+  /* color: var(--primary-color); */
+  color: var(--text-color);
   border: none;
   border-radius: 50%;
   cursor: pointer;
@@ -535,7 +572,9 @@ input[type="time"] {
 
 #themeSwitcher:hover {
   box-shadow: 0 4px 16px rgba(21, 43, 74, 0.18);
-  background-color: var(--primary-color);
+  /* background-color: var(--primary-color); */
+  background-color: var(--text-color);
+  /* color: var(--secondary-color); */
   color: var(--secondary-color);
 }
 
