@@ -16,16 +16,28 @@
 
 <body>
    <header class="header">
-    <h1 class="header__logo">VCK</h1>
-    <nav class="header__nav">
-      <a href="https://obiwan.netflix.com/" target="_blank" class="header__link">Obiwan</a>
-      <a href="https://netflix.teleopticloud.com/Web/Authentication" target="_blank" class="header__link">Calabrio</a>
-      <a href="https://2mares.grupokonecta.corp/CMI360/Pages/LoginCentratel.aspx" target="_blank"
-        class="header__link">2 Mares</a>
-      <a href="https://streamu.netflix.net" target="_blank" class="header__link">Stream University</a>
-      <button class="material-symbols-outlined" id="themeSwitcher">invert_colors</button>
-    </nav>
+      <!-- LOGOTIPO -->
+      <h1 class="header__logo">VCK</h1>
+
+      <!-- TOGGLE -->
+      <button class="header__btn">
+        <svg class="menu-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M0 96C0 78.3 14.3 64 32 64l384 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 128C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32l384 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 288c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32L32 448c-17.7 0-32-14.3-32-32s14.3-32 32-32l384 0c17.7 0 32 14.3 32 32z"/></svg>
+      </button>
+
+      <!-- NAVEGATION -->
+      <nav class="header__nav" id="mainMenu">
+        <a href="https://netflixcare.sprinklr.com/" target="_blank" class="header__link">Sprinklr</a>
+        <a href="https://csmemberadmin.prod.netflix.net/" target="_blank" class="header__link">CSMA</a>
+        <a href="https://netflix.teleopticloud.com/Web/Authentication" target="_blank" class="header__link">Calabrio</a>
+        <a href="https://2mares.grupokonecta.corp/CMI360/Pages/LoginCentratel.aspx" target="_blank"
+          class="header__link">2 Mares</a>
+        <a href="https://streamu.netflix.net" target="_blank" class="header__link">Stream University</a>
+        <a href="#" class="header__link">Herramientas</a>
+
+        <button class="material-symbols-outlined" id="themeSwitcher">invert_colors</button>
+      </nav>
   </header>
+
   <main class="container">
     <div id="time" class="clock">
       <div id="hour" class="clock__item">00</div>

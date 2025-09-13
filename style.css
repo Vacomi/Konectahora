@@ -93,14 +93,16 @@ button:nth-of-type(7) {
   background-color: #ffeaeb;
 }
 
-
+/********** ZONA HEADER - CABECERA *********/
 .header {
   background-color: var(--secondary-color);
   color: var(--text-color);
   display: flex;
-  justify-content: space-around;
+  flex-wrap: wrap;
+  justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
+  padding: 0 1em;
   transition: background-color 0.5s ease, color 0.5s ease;
 }
 
@@ -109,14 +111,66 @@ button:nth-of-type(7) {
   font-size: 28px;
 }
 
+.header__btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.menu-svg {
+  width: 2em;
+  height: 2em;
+  fill: var(--text-color);
+  transition: fill 0.5s ease;
+}
+
 .header__nav {
+  /* display: none; */
   display: flex;
-  gap: 25px;
+  justify-content: flex-end;
+  align-items: center;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  width: 100%;
+  /* padding-bottom: 1em; */
+  padding-bottom: 0;
+  row-gap: 12px;
+
+/* Propiedades clave para la animación de despliegue */
+  max-height: 0;
+  pointer-events: none; /* Evita interacciones cuando está cerrado */ 
+  overflow: hidden;
+  transition: max-height 0.6s ease-in-out, padding 0.5s ease-in-out;
+  
+  /* transition: all .5s ease; */
+}
+.header__nav.active {
+  /* display: flex; */
+  /* Estilo cuando el menú está activo */
+  max-height: 500px; /* Un valor alto que cubra todo el contenido */
+  padding-bottom: 1em; /* El padding que quieres para el menú visible */
+  pointer-events: auto; /* Permite interacciones cuando está abierto */ 
 }
 
 .header__link {
   color: white;
 }
+
+@media (min-width: 768px) {
+  .header {
+    flex-wrap: nowrap;
+  }
+  .header__btn {
+    display: none;
+  }
+  .header__nav {
+    flex-direction: row;
+    width: auto;
+    column-gap: 15px;
+    padding: 0;
+  }
+}
+
 
 .container {
   display: flex;

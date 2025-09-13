@@ -9,6 +9,8 @@
       btnLunch: document.getElementById('btnLunch'),
       themeSwitcher: document.getElementById('themeSwitcher'), // Nuevo botón de tema
       body: document.body, // Referencia al body para cambiar el tema
+      btnMenu: document.querySelector('.header__btn'),
+      navMenu: document.getElementById('mainMenu'),
     };
 
     // 2. Objeto para mantener el estado de la aplicación
@@ -362,6 +364,11 @@
     }
 
     setInterval(verificarHorario, 1000); 
+
+    // Manejo del menú en móvil
+    elements.btnMenu.addEventListener('click', () => {
+      elements.navMenu.classList.toggle('active');
+    });
 
     btnOpenModal.addEventListener('click', openModal);
     btnCloseModal.addEventListener('click', closeModal);
