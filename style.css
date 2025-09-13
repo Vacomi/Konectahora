@@ -168,6 +168,9 @@ button:nth-of-type(7) {
     width: auto;
     column-gap: 15px;
     padding: 0;
+    max-height: none; /* Anulamos el max-height para escritorio */
+    overflow: visible; /* Anulamos el overflow para escritorio */
+    pointer-events: auto; /* Aseguramos que siempre se pueda interactuar */
   }
 }
 
