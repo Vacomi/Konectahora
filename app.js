@@ -358,6 +358,18 @@
         alarmasDisparadas.hbreak1 = false;
         alarmasDisparadas.hbreak2 = false;
         alarmasDisparadas.hlunch = false;
+        // Quitar la hora guardada o marcada
+        horarios.hbreak1 = null;
+        horarios.hbreak2 = null;
+        horarios.hlunch = null;
+        localStorage.setItem('horarios', JSON.stringify(horarios));
+        visualBreak.classList.remove('alarm__time--used');
+        visualBreak2.classList.remove('alarm__time--used');
+        visualLunch.classList.remove('alarm__time--used');
+        // También actualiza el texto a "Sin definir"
+        visualBreak.textContent = "Sin definir";
+        visualBreak2.textContent = "Sin definir";
+        visualLunch.textContent = "Sin definir";
         guardarEstadoAlarmas();
         localStorage.setItem('ultimoReinicio', ahora.getTime());
       }
