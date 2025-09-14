@@ -521,7 +521,7 @@ input[type="time"] {
 }
 
 .alarm__btn {
-  background-color: var(--primary-color);
+  /* background-color: var(--primary-color);
   color: var(--secondary-color);
   border: none;
   padding: 5px 10px;
@@ -529,8 +529,107 @@ input[type="time"] {
   cursor: pointer;
   font-size: 16px;
   font-weight: bold;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease; */
+  position: relative;
+  padding: 5px 10px;
+  color: var(--highlight-color);
+  background: transparent;
+  border: none;
+  border-radius: 5px;
+  outline: none;
+  cursor: pointer;
+  z-index: 1;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 }
+.alarm__btn span {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+}
+.alarm__btn .alarm__btn--top {
+  animation: animateTop 2s ease-in-out infinite;
+}
+.alarm__btn .alarm__btn--right {
+  animation: animateRight 2s ease-in-out infinite;
+}
+.alarm__btn .alarm__btn--bottom {
+  animation: animateBottom 2s ease-in-out infinite;
+}
+.alarm__btn .alarm__btn--left {
+  animation: animateLeft 2s ease-in-out infinite;
+}
+
+.alarm__btn .alarm__btn--top {
+  background: linear-gradient(90deg, transparent 50%, var(--highlight-color));
+      /* background: linear-gradient(
+        90deg,
+        transparent 50%,
+        rgba(0,255,255,0.5),
+        rgb(0,255,255)
+    ); */
+}
+.alarm__btn  .alarm__btn--right {
+  left: 100%;
+  width: 2px;
+  height: 0;
+  background: linear-gradient(180deg, transparent 30%, var(--highlight-color));
+  /* background: linear-gradient(
+    180deg,
+    transparent 30%,
+    rgba(0,255,255,0.5),
+    rgb(0,255,255)
+  ); */
+}
+
+.alarm__btn .alarm__btn--bottom {
+  top: 100%;
+  left: 100%;
+  /* background: linear-gradient(
+        90deg,
+        rgb(0,255,255),
+        rgba(0,255,255,0.5),
+        transparent 50%); */
+  background: linear-gradient(90deg, var(--highlight-color), transparent 50%);
+}
+.alarm__btn .alarm__btn--left {
+  top: 100%;
+  left: 0;
+  width: 2px;
+  height: 0;
+  background: linear-gradient(180deg,var(--highlight-color) ,var(--highlight-color), transparent 70%);
+      /* background: linear-gradient(
+        180deg,
+        rgb(0,255,255),
+        rgba(0,255,255,0.5),
+        transparent 70%
+    ); */
+}
+
+@keyframes animateTop {
+  100% {
+    width: 100%;;
+  }
+}
+@keyframes animateRight {
+  100% {
+    height: 100%;
+  }
+}
+@keyframes animateBottom {
+  100% {
+    left: 0;
+    width: 100%;
+  }
+}
+@keyframes animateLeft {
+  100% {
+    height: 100%;
+    top: 0;
+  }
+}
+
 
 .alarm__section {
   display: flex;
