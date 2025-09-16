@@ -60,9 +60,9 @@ body.dark-theme .actions__btn {
   color: #FFFFFF; */
 }
 body.dark-theme .alarm__btn {
-    background-color: transparent;
-    border: 1px solid var(--highlight-color);
-    color: var(--highlight-color);
+  /* background-color: transparent; */
+  /* border: 1px solid var(--highlight-color); */
+  color: var(--text-color);
 }
 
 body.dark-theme .actions__btn:hover {
@@ -521,115 +521,50 @@ input[type="time"] {
 }
 
 .alarm__btn {
-  /* background-color: var(--primary-color);
-  color: var(--secondary-color);
-  border: none;
-  padding: 5px 10px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
-  font-weight: bold;
-  transition: background-color 0.3s ease; */
   position: relative;
-  padding: 5px 10px;
-  color: var(--highlight-color);
-  background: transparent;
+  padding: 8px 12px;
+  font-size: 1rem;
+  font-weight: bold;
+  color: var(--primary-color);
+  background-color: transparent;
   border: none;
-  border-radius: 5px;
-  outline: none;
+  border-radius: 12px;
   cursor: pointer;
   z-index: 1;
-  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-}
-.alarm__btn span {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 0;
-  height: 2px;
-}
-.alarm__btn .alarm__btn--top {
-  animation: animateTop 2s ease-in-out infinite;
-}
-.alarm__btn .alarm__btn--right {
-  animation: animateRight 2s ease-in-out infinite;
-}
-.alarm__btn .alarm__btn--bottom {
-  animation: animateBottom 2s ease-in-out infinite;
-}
-.alarm__btn .alarm__btn--left {
-  animation: animateLeft 2s ease-in-out infinite;
+  overflow: hidden;
+  
+  /* Background animado de degradado */
+  background: linear-gradient(135deg, #3b004a, var(--highlight-color), #3b004a, var(--highlight-color));
+  background-size: 400% 400%;
+  animation: liquid-flow 15s ease infinite;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+
+  border: 1px solid var(--highlight-color);
 }
 
-.alarm__btn .alarm__btn--top {
-  background: linear-gradient(90deg, transparent 50%, var(--highlight-color));
-      /* background: linear-gradient(
-        90deg,
-        transparent 50%,
-        rgba(0,255,255,0.5),
-        rgb(0,255,255)
-    ); */
-}
-.alarm__btn  .alarm__btn--right {
-  left: 100%;
-  width: 2px;
-  height: 0;
-  background: linear-gradient(180deg, transparent 30%, var(--highlight-color));
-  /* background: linear-gradient(
-    180deg,
-    transparent 30%,
-    rgba(0,255,255,0.5),
-    rgb(0,255,255)
-  ); */
+ /* Animación del fondo */
+@keyframes liquid-flow {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
 }
 
-.alarm__btn .alarm__btn--bottom {
-  top: 100%;
-  left: 100%;
-  /* background: linear-gradient(
-        90deg,
-        rgb(0,255,255),
-        rgba(0,255,255,0.5),
-        transparent 50%); */
-  background: linear-gradient(90deg, var(--highlight-color), transparent 50%);
+/* Efecto al pasar el cursor */
+.alarm__btn:hover {
+    transform: scale(1.05);
+    color: white;
+    box-shadow: 0 0 15px var(--highlight-color);
+    background: linear-gradient(135deg, #3b004a, var(--highlight-color), #3b004a, var(--highlight-color));
+    background-size: 400% 400%;
+    animation: liquid-flow 5s ease infinite;
 }
-.alarm__btn .alarm__btn--left {
-  top: 100%;
-  left: 0;
-  width: 2px;
-  height: 0;
-  background: linear-gradient(180deg,var(--highlight-color) ,var(--highlight-color), transparent 70%);
-      /* background: linear-gradient(
-        180deg,
-        rgb(0,255,255),
-        rgba(0,255,255,0.5),
-        transparent 70%
-    ); */
-}
-
-@keyframes animateTop {
-  100% {
-    width: 100%;;
-  }
-}
-@keyframes animateRight {
-  100% {
-    height: 100%;
-  }
-}
-@keyframes animateBottom {
-  100% {
-    left: 0;
-    width: 100%;
-  }
-}
-@keyframes animateLeft {
-  100% {
-    height: 100%;
-    top: 0;
-  }
-}
-
 
 .alarm__section {
   display: flex;
