@@ -17,6 +17,12 @@
   /* Pink */
   --marcaagua: rgba(218, 218, 218, 0.2);
   --opacidadgeneral: rgba(218, 218, 218, 0.15);
+
+  --text-notes: #0c1729;
+  /* --text-notes: rgba(223, 223, 223, 0.6); */
+
+  --text-placeholder: rgba(12, 23, 41, 0.603);
+
 }
 
 /* Práctica recomendada: aplicar box-sizing globalmente */
@@ -50,6 +56,8 @@ body.dark-theme {
   --highlight-color: #C62828;    /* Elegant Deep Red */
   --marcaagua: rgba(255, 255, 255, 0.1);
   --opacidadgeneral: rgba(255, 255, 255, 0.05);
+  --text-notes: rgba(223, 223, 223, 0.6);
+  --text-placeholder: rgba(230, 230, 250, 0.6);
   background-image: none;
   /* Remove the light theme background pattern */
 }
@@ -678,4 +686,123 @@ input[type="time"] {
 
 #themeSwitcher:hover .material-icons {
   color: var(--primary-color);
+}
+
+/* ZONA DE NOTAS */
+.editable {
+  display: grid;
+  grid-template-columns: 1fr;
+  /* grid-template-columns: 2fr 1fr; */
+  margin: 10px auto;
+  width: 100%;
+  max-width: 800px;
+}
+@media (min-width: 600px) {
+  .editable {
+    grid-template-columns: 1fr 1fr;
+    column-gap: 10px;
+  }
+  
+}
+.bloc {
+  height: 400px;
+  background-color: var(--secondary-color);
+  border-radius: 10px;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.6);
+  /* box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); */
+  padding: .5rem .5rem 1rem .5rem;
+  margin-bottom: .5rem;
+  display: flex;
+  flex-direction: column;
+}
+.bloc__title {
+  font-size: 1rem;
+  font-weight: bold;
+  text-align: center;
+  color: var(--text-color);
+  margin-bottom: .5rem;
+}
+.bloc__text {
+  flex: 1;
+  width: 100%;
+  background-color: var(--primary-color);
+  color: var(--text-notes);
+  border: none;
+  outline: none;
+  resize: none;
+  padding: .5rem;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-family: "Saira", Arial, sans-serif;;
+  line-height: 1.6;
+  transition: all 0.3s ease;
+}
+
+.bloc__text::placeholder {
+  color: var(--text-placeholder);
+}
+
+.bloc__text:focus {
+  /* box-shadow: 0 0 10px var(--highlight-color); */
+  /* border: 1px solid var(--highlight-color); */
+}
+
+
+/* zona de kbS */
+.kbs {
+  background-color: var(--primary-color);
+  color: var(--secondary-color);
+  padding: .5rem;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 600px;
+  transition: background-color 0.5s ease;
+  box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.2);
+}
+.kbs__title {
+  font-size: 1rem;
+  font-weight: bold;
+  color: var(--text-notes);
+  margin-bottom: .5rem;
+}
+.kbs__input {
+  /* width: 100%; */
+  padding: 5px;
+  border-radius: 5px;
+  font-size: 14px;
+  margin-bottom: 10px;
+  background-color: var(--secondary-color);
+  color: var(--text-color);
+  outline: none;
+  /* border: none; */
+  border: 1px solid var(--primary-color);
+}
+.kbs__input:focus {
+  box-shadow: 0 0 10px var(--highlight-color);
+  border: 1px solid var(--highlight-color);
+}
+.kbs__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.kbs__item {
+  display: flex;
+  align-items: center;
+  padding: 5px;
+  margin-bottom: 10px;
+  font-size: 16px;
+  background-color: var(--secondary-color);
+  color: var(--primary-color);
+  border-radius: 10px;
+}
+.kbs__title::after {
+  content: 'Trabajando... by (G.V)';
+  display: block;
+  width: 200px;
+  height: 4px;
+  background-color: var(--highlight-color);
+  margin: 0.5rem auto 0 auto;
+  border-radius: 2px;
+  opacity: 0.7;
 }
