@@ -7,7 +7,6 @@
   --text-color: #DCDCDC;
   /*gris blanco*/
   --disabled-color: #cccccc;
-  /* --disabled-color: #8a8a8a; */
   /* Light Gray */
   --success-color: #04fc43;
   /* Green */
@@ -20,9 +19,7 @@
 
   --text-notes: #0c1729;
   /* --text-notes: rgba(223, 223, 223, 0.6); */
-
   --text-placeholder: rgba(12, 23, 41, 0.603);
-
 }
 
 /* Práctica recomendada: aplicar box-sizing globalmente */
@@ -57,19 +54,14 @@ body.dark-theme {
   --marcaagua: rgba(255, 255, 255, 0.1);
   --opacidadgeneral: rgba(255, 255, 255, 0.05);
   --text-notes: rgba(223, 223, 223, 0.6);
-  --text-placeholder: rgba(230, 230, 250, 0.6);
+  /* --text-placeholder: rgba(230, 230, 250, 0.6); */
   background-image: none;
   /* Remove the light theme background pattern */
 }
 
 /* Overrides para el tema oscuro para un acento rojo mínimo */
-body.dark-theme .actions__btn {
-  /* background-color: var(--highlight-color);
-  color: #FFFFFF; */
-}
+
 body.dark-theme .alarm__btn {
-  /* background-color: transparent; */
-  /* border: 1px solid var(--highlight-color); */
   color: var(--text-color);
 }
 
@@ -81,22 +73,26 @@ body.dark-theme .alarm__btn:hover {
   color: #FFFFFF;
 }
 
-body.dark-theme #seconds {
-  /* color: var(--info-color); */
-  /* Use a subtle gray for seconds */
+body.dark-theme .kbs {
+  box-shadow: 0px 2px 5px 1px #000;
+}
+body.dark-theme .kbs__title {
+  color: var(--text-color);
+}
+body.dark-theme .kbs__input {
+  background-color: var(--secondary-color);
+  color: var(--text-color);
+}
+body.dark-theme .kbs__input::placeholder {
+  color: var(--text-notes);
 }
 
-body.dark-theme .header {
-  /* background-color: #171717; */
-  /* background-color: #333333; */
-  /* Make header slightly different */
+body.dark-theme .kbs__list-title {
+  color: var(--text-notes);
 }
-
-body.dark-theme .text-info {
-  /* color: var(--info-color); */
-  /* Adjust text color utility class */
-    }
-
+body.dark-theme .kbs__item {
+  color: var(--text-notes);
+}
 button:nth-of-type(7) {
   background-color: #ffeaeb;
 }
@@ -140,7 +136,6 @@ button:nth-of-type(7) {
   flex-direction: column;
   flex-wrap: nowrap;
   width: 100%;
-  /* padding-bottom: 1em; */
   padding-bottom: 0;
   row-gap: 12px;
 
@@ -410,14 +405,11 @@ button:nth-of-type(7) {
 
 #stop {
   display: none;
-  /* Oculto inicialmente */
   color: var(--highlight-color);
-  /* Color rojo/naranja */
 }
 
 #play {
   color: var(--success-color);
-  /* Color verde */
 }
 
 .contenedor {
@@ -588,7 +580,6 @@ input[type="time"] {
 
 .alarm__description {
   font-size: 16px;
-  /* font-weight: bold; */
 }
 .alarm__time {
   font-size: 16px;
@@ -680,7 +671,6 @@ input[type="time"] {
 /* Si usas Material Icons, asegúrate que el icono herede el color */
 #themeSwitcher .material-icons {
   color: var(--secondary-color);
-  /* font-size: 28px; */
   transition: color 0.3s;
 }
 
@@ -692,7 +682,6 @@ input[type="time"] {
 .editable {
   display: grid;
   grid-template-columns: 1fr;
-  /* grid-template-columns: 2fr 1fr; */
   margin: 10px auto;
   width: 100%;
   max-width: 800px;
@@ -709,7 +698,6 @@ input[type="time"] {
   background-color: var(--secondary-color);
   border-radius: 10px;
   box-shadow: 0 0 40px rgba(0, 0, 0, 0.6);
-  /* box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); */
   padding: .5rem .5rem 1rem .5rem;
   margin-bottom: .5rem;
   display: flex;
@@ -742,12 +730,6 @@ input[type="time"] {
   color: var(--text-placeholder);
 }
 
-.bloc__text:focus {
-  /* box-shadow: 0 0 10px var(--highlight-color); */
-  /* border: 1px solid var(--highlight-color); */
-}
-
-
 /* zona de kbS */
 .kbs {
   background-color: var(--primary-color);
@@ -762,20 +744,60 @@ input[type="time"] {
 .kbs__title {
   font-size: 1rem;
   font-weight: bold;
-  color: var(--text-notes);
+  color: var(--secondary-color);
   margin-bottom: .5rem;
 }
-.kbs__input {
-  /* width: 100%; */
+.kbs__form {
+  margin-bottom: 10px;
+}
+.kbs__fpart1 {
+  display: flex;
+  margin-bottom: 10px;
+}
+.kbs__fpart1 .kbs__input {
+  margin-right: 10px;
+  width: 40%; 
+}
+.kbs__fpart1 .kbs__btnAdd {
+  width: 60%;
+  background-color: var(--secondary-color);
+  color: var(--text-color);
+  border: none;
   padding: 5px;
   border-radius: 5px;
   font-size: 14px;
-  margin-bottom: 10px;
-  background-color: var(--secondary-color);
-  color: var(--text-color);
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+.kbs__btnAdd:hover {
+  box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.5),
+    0px -3px 5px rgba(0, 0, 0, 0.5);
+}
+
+.kbs__input {
+  width: 100%;
+  padding: 5px;
+  border-radius: 5px;
+  font-size: 14px;
+  background-color: #fff;
+  font-style: italic;
+  color: var(--secondary-color);
   outline: none;
-  /* border: none; */
   border: 1px solid var(--primary-color);
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.2);
+}
+.kbs__input::placeholder {
+  color: var(--text-placeholder);
 }
 .kbs__input:focus {
   box-shadow: 0 0 10px var(--highlight-color);
@@ -785,24 +807,53 @@ input[type="time"] {
   list-style: none;
   padding: 0;
   margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.kbs__list-title{
+  margin-bottom: 5px;
+  text-align: center;
 }
 .kbs__item {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  padding: 5px;
-  margin-bottom: 10px;
-  font-size: 16px;
+  padding: 3px 5px;
+  font-size: 14px;
   background-color: var(--secondary-color);
   color: var(--primary-color);
-  border-radius: 10px;
+  color: var(--secondary-color);
+  border-radius: 5px;
+  background-color: var(--primary-color);
+  transition: all 0.3s;
+  box-shadow: 0 3px 3px 2px rgba(0, 0, 0, 0.2);
 }
-.kbs__title::after {
-  content: 'Trabajando... by (G.V)';
-  display: block;
-  width: 200px;
-  height: 4px;
-  background-color: var(--highlight-color);
-  margin: 0.5rem auto 0 auto;
-  border-radius: 2px;
-  opacity: 0.7;
+.kbs__info {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+.kbs__number {
+  font-weight: bold;
+  color: var(--highlight-color);
+}
+.kbs__actions {
+  display: flex;
+  gap: 0.5rem;
+  border-radius: 5px;
+}
+.kb-action-btn {
+  cursor: pointer;
+  font-size: 18px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+.copy-btn:hover {
+  color: var(--success-color);
+}
+.edit-btn:hover {
+  color: var(--info-color);
+}
+.delete-btn:hover {
+  color: var(--highlight-color);
 }

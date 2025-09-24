@@ -12,6 +12,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Saira:wght@500;600&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
 </head>
 
 <body>
@@ -127,11 +129,42 @@
   <section class="editable">
     <article class="bloc">
       <h3 class="bloc__title">Bloc de notas:</h3>
-      <textarea class="bloc__text" id="notasTextarea" placeholder="Escribe tus notas aquí..."></textarea>
+      <textarea class="bloc__text" id="notasTextarea" placeholder="Escribe tus notas aquí..." spellcheck="false"></textarea>
     </article>
 
     <article class="kbs">
       <h3 class="kbs__title">Mis KB's:</h3>
+
+      <div class="kbs__form">
+        <div class="kbs__fpart1">
+          <input type="number" class="kbs__input" id="kbInput-id" placeholder="Número" required>
+          <button class="kbs__btnAdd" id="KbBtn-add">Agregar</button>
+        </div>
+
+        <div class="kbs__fpart2">
+          <input type="text" class="kbs__input" id="kbInput-des" placeholder="Descripción" required>
+        </div>
+      </div>
+
+      <div class="kbs__list-container">
+        <h4 class="kbs__list-title">Mis KBs Favoritos</h4>
+        <ul id="kb-list" class="kbs__list">
+        <!-- KB items will be injected here by JavaScript -->
+          <!-- <li class="kbs__item">
+            <div class="kbs__info">
+              <span class="kbs__number">42</span>
+              <span class="kb-description">Actividad inusual y Cargo no reconocido</span>
+            </div>
+            <div class="kbs__actions">
+              <button class="kb-action-btn copy-btn" data-id="${kb.id}" data-description="${kb.description}">Copy</button>
+              <button class="kb-action-btn edit-btn" data-id="${kb.id}">Edit</button>
+              <button class="kb-action-btn delete-btn" data-id="${kb.id}">Delete</button>
+            </div>
+          </li> -->
+
+        </ul>
+      </div>
+      
     </article> 
     
   </section>  
