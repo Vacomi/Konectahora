@@ -148,8 +148,6 @@ button:nth-of-type(7) {
   /* transition: all .5s ease; */
 }
 .header__nav.active {
-  /* display: flex; */
-  /* Estilo cuando el menú está activo */
   max-height: 500px; /* Un valor alto que cubra todo el contenido */
   padding-bottom: 1em; /* El padding que quieres para el menú visible */
   pointer-events: auto; /* Permite interacciones cuando está abierto */ 
@@ -183,33 +181,6 @@ button:nth-of-type(7) {
   flex-direction: column;
   align-items: center;
   gap: 15px;
-}
-
-.actions {
-  display: flex;
-  gap: 15px;
-  /* Manera moderna de separar elementos flexibles */
-}
-
-.actions__btn {
-  border: none;
-  background-color: var(--secondary-color);
-  color: var(--text-color);
-  opacity: 0.95;
-  padding: 8px 14px;
-  border-radius: 15px;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 600;
-  margin-top: 5px;
-  transition: background-color 0.5s ease, color 0.5s ease, opacity 0.3s ease;
-}
-
-.actions__btn:disabled {
-  background-color: var(--disabled-color);
-  color: #666666;
-  cursor: not-allowed;
-  opacity: 0.7;
 }
 
 .clock {
@@ -277,59 +248,6 @@ button:nth-of-type(7) {
   justify-content: center;
   align-items: center;
   font-weight: 500;
-}
-
-.registro {
-  width: 100%;
-  max-width: 500px;
-  color: var(--text-color);
-  background-color: var(--secondary-color);
-  opacity: 0.95;
-  font-size: 16px;
-  text-align: center;
-  padding: 10px 15px;
-  border-radius: 5px;
-  min-height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  transition: background-color 0.5s ease;
-}
-
-.registro-item {
-  font-size: 1em;
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  opacity: 0.75;
-  flex-grow: 1;
-  gap: 10px;
-}
-
-/* Estilo para el botón de eliminar 'x' */
-.btn-eliminar-registro {
-  background-color: red;
-  color: var(--text-color);
-  font-weight: bold;
-  cursor: pointer;
-  font-size: 14px;
-  padding: 0 6px 2px 6px;
-  border-radius: 5px;
-  border: none;
-}
-
-/* Clases de utilidad para colores */
-.text-success {
-  color: var(--success-color);
-}
-
-.text-info {
-  color: #dee2e6;
-}
-
-.text-highlight {
-  color: var(--highlight-color);
 }
 
 /****************************** Temporizador ***********************************/

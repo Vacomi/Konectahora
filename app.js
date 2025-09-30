@@ -4,9 +4,6 @@ const elements = {
   minutes: document.getElementById('minutes'),
   seconds: document.getElementById('seconds'),
   ampm: document.getElementById('ampm'),
-  registroDiv: document.getElementById('registro'),
-  btnBreak: document.getElementById('btnBreak'),
-  btnLunch: document.getElementById('btnLunch'),
   themeSwitcher: document.getElementById('themeSwitcher'), // Nuevo botón de tema
   body: document.body, // Referencia al body para cambiar el tema
   btnMenu: document.querySelector('.header__btn'),
@@ -106,13 +103,7 @@ kbsElements.kbList.addEventListener('click', async (e) => {
     // }
   }
 });
-// 2. Objeto para mantener el estado de la aplicación
-const appState = {
-  breakStartTime: null,
-  lunchStartTime: null,
-};
 
-const initialMessage = 'Empieza marcando tu Break o tu Lunch ...';
 
 // 3. Función auxiliar para formatear la hora (DRY)
 const formatTime = (date) => {
@@ -133,76 +124,8 @@ const updateClock = () => {
   elements.ampm.textContent = now.getHours() >= 12 ? 'PM' : 'AM';
 };
 
-// 5. Función genérica para manejar los clics en los botones
-const handleMarking = (eventType) => {
-  const now = new Date();
-  const timeString = formatTime(now);
-  const stateKey = `${eventType.toLowerCase()}StartTime`; // 'breakStartTime' o 'lunchStartTime'
-  const btn = eventType === 'Break' ? elements.btnBreak : elements.btnLunch;
-  const otherBtn = eventType === 'Break' ? elements.btnLunch : elements.btnBreak;
-
-  if (!appState[stateKey]) { // Iniciar marca
-    appState[stateKey] = timeString;
-    btn.textContent = btn.dataset.textEnd;
-    otherBtn.disabled = true;
-
-    elements.registroDiv.innerHTML = `
-            <div class="registro-item">
-                <span class="text-success">${eventType}:</span>
-                <span class="text-info">Inicio ${appState[stateKey]}</span>
-            </div>`;
-  } else { // Finalizar marca
-    const endTime = timeString;
-    const startTime = appState[stateKey];
-
-    const btnEliminar = document.createElement('button');
-    btnEliminar.textContent = 'x';
-    btnEliminar.className = 'btn-eliminar-registro';
-    btnEliminar.addEventListener('click', () => {
-      resetUI();
-    });
-
-    const logEntry = document.createElement('div');
-    logEntry.className = 'registro-item';
-    logEntry.innerHTML = `
-            <span class="text-success">${eventType}:</span>
-            <span class="text-info">Inicio ${startTime} - Fin ${endTime}</span>`;
-    logEntry.appendChild(btnEliminar);
-
-    elements.registroDiv.innerHTML = '';
-    elements.registroDiv.appendChild(logEntry);
-
-    resetState(eventType);
-  }
-};
-
-const resetState = (eventType) => {
-  const stateKey = `${eventType.toLowerCase()}StartTime`;
-  const btn = eventType === 'Break' ? elements.btnBreak : elements.btnLunch;
-
-  appState[stateKey] = null;
-  btn.textContent = btn.dataset.textStart;
-  elements.btnBreak.disabled = false;
-  elements.btnLunch.disabled = false;
-};
-
-const resetUI = () => {
-  elements.registroDiv.innerHTML = `<p>${initialMessage}</p>`;
-  appState.breakStartTime = null;
-  appState.lunchStartTime = null;
-  elements.btnBreak.textContent = elements.btnBreak.dataset.textStart;
-  elements.btnLunch.textContent = elements.btnLunch.dataset.textStart;
-  elements.btnBreak.disabled = false;
-  elements.btnLunch.disabled = false;
-};
-
-// 6. Asignar los eventos
-elements.btnBreak.addEventListener('click', () => handleMarking('Break'));
-elements.btnLunch.addEventListener('click', () => handleMarking('Lunch'));
-
-// Iniciar el reloj y la UI
-setInterval(updateClock, 1000);
-resetUI(); // Llama para establecer el estado inicial
+-// Iniciar el reloj
+-setInterval(updateClock, 1000);
 
 
 /********* ZONA TEMPORIZADOR ******/
@@ -495,7 +418,7 @@ document.addEventListener('DOMContentLoaded', () => {
     applyTheme('default');
   }
   // 2. Inicializar el temporizador
-  initializeTimer(60);
+ initializeTimer(60);
 
   // 3. Cargar horarios y estado de alarmas
   const listHora = JSON.parse(localStorage.getItem('horarios'));
