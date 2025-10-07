@@ -758,10 +758,6 @@ input[type="time"] {
   transition: all 0.3s ease;
 }
 
-.bloc__text::placeholder {
-  color: var(--text-placeholder);
-}
-
 /* zona de kbS */
 .kbs {
   background-color: var(--primary-color);
