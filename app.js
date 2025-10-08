@@ -14,6 +14,7 @@ const elements = {
 const kbsElements = {
     idInput: document.getElementById('kbInput-id'),
     descriptionInput: document.getElementById('kbInput-des'),
+    spanInput: document.getElementById('kbs-span'),
     addBtn: document.getElementById('KbBtn-add'),
     kbList: document.getElementById('kb-list'),
     kbs: JSON.parse(localStorage.getItem('kbs')) || [],
@@ -72,6 +73,10 @@ kbsElements.addBtn.addEventListener('click', () => {
     }
     saveKB();
     clearKbInputs();
+});
+// Añadiendo evento para contar caracteres en la descripción
+kbsElements.descriptionInput.addEventListener('input', (e) => {
+    kbsElements.spanInput.textContent = e.target.value.length;
 });
 
 kbsElements.kbList.addEventListener('click', async (e) => {
