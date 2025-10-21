@@ -427,7 +427,7 @@ button:nth-of-type(7) {
 
 .numero .temporizador__control {
   cursor: pointer;
-  font-size: 2rem;
+  font-size: 2.2rem;
   transition: transform 0.1s ease, color 0.3s ease;
   z-index: 10;
 }
