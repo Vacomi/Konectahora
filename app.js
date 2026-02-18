@@ -1,31 +1,31 @@
 // 1. Cachear elementos del DOM para mayor eficiencia
 const elements = {
-    hour: document.getElementById('hour'),
-    minutes: document.getElementById('minutes'),
-    seconds: document.getElementById('seconds'),
-    ampm: document.getElementById('ampm'),
-    themeSwitcher: document.getElementById('themeSwitcher'), // Nuevo botón de tema
-    body: document.body, // Referencia al body para cambiar el tema
-    btnMenu: document.querySelector('.header__btn'),
-    navMenu: document.getElementById('mainMenu'),
+  hour: document.getElementById('hour'),
+  minutes: document.getElementById('minutes'),
+  seconds: document.getElementById('seconds'),
+  ampm: document.getElementById('ampm'),
+  themeSwitcher: document.getElementById('themeSwitcher'), // Nuevo botón de tema
+  body: document.body, // Referencia al body para cambiar el tema
+  btnMenu: document.querySelector('.header__btn'),
+  navMenu: document.getElementById('mainMenu'),
 };
 
 // ZONA PARA LA SECCION KBS
 const kbsElements = {
-    idInput: document.getElementById('kbInput-id'),
-    descriptionInput: document.getElementById('kbInput-des'),
-    spanInput: document.getElementById('kbs-span'),
-    addBtn: document.getElementById('KbBtn-add'),
-    kbList: document.getElementById('kb-list'),
-    kbs: JSON.parse(localStorage.getItem('kbs')) || [],
+  idInput: document.getElementById('kbInput-id'),
+  descriptionInput: document.getElementById('kbInput-des'),
+  spanInput: document.getElementById('kbs-span'),
+  addBtn: document.getElementById('KbBtn-add'),
+  kbList: document.getElementById('kb-list'),
+  kbs: JSON.parse(localStorage.getItem('kbs')) || [],
 };
 
 const renderKBs = () => {
-    kbsElements.kbList.innerHTML = '';
-    kbsElements.kbs.forEach(kb => {
-        const kbItem = document.createElement('li');
-        kbItem.className = 'kbs__item';
-        kbItem.innerHTML = `
+  kbsElements.kbList.innerHTML = '';
+  kbsElements.kbs.forEach((kb) => {
+    const kbItem = document.createElement('li');
+    kbItem.className = 'kbs__item';
+    kbItem.innerHTML = `
         <div class="kbs__info">
           <span class="kbs__number">${kb.id}</span>
           <span class="kbs__description">${kb.description}</span>
@@ -38,280 +38,281 @@ const renderKBs = () => {
           <span class="material-symbols-outlined kb-action-btn delete-btn" data-id="${kb.id}" title="Eliminar">delete</span>
 
       `;
-        kbsElements.kbList.appendChild(kbItem);
-    });
-}
+    kbsElements.kbList.appendChild(kbItem);
+  });
+};
 
 const saveKB = () => {
-    localStorage.setItem('kbs', JSON.stringify(kbsElements.kbs));
-    renderKBs();
-}
+  localStorage.setItem('kbs', JSON.stringify(kbsElements.kbs));
+  renderKBs();
+};
 
 const clearKbInputs = () => {
-    kbsElements.idInput.value = '';
-    kbsElements.descriptionInput.value = '';
-    kbsElements.addBtn.textContent = 'Agregar';
-    kbsElements.addBtn.style.backgroundColor = 'var(--secondary-color)';
-    kbsElements.addBtn.style.color = 'var(--text-color)';
-}
+  kbsElements.idInput.value = '';
+  kbsElements.descriptionInput.value = '';
+  kbsElements.addBtn.textContent = 'Agregar';
+  kbsElements.addBtn.style.backgroundColor = 'var(--secondary-color)';
+  kbsElements.addBtn.style.color = 'var(--text-color)';
+};
 
 kbsElements.addBtn.addEventListener('click', () => {
-    const id = kbsElements.idInput.value.trim();
-    const description = kbsElements.descriptionInput.value.trim();
+  const id = kbsElements.idInput.value.trim();
+  const description = kbsElements.descriptionInput.value.trim();
 
-    if (!id || !description) {
-        // alert('Por favor, completa ambos campos.');
-        return;
-    }
+  if (!id || !description) {
+    // alert('Por favor, completa ambos campos.');
+    return;
+  }
 
-    const existingIndex = kbsElements.kbs.findIndex(kb => kb.id === id);
+  const existingIndex = kbsElements.kbs.findIndex((kb) => kb.id === id);
 
-    if (existingIndex !== -1) {
-        kbsElements.kbs[existingIndex].description = description;
-    } else {
-        kbsElements.kbs.push({ id, description });
-    }
-    saveKB();
-    clearKbInputs();
+  if (existingIndex !== -1) {
+    kbsElements.kbs[existingIndex].description = description;
+  } else {
+    kbsElements.kbs.push({ id, description });
+  }
+  saveKB();
+  clearKbInputs();
 });
 // Añadiendo evento para contar caracteres en la descripción
 kbsElements.descriptionInput.addEventListener('input', (e) => {
-    kbsElements.spanInput.textContent = e.target.value.length;
+  kbsElements.spanInput.textContent = e.target.value.length;
 });
 
 kbsElements.kbList.addEventListener('click', async (e) => {
-    const target = e.target;
-    const id = target.dataset.id;
+  const target = e.target;
+  const id = target.dataset.id;
 
-    if (target.classList.contains('copy-btn')) {
-        try {
-            await navigator.clipboard.writeText(id);
-            console.log('Texto copiado al portapapeles:', id);
-        } catch (err) {
-            console.error('Error al copiar al portapapeles:', err);
-        }
-        //return;
-    } else if (target.classList.contains('edit-btn')) {
-        const kbToEdit = kbsElements.kbs.find(kb => kb.id === id);
-        if (kbToEdit) {
-            kbsElements.idInput.value = kbToEdit.id;
-            kbsElements.descriptionInput.value = kbToEdit.description;
-            kbsElements.addBtn.textContent = 'Guardar Cambios';
-            kbsElements.addBtn.style.backgroundColor = '#fee800';
-            kbsElements.addBtn.style.color = '#152b4a';
-        }
-    } else if (target.classList.contains('delete-btn')) {
-        // const confirmDelete = confirm('¿Estás seguro de que deseas eliminar este Kb?');
-        // if (confirmDelete) {
-        kbsElements.kbs = kbsElements.kbs.filter(kb => kb.id !== id);
-        saveKB();
-        // }
+  if (target.classList.contains('copy-btn')) {
+    try {
+      await navigator.clipboard.writeText(id);
+      console.log('Texto copiado al portapapeles:', id);
+    } catch (err) {
+      console.error('Error al copiar al portapapeles:', err);
     }
+    //return;
+  } else if (target.classList.contains('edit-btn')) {
+    const kbToEdit = kbsElements.kbs.find((kb) => kb.id === id);
+    if (kbToEdit) {
+      kbsElements.idInput.value = kbToEdit.id;
+      kbsElements.descriptionInput.value = kbToEdit.description;
+      kbsElements.addBtn.textContent = 'Guardar Cambios';
+      kbsElements.addBtn.style.backgroundColor = '#fee800';
+      kbsElements.addBtn.style.color = '#152b4a';
+    }
+  } else if (target.classList.contains('delete-btn')) {
+    // const confirmDelete = confirm('¿Estás seguro de que deseas eliminar este Kb?');
+    // if (confirmDelete) {
+    kbsElements.kbs = kbsElements.kbs.filter((kb) => kb.id !== id);
+    saveKB();
+    // }
+  }
 });
-
 
 // 3. Función auxiliar para formatear la hora (DRY)
 const formatTime = (date) => {
-    const hours = date.getHours();
-    const minutes = date.getMinutes().toString().padStart(2, '0');
-    const seconds = date.getSeconds().toString().padStart(2, '0');
-    const ampm = hours >= 12 ? 'PM' : 'AM';
-    const displayHours = (hours % 12 || 12).toString().padStart(2, '0');
-    return `${displayHours}:${minutes}:${seconds} ${ampm}`;
+  const hours = date.getHours();
+  const minutes = date.getMinutes().toString().padStart(2, '0');
+  const seconds = date.getSeconds().toString().padStart(2, '0');
+  const ampm = hours >= 12 ? 'PM' : 'AM';
+  const displayHours = (hours % 12 || 12).toString().padStart(2, '0');
+  return `${displayHours}:${minutes}:${seconds} ${ampm}`;
 };
 
 // 4. Función para actualizar el reloj principal
 const updateClock = () => {
-    const now = new Date();
-    elements.hour.textContent = (now.getHours() % 12 || 12).toString().padStart(2, '0');
-    elements.minutes.textContent = now.getMinutes().toString().padStart(2, '0');
-    elements.seconds.textContent = now.getSeconds().toString().padStart(2, '0');
-    elements.ampm.textContent = now.getHours() >= 12 ? 'PM' : 'AM';
+  const now = new Date();
+  elements.hour.textContent = (now.getHours() % 12 || 12).toString().padStart(2, '0');
+  elements.minutes.textContent = now.getMinutes().toString().padStart(2, '0');
+  elements.seconds.textContent = now.getSeconds().toString().padStart(2, '0');
+  elements.ampm.textContent = now.getHours() >= 12 ? 'PM' : 'AM';
 };
 
--// Iniciar el reloj
-    -setInterval(updateClock, 1000);
+-(
+  // Iniciar el reloj
+  (-setInterval(updateClock, 1000))
+);
 
 //--- Módulo del Temporizador ---
 const TimerModule = (function () {
+  const timer = {
+    // 1. Elementos del DOM
+    elements: {
+      display: document.querySelector('#tiempoDisplay'),
+      btnPlay: document.querySelector('#play'),
+      btnStop: document.querySelector('#stop'),
+      progressCircle: document.querySelector('#progressCircle'),
+      dot: document.querySelector('#dot'),
+      opciones: document.querySelectorAll('.temporizador__opcion'),
+    },
+    // 2. Estado de la aplicación del temporizador
+    state: {
+      tiempoActual: 0,
+      animationFrameId: null,
+      selectedDuration: 0,
+      isRunning: false,
+      startTime: 0,
+      // ALMACENAREMOS EL ID DEL TIMEOUT PARA PODER CANCELARLO
+      alarmTimeoutId: null,
+    },
+    // 3. Constantes o configuración
+    config: {
+      // CIRCLE_CIRCUMFERENCE: 2 * Math.PI * 70,
+      CIRCLE_CIRCUMFERENCE: 2 * Math.PI * 60,
+    },
+    // 4. Recurso de sonido
+    resources: {
+      alarmSound: document.getElementById('alarmSound'),
+    },
+  };
 
-    const timer = {
-        // 1. Elementos del DOM
-        elements: {
-            display: document.querySelector('#tiempoDisplay'),
-            btnPlay: document.querySelector('#play'),
-            btnStop: document.querySelector('#stop'),
-            progressCircle: document.querySelector('#progressCircle'),
-            dot: document.querySelector('#dot'),
-            opciones: document.querySelectorAll('.temporizador__opcion'),
-        },
-        // 2. Estado de la aplicación del temporizador
-        state: {
-            tiempoActual: 0,
-            animationFrameId: null,
-            selectedDuration: 0,
-            isRunning: false,
-            startTime: 0,
-            // ALMACENAREMOS EL ID DEL TIMEOUT PARA PODER CANCELARLO
-            alarmTimeoutId: null, 
-        },
-        // 3. Constantes o configuración
-        config: {
-            // CIRCLE_CIRCUMFERENCE: 2 * Math.PI * 70,
-            CIRCLE_CIRCUMFERENCE: 2 * Math.PI * 60,
+  function formatTimes(seconds) {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = Math.floor(seconds % 60);
+    const formattedMinutes = String(minutes).padStart(2, '0');
+    const formattedSeconds = String(remainingSeconds).padStart(2, '0');
+    return `${formattedMinutes}:${formattedSeconds}`;
+  }
+  function updateDisplay(progress) {
+    const strokeOffset =
+      timer.config.CIRCLE_CIRCUMFERENCE - progress * timer.config.CIRCLE_CIRCUMFERENCE;
+    timer.elements.progressCircle.style.strokeDashoffset = strokeOffset;
+    const rotation = progress * 360;
+    timer.elements.dot.style.transform = `rotate(${rotation}deg)`;
+  }
 
-        },
-        // 4. Recurso de sonido
-        resources: {
-            alarmSound: document.getElementById('alarmSound'),
-        }
-    };
+  // Función para tiempoDisplayiniciar la cuenta regresiva
+  function countdownLoop(timestamp) {
+    if (!timer.state.startTime) timer.state.startTime = timestamp;
 
-    function formatTimes(seconds) {
-        const minutes = Math.floor(seconds / 60);
-        const remainingSeconds = Math.floor(seconds % 60);
-        const formattedMinutes = String(minutes).padStart(2, '0');
-        const formattedSeconds = String(remainingSeconds).padStart(2, '0');
-        return `${formattedMinutes}:${formattedSeconds}`;
-    }
-    function updateDisplay(progress) {
-        const strokeOffset = timer.config.CIRCLE_CIRCUMFERENCE - progress * timer.config.CIRCLE_CIRCUMFERENCE;
-        timer.elements.progressCircle.style.strokeDashoffset = strokeOffset;
-        const rotation = progress * 360;
-        timer.elements.dot.style.transform = `rotate(${rotation}deg)`;
-    }
+    const realElapsedTime = (Date.now() - timer.state.startTime) / 1000;
 
-    // Función para tiempoDisplayiniciar la cuenta regresiva
-    function countdownLoop(timestamp) {
-        if (!timer.state.startTime) timer.state.startTime = timestamp;
+    // 2. Calcular el tiempo restante (timeAtStartOfRun - realElapsedTime)
+    timer.state.tiempoActual = timer.state.selectedDuration - realElapsedTime;
 
-        const realElapsedTime = (Date.now() - timer.state.startTime) / 1000;
-    
-        // 2. Calcular el tiempo restante (timeAtStartOfRun - realElapsedTime)
-        timer.state.tiempoActual = timer.state.selectedDuration - realElapsedTime;
+    if (timer.state.tiempoActual <= 0) {
+      timer.state.tiempoActual = 0;
+      stopCountdown();
+      // Actualizamos una última vez para que muestre 00:00
+      const progress = timer.state.tiempoActual / timer.state.selectedDuration;
+      updateDisplay(progress);
+      timer.elements.display.textContent = formatTimes(timer.state.tiempoActual);
+      return;
 
-        if (timer.state.tiempoActual <= 0) {
-            timer.state.tiempoActual = 0;
-            stopCountdown();
-            // Actualizamos una última vez para que muestre 00:00
-            const progress = timer.state.tiempoActual / timer.state.selectedDuration;
-            updateDisplay(progress);
-            timer.elements.display.textContent = formatTimes(timer.state.tiempoActual);
-            return;
-
-            // if (timer.resources.alarmSound) timer.resources.alarmSound.play();
-            // setTimeout(() => initializeTimer(timer.state.selectedDuration), 1000);
-            // return;
-        }
-
-        const progress = timer.state.tiempoActual / timer.state.selectedDuration;
-        updateDisplay(progress);
-        timer.elements.display.textContent = formatTimes(timer.state.tiempoActual);
-        timer.state.animationFrameId = requestAnimationFrame(countdownLoop);
-    }
-    function startCountdown() {
-        if (timer.state.isRunning || timer.state.tiempoActual <= 0) return;
-        timer.state.isRunning = true;
-        timer.elements.btnPlay.style.display = 'none';
-        timer.elements.btnStop.style.display = 'block';
-        // timer.state.startTime = 0;
-        // ESTO ES CLAVE: Guarda el tiempo actual restante y la hora de inicio ABSOLUTA del sistema.
-        timer.state.startTime = Date.now();
-
-        // 1. Inicia la animación visual
-        timer.state.animationFrameId = requestAnimationFrame(countdownLoop);
-        // 2. Programa la alarma de fondo
-        const durationInMilliseconds = timer.state.selectedDuration * 1000;
-        console.log('Duración en ms para la alarma:', durationInMilliseconds);
-        console.log(timer.state.alarmTimeoutId);
-        timer.state.alarmTimeoutId = setTimeout(() => {
-        if (timer.resources.alarmSound) timer.resources.alarmSound.play();
-        console.log("¡Tiempo terminado!");
-        // Aquí podrías mostrar una notificación del navegador si quisieras
-        
-        // Reseteamos la UI
-        stopCountdown();
-        initializeTimer(timer.state.selectedDuration);
-        
-        }, durationInMilliseconds - 1000); // -1000ms para que suene justo al llegar a 00:00
-    }
-    function stopCountdown() {
-        if (!timer.state.isRunning) return;
-        timer.state.isRunning = false;
-        cancelAnimationFrame(timer.state.animationFrameId);
-        clearTimeout(timer.state.alarmTimeoutId);
-    }
-    function resetTimerUI(duration) {
-        timer.elements.display.textContent = formatTimes(duration);
-        updateDisplay(1); // 1 = 100% del círculo de progreso
-        timer.elements.btnPlay.style.display = 'block';
-        timer.elements.btnStop.style.display = 'none';
+      // if (timer.resources.alarmSound) timer.resources.alarmSound.play();
+      // setTimeout(() => initializeTimer(timer.state.selectedDuration), 1000);
+      // return;
     }
 
-    function initializeTimer(duration) {
-        stopCountdown();
-        timer.state.selectedDuration = duration;
-        timer.state.tiempoActual = timer.state.selectedDuration;
-        // Usamos la nueva función para establecer el estado visual inicial.
-        resetTimerUI(duration);
-    }
-    timer.elements.opciones.forEach(opcion => {
-        opcion.addEventListener('click', (e) => {
-            // Quita la clase seleccionada de todos
-            timer.elements.opciones.forEach(opt => opt.classList.remove('temporizador__opcion--seleccionado'));
-            // Añade la clase seleccionada al clickeado
-            e.currentTarget.classList.add('temporizador__opcion--seleccionado');
-            // leer el tiempo del data-attribute
-            const duration = parseInt(e.currentTarget.dataset.duration, 10);
-            initializeTimer(duration);
-        });
+    const progress = timer.state.tiempoActual / timer.state.selectedDuration;
+    updateDisplay(progress);
+    timer.elements.display.textContent = formatTimes(timer.state.tiempoActual);
+    timer.state.animationFrameId = requestAnimationFrame(countdownLoop);
+  }
+  function startCountdown() {
+    if (timer.state.isRunning || timer.state.tiempoActual <= 0) return;
+    timer.state.isRunning = true;
+    timer.elements.btnPlay.style.display = 'none';
+    timer.elements.btnStop.style.display = 'block';
+    // timer.state.startTime = 0;
+    // ESTO ES CLAVE: Guarda el tiempo actual restante y la hora de inicio ABSOLUTA del sistema.
+    timer.state.startTime = Date.now();
+
+    // 1. Inicia la animación visual
+    timer.state.animationFrameId = requestAnimationFrame(countdownLoop);
+    // 2. Programa la alarma de fondo
+    const durationInMilliseconds = timer.state.selectedDuration * 1000;
+    console.log('Duración en ms para la alarma:', durationInMilliseconds);
+    console.log(timer.state.alarmTimeoutId);
+    timer.state.alarmTimeoutId = setTimeout(() => {
+      if (timer.resources.alarmSound) timer.resources.alarmSound.play();
+      console.log('¡Tiempo terminado!');
+      // Aquí podrías mostrar una notificación del navegador si quisieras
+
+      // Reseteamos la UI
+      stopCountdown();
+      initializeTimer(timer.state.selectedDuration);
+    }, durationInMilliseconds - 1000); // -1000ms para que suene justo al llegar a 00:00
+  }
+  function stopCountdown() {
+    if (!timer.state.isRunning) return;
+    timer.state.isRunning = false;
+    cancelAnimationFrame(timer.state.animationFrameId);
+    clearTimeout(timer.state.alarmTimeoutId);
+  }
+  function resetTimerUI(duration) {
+    timer.elements.display.textContent = formatTimes(duration);
+    updateDisplay(1); // 1 = 100% del círculo de progreso
+    timer.elements.btnPlay.style.display = 'block';
+    timer.elements.btnStop.style.display = 'none';
+  }
+
+  function initializeTimer(duration) {
+    stopCountdown();
+    timer.state.selectedDuration = duration;
+    timer.state.tiempoActual = timer.state.selectedDuration;
+    // Usamos la nueva función para establecer el estado visual inicial.
+    resetTimerUI(duration);
+  }
+  timer.elements.opciones.forEach((opcion) => {
+    opcion.addEventListener('click', (e) => {
+      // Quita la clase seleccionada de todos
+      timer.elements.opciones.forEach((opt) =>
+        opt.classList.remove('temporizador__opcion--seleccionado')
+      );
+      // Añade la clase seleccionada al clickeado
+      e.currentTarget.classList.add('temporizador__opcion--seleccionado');
+      // leer el tiempo del data-attribute
+      const duration = parseInt(e.currentTarget.dataset.duration, 10);
+      initializeTimer(duration);
     });
+  });
 
-    timer.elements.btnPlay.addEventListener('click', startCountdown);
-    timer.elements.btnStop.addEventListener('click', ()=> {
-        stopCountdown();
-        resetTimerUI(timer.state.selectedDuration);
-    });
+  timer.elements.btnPlay.addEventListener('click', startCountdown);
+  timer.elements.btnStop.addEventListener('click', () => {
+    stopCountdown();
+    resetTimerUI(timer.state.selectedDuration);
+  });
 
-    function init() {
-        // Inicialización del temporizador
-        const initialDuration = document.querySelector('.temporizador__opcion--seleccionado').dataset.duration;
-        initializeTimer(parseInt(initialDuration, 10));
-    }
-    return {
-        init: init
-    };
+  function init() {
+    // Inicialización del temporizador
+    const initialDuration = document.querySelector('.temporizador__opcion--seleccionado').dataset
+      .duration;
+    initializeTimer(parseInt(initialDuration, 10));
+  }
+  return {
+    init: init,
+  };
 })();
 
 // Lógica para el cambio de tema
 const applyTheme = (theme) => {
-    elements.body.dataset.theme = theme;
-    localStorage.setItem('selectedTheme', theme); // Guardar la preferencia
-    if (theme === 'dark') {
-        elements.body.classList.add('dark-theme');
-    } else {
-        elements.body.classList.remove('dark-theme');
-    }
+  elements.body.dataset.theme = theme;
+  localStorage.setItem('selectedTheme', theme); // Guardar la preferencia
+  if (theme === 'dark') {
+    elements.body.classList.add('dark-theme');
+  } else {
+    elements.body.classList.remove('dark-theme');
+  }
 };
 
 elements.themeSwitcher.addEventListener('click', () => {
-    const currentTheme = elements.body.dataset.theme;
-    const newTheme = currentTheme === 'default' ? 'dark' : 'default';
-    applyTheme(newTheme);
+  const currentTheme = elements.body.dataset.theme;
+  const newTheme = currentTheme === 'default' ? 'dark' : 'default';
+  applyTheme(newTheme);
 });
-
 
 /******************ZONA ALARMA Y MODAL ****************/
 const horarios = {
-    hbreak1: null,
-    hbreak2: null,
-    hlunch: null,
-}
+  hbreak1: null,
+  hbreak2: null,
+  hlunch: null,
+};
 
 let alarmasDisparadas = {
-    hbreak1: false,
-    hbreak2: false,
-    hlunch: false,
+  hbreak1: false,
+  hbreak2: false,
+  hlunch: false,
 };
 
 const alertaModal = document.getElementById('alertaModal');
@@ -327,153 +328,150 @@ const visualBreak2 = document.getElementById('tiempoBreak2');
 const visualLunch = document.getElementById('tiempoLunch');
 
 function openModal() {
-    const modal = document.getElementById('myModal');
-    modal.style.display = 'block';
+  const modal = document.getElementById('myModal');
+  modal.style.display = 'block';
 }
 
 function closeModal() {
-    const modal = document.getElementById('myModal');
-    modal.style.display = 'none';
+  const modal = document.getElementById('myModal');
+  modal.style.display = 'none';
 }
 
 // ...existing code...
 function formatHoraConIcono(hora24) {
-    if (!hora24 || hora24 === "00:00") return "";
-    const [h, m] = hora24.split(':').map(Number);
-    const ampm = h >= 12 ? 'PM' : 'AM';
-    const hora12 = ((h % 12) || 12).toString().padStart(2, '0');
-    const minutos = m.toString().padStart(2, '0');
-    // Sol: 6:00am - 5:59pm (06:00 - 17:59)
-    const esDia = (h >= 6 && h < 18);
-    const icono = esDia ? '☀️' : '🌙';
-    return `${hora12}:${minutos} ${ampm} ${icono}`;
+  if (!hora24 || hora24 === '00:00') return '';
+  const [h, m] = hora24.split(':').map(Number);
+  const ampm = h >= 12 ? 'PM' : 'AM';
+  const hora12 = (h % 12 || 12).toString().padStart(2, '0');
+  const minutos = m.toString().padStart(2, '0');
+  // Sol: 6:00am - 5:59pm (06:00 - 17:59)
+  const esDia = h >= 6 && h < 18;
+  const icono = esDia ? '☀️' : '🌙';
+  return `${hora12}:${minutos} ${ampm} ${icono}`;
 }
 
-
 function saveHorarios() {
-    horarios.hbreak1 = document.getElementById('breakTime').value;
-    horarios.hbreak2 = document.getElementById('breakTime2').value;
-    horarios.hlunch = document.getElementById('lunchTime').value;
+  horarios.hbreak1 = document.getElementById('breakTime').value;
+  horarios.hbreak2 = document.getElementById('breakTime2').value;
+  horarios.hlunch = document.getElementById('lunchTime').value;
 
-    let listHoraAntes = JSON.parse(localStorage.getItem('horarios'));
-    localStorage.setItem('horarios', JSON.stringify(horarios));
-    let listHora = JSON.parse(localStorage.getItem('horarios'));
+  let listHoraAntes = JSON.parse(localStorage.getItem('horarios'));
+  localStorage.setItem('horarios', JSON.stringify(horarios));
+  let listHora = JSON.parse(localStorage.getItem('horarios'));
 
-
-
-    // Para cada horario, si está vacío o "00:00", reinicia el estado de la alarma
-    if (!listHora.hbreak1 || listHora.hbreak1 === "00:00") {
-        alarmasDisparadas.hbreak1 = false;
-        visualBreak.textContent = "Sin definir";
-        visualBreak.classList.remove('alarm__time--used');
-    } else {
-        visualBreak.textContent = formatHoraConIcono(listHora.hbreak1);
-        if (listHoraAntes.hbreak1 !== listHora.hbreak1) {
-            alarmasDisparadas.hbreak1 = false;
-            visualBreak.classList.remove('alarm__time--used');
-        }
+  // Para cada horario, si está vacío o "00:00", reinicia el estado de la alarma
+  if (!listHora.hbreak1 || listHora.hbreak1 === '00:00') {
+    alarmasDisparadas.hbreak1 = false;
+    visualBreak.textContent = 'Sin definir';
+    visualBreak.classList.remove('alarm__time--used');
+  } else {
+    visualBreak.textContent = formatHoraConIcono(listHora.hbreak1);
+    if (listHoraAntes.hbreak1 !== listHora.hbreak1) {
+      alarmasDisparadas.hbreak1 = false;
+      visualBreak.classList.remove('alarm__time--used');
     }
+  }
 
-    if (!listHora.hbreak2 || listHora.hbreak2 === "00:00") {
-        alarmasDisparadas.hbreak2 = false;
-        visualBreak2.textContent = "Sin definir";
-        visualBreak2.classList.remove('alarm__time--used');
-    } else {
-        visualBreak2.textContent = formatHoraConIcono(listHora.hbreak2);
-        if (listHoraAntes.hbreak2 !== listHora.hbreak2) {
-            alarmasDisparadas.hbreak2 = false;
-            visualBreak2.classList.remove('alarm__time--used');
-        }
+  if (!listHora.hbreak2 || listHora.hbreak2 === '00:00') {
+    alarmasDisparadas.hbreak2 = false;
+    visualBreak2.textContent = 'Sin definir';
+    visualBreak2.classList.remove('alarm__time--used');
+  } else {
+    visualBreak2.textContent = formatHoraConIcono(listHora.hbreak2);
+    if (listHoraAntes.hbreak2 !== listHora.hbreak2) {
+      alarmasDisparadas.hbreak2 = false;
+      visualBreak2.classList.remove('alarm__time--used');
     }
+  }
 
-    if (!listHora.hlunch || listHora.hlunch === "00:00") {
-        alarmasDisparadas.hlunch = false;
-        visualLunch.textContent = "Sin definir";
-        visualLunch.classList.remove('alarm__time--used');
-    } else {
-        visualLunch.textContent = formatHoraConIcono(listHora.hlunch);
-        if (listHoraAntes.hlunch !== listHora.hlunch) {
-            alarmasDisparadas.hlunch = false;
-            visualLunch.classList.remove('alarm__time--used');
-        }
+  if (!listHora.hlunch || listHora.hlunch === '00:00') {
+    alarmasDisparadas.hlunch = false;
+    visualLunch.textContent = 'Sin definir';
+    visualLunch.classList.remove('alarm__time--used');
+  } else {
+    visualLunch.textContent = formatHoraConIcono(listHora.hlunch);
+    if (listHoraAntes.hlunch !== listHora.hlunch) {
+      alarmasDisparadas.hlunch = false;
+      visualLunch.classList.remove('alarm__time--used');
     }
+  }
 
-    guardarEstadoAlarmas();
-    closeModal();
+  guardarEstadoAlarmas();
+  closeModal();
 }
 
 function mostrarAlerta(mensaje) {
-    alertaMensaje.textContent = mensaje;
-    alertaModal.showModal();
-    playSonidoAlarma();
+  alertaMensaje.textContent = mensaje;
+  alertaModal.showModal();
+  playSonidoAlarma();
 }
 
 function playSonidoAlarma() {
-    alarmaSonido.loop = true;
-    alarmaSonido.play();
+  alarmaSonido.loop = true;
+  alarmaSonido.play();
 }
 
 function stopSonidoAlarma() {
-    alarmaSonido.pause();
-    alarmaSonido.currentTime = 0;
+  alarmaSonido.pause();
+  alarmaSonido.currentTime = 0;
 }
 
 function verificarHorario() {
-    const ahora = new Date();
-    const horaActual = `${String(ahora.getHours()).padStart(2, '0')}:${String(ahora.getMinutes()).padStart(2, '0')}`;
-    const listHora = JSON.parse(localStorage.getItem('horarios'));
+  const ahora = new Date();
+  const horaActual = `${String(ahora.getHours()).padStart(2, '0')}:${String(ahora.getMinutes()).padStart(2, '0')}`;
+  const listHora = JSON.parse(localStorage.getItem('horarios'));
 
-    if (!listHora) return;
+  if (!listHora) return;
 
-    if (horaActual === listHora.hbreak1 && !alarmasDisparadas.hbreak1) {
-        mostrarAlerta('¡Es hora de tu primer Break! ☕️');
-        alarmasDisparadas.hbreak1 = true;
-        // Añadiendo por si acaso
-        visualBreak.classList.add('alarm__time--used');
-    } else if (horaActual === listHora.hbreak2 && !alarmasDisparadas.hbreak2) {
-        mostrarAlerta('¡Es hora de tu segundo Break! 🍎');
-        alarmasDisparadas.hbreak2 = true;
-        visualBreak2.classList.add('alarm__time--used');
-    } else if (horaActual === listHora.hlunch && !alarmasDisparadas.hlunch) {
-        mostrarAlerta('¡Es hora de tu Lunch! 🍲');
-        alarmasDisparadas.hlunch = true;
-        visualLunch.classList.add('alarm__time--used');
-    }
+  if (horaActual === listHora.hbreak1 && !alarmasDisparadas.hbreak1) {
+    mostrarAlerta('¡Es hora de tu primer Break! ☕️');
+    alarmasDisparadas.hbreak1 = true;
+    // Añadiendo por si acaso
+    visualBreak.classList.add('alarm__time--used');
+  } else if (horaActual === listHora.hbreak2 && !alarmasDisparadas.hbreak2) {
+    mostrarAlerta('¡Es hora de tu segundo Break! 🍎');
+    alarmasDisparadas.hbreak2 = true;
+    visualBreak2.classList.add('alarm__time--used');
+  } else if (horaActual === listHora.hlunch && !alarmasDisparadas.hlunch) {
+    mostrarAlerta('¡Es hora de tu Lunch! 🍲');
+    alarmasDisparadas.hlunch = true;
+    visualLunch.classList.add('alarm__time--used');
+  }
 }
 
 function guardarEstadoAlarmas() {
-    localStorage.setItem('alarmasDisparadas', JSON.stringify(alarmasDisparadas));
+  localStorage.setItem('alarmasDisparadas', JSON.stringify(alarmasDisparadas));
 }
 
 function reiniciarAlarmasDiarias() {
-    const ahora = new Date();
-    const ultimoReinicio = localStorage.getItem('ultimoReinicio');
-    if (!ultimoReinicio || ahora.getDate() !== new Date(parseInt(ultimoReinicio)).getDate()) {
-        alarmasDisparadas.hbreak1 = false;
-        alarmasDisparadas.hbreak2 = false;
-        alarmasDisparadas.hlunch = false;
-        // Quitar la hora guardada o marcada
-        horarios.hbreak1 = null;
-        horarios.hbreak2 = null;
-        horarios.hlunch = null;
-        localStorage.setItem('horarios', JSON.stringify(horarios));
-        visualBreak.classList.remove('alarm__time--used');
-        visualBreak2.classList.remove('alarm__time--used');
-        visualLunch.classList.remove('alarm__time--used');
-        // También actualiza el texto a "Sin definir"
-        visualBreak.textContent = "Sin definir";
-        visualBreak2.textContent = "Sin definir";
-        visualLunch.textContent = "Sin definir";
-        guardarEstadoAlarmas();
-        localStorage.setItem('ultimoReinicio', ahora.getTime());
-    }
+  const ahora = new Date();
+  const ultimoReinicio = localStorage.getItem('ultimoReinicio');
+  if (!ultimoReinicio || ahora.getDate() !== new Date(parseInt(ultimoReinicio)).getDate()) {
+    alarmasDisparadas.hbreak1 = false;
+    alarmasDisparadas.hbreak2 = false;
+    alarmasDisparadas.hlunch = false;
+    // Quitar la hora guardada o marcada
+    horarios.hbreak1 = null;
+    horarios.hbreak2 = null;
+    horarios.hlunch = null;
+    localStorage.setItem('horarios', JSON.stringify(horarios));
+    visualBreak.classList.remove('alarm__time--used');
+    visualBreak2.classList.remove('alarm__time--used');
+    visualLunch.classList.remove('alarm__time--used');
+    // También actualiza el texto a "Sin definir"
+    visualBreak.textContent = 'Sin definir';
+    visualBreak2.textContent = 'Sin definir';
+    visualLunch.textContent = 'Sin definir';
+    guardarEstadoAlarmas();
+    localStorage.setItem('ultimoReinicio', ahora.getTime());
+  }
 }
 
 setInterval(verificarHorario, 1000);
 
 // Manejo del menú en móvil
 elements.btnMenu.addEventListener('click', () => {
-    elements.navMenu.classList.toggle('active');
+  elements.navMenu.classList.toggle('active');
 });
 
 btnOpenModal.addEventListener('click', openModal);
@@ -481,61 +479,60 @@ btnCloseModal.addEventListener('click', closeModal);
 btnSaveHorarios.addEventListener('click', saveHorarios);
 
 alertaAceptarBtn.addEventListener('click', () => {
-    alertaModal.close();
-    stopSonidoAlarma();
-    guardarEstadoAlarmas();
+  alertaModal.close();
+  stopSonidoAlarma();
+  guardarEstadoAlarmas();
 });
 
 // CÓDIGO DE INICIALIZACIÓN UNIFICADO
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Cargar tema
-    const savedTheme = localStorage.getItem('selectedTheme');
-    if (savedTheme) {
-        applyTheme(savedTheme);
-    } else {
-        applyTheme('default');
+  // 1. Cargar tema
+  const savedTheme = localStorage.getItem('selectedTheme');
+  if (savedTheme) {
+    applyTheme(savedTheme);
+  } else {
+    applyTheme('default');
+  }
+  // 2. Inicializar el temporizador
+  // initializeTimer(60);
+  // Logica para el nuevo temporizador
+  TimerModule.init();
+
+  // 3. Cargar horarios y estado de alarmas
+  const listHora = JSON.parse(localStorage.getItem('horarios'));
+  const estadoGuardado = JSON.parse(localStorage.getItem('alarmasDisparadas'));
+
+  if (listHora) {
+    if (listHora.hbreak1) {
+      visualBreak.textContent = formatHoraConIcono(listHora.hbreak1);
     }
-    // 2. Inicializar el temporizador
-    // initializeTimer(60);
-    // Logica para el nuevo temporizador
-    TimerModule.init();
-
-    // 3. Cargar horarios y estado de alarmas
-    const listHora = JSON.parse(localStorage.getItem('horarios'));
-    const estadoGuardado = JSON.parse(localStorage.getItem('alarmasDisparadas'));
-
-    if (listHora) {
-        if (listHora.hbreak1) {
-            visualBreak.textContent = formatHoraConIcono(listHora.hbreak1);
-        }
-        if (listHora.hbreak2) {
-            visualBreak2.textContent = formatHoraConIcono(listHora.hbreak2);
-        }
-        if (listHora.hlunch) {
-            visualLunch.textContent = formatHoraConIcono(listHora.hlunch);
-        }
+    if (listHora.hbreak2) {
+      visualBreak2.textContent = formatHoraConIcono(listHora.hbreak2);
     }
-
-    if (estadoGuardado) {
-        console.log("Estado de alarmas cargado:", estadoGuardado);
-
-        alarmasDisparadas = estadoGuardado;
-        for (let element in alarmasDisparadas) {
-            if (alarmasDisparadas.hbreak1) {
-                visualBreak.classList.add('alarm__time--used');
-            }
-            if (alarmasDisparadas.hbreak2) {
-                visualBreak2.classList.add('alarm__time--used');
-            }
-            if (alarmasDisparadas.hlunch) {
-                visualLunch.classList.add('alarm__time--used');
-            }
-        }
+    if (listHora.hlunch) {
+      visualLunch.textContent = formatHoraConIcono(listHora.hlunch);
     }
+  }
 
-    // 4. Lógica para reiniciar las alarmas al inicio de un nuevo día
-    reiniciarAlarmasDiarias();
-    clearKbInputs();
-    renderKBs(); // Renderizar los Kbs al cargar la página
+  if (estadoGuardado) {
+    console.log('Estado de alarmas cargado:', estadoGuardado);
 
+    alarmasDisparadas = estadoGuardado;
+    for (let element in alarmasDisparadas) {
+      if (alarmasDisparadas.hbreak1) {
+        visualBreak.classList.add('alarm__time--used');
+      }
+      if (alarmasDisparadas.hbreak2) {
+        visualBreak2.classList.add('alarm__time--used');
+      }
+      if (alarmasDisparadas.hlunch) {
+        visualLunch.classList.add('alarm__time--used');
+      }
+    }
+  }
+
+  // 4. Lógica para reiniciar las alarmas al inicio de un nuevo día
+  reiniciarAlarmasDiarias();
+  clearKbInputs();
+  renderKBs(); // Renderizar los Kbs al cargar la página
 });
