@@ -1,0 +1,28 @@
+# Dependencias instaladas con npm
+node_modules/
+
+# Archivos de logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+
+# Archivos de entorno (variables secretas)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Compilados o builds (si usas frameworks)
+dist/
+build/
+
+# Cache de VS Code
+.vscode/
+
+# Cache de ESLint
+.eslintcache

@@ -1,170 +1,267 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Una herramienta simple para gestionar tus horarios de break y lunch. Mantente al día con tu tiempo de descanso."
+    />
+    <title>VCK</title>
+    <link rel="icon" href="./img/faviKVC.png" type="image/png" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Saira:wght@500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
+      rel="stylesheet"
+    />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  </head>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description"
-    content="Una herramienta simple para gestionar tus horarios de break y lunch. Mantente al día con tu tiempo de descanso.">
-  <title>VCK</title>
-  <link rel="icon" href="./img/faviKVC.png" type="image/png">
-  <link rel="stylesheet" href="style.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Saira:wght@500;600&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-</head>
+  <body>
+    <header class="header">
+      <!-- LOGOTIPO -->
+      <h1 class="header__logo">VCK</h1>
 
-<body>
-  <header class="header">
-    <!-- LOGOTIPO -->
-    <h1 class="header__logo">VCK</h1>
-
-    <!-- TOGGLE -->
-    <button class="header__btn">
-      <svg class="menu-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
-        <path
-          d="M0 96C0 78.3 14.3 64 32 64l384 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 128C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32l384 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 288c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32L32 448c-17.7 0-32-14.3-32-32s14.3-32 32-32l384 0c17.7 0 32 14.3 32 32z" />
-      </svg>
-    </button>
-
-    <!-- NAVEGATION -->
-    <nav class="header__nav" id="mainMenu">
-      <a href="https://netflixcare.sprinklr.com/" target="_blank" class="header__link">Sprinklr</a>
-      <a href="https://csmemberadmin.prod.netflix.net/" target="_blank" class="header__link">CSMA</a>
-      <a href="https://netflix.teleopticloud.com/Web/Authentication" target="_blank" class="header__link">Calabrio</a>
-      <a href="https://2mares.grupokonecta.corp/CMI360/Pages/LoginCentratel.aspx" target="_blank" class="header__link">2
-        Mares</a>
-      <a href="https://streamu.netflix.net" target="_blank" class="header__link">Stream University</a>
-      <a href="#" class="header__link">Herramientas</a>
-
-      <button class="material-symbols-outlined" id="themeSwitcher">invert_colors</button>
-    </nav>
-  </header>
-
-  <main class="container">
-    <div id="time" class="clock">
-      <div id="hour" class="clock__item">00</div>
-      <div id="minutes" class="clock__item">00</div>
-      <div id="seconds" class="clock__item">00</div>
-      <div id="ampm" class="clock__item">AM</div>
-    </div>
-
-    <!-- NUEVA SECCIÓN DE ALARMA AÑADIDA -->
-    <div class="alarm">
-      <button class="alarm__btn" id="abrirModal">
-        Editar Horario
+      <!-- TOGGLE -->
+      <button class="header__btn">
+        <svg class="menu-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+          <path
+            d="M0 96C0 78.3 14.3 64 32 64l384 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 128C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32l384 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 288c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32L32 448c-17.7 0-32-14.3-32-32s14.3-32 32-32l384 0c17.7 0 32 14.3 32 32z"
+          />
+        </svg>
       </button>
-      <section class="alarm__section">
-        <div class="alarm__item">
-          <p class="alarm__description">Primer Break:</p>
-          <p class="alarm__time" id="tiempoBreak1">Sin definir</p>
+
+      <!-- NAVEGATION -->
+      <nav class="header__nav" id="mainMenu">
+        <div class="header__link-wrapper">
+          <a href="https://netflixcare.sprinklr.com/" target="_blank" class="header__link"
+            >Sprinklr</a
+          >
+          <span
+            class="material-symbols-outlined copy-link-btn"
+            data-url="https://netflixcare.sprinklr.com/"
+            title="Copiar enlace"
+            >content_copy</span
+          >
         </div>
-        <div class="alarm__item alarmab2">
-          <p class="alarm__description">Segundo Break:</p>
-          <p class="alarm__time" id="tiempoBreak2">Sin definir</p>
+
+        <div class="header__link-wrapper">
+          <a href="https://csmemberadmin.prod.netflix.net/" target="_blank" class="header__link"
+            >CSMA</a
+          >
+          <span
+            class="material-symbols-outlined copy-link-btn"
+            data-url="https://csmemberadmin.prod.netflix.net/"
+            title="Copiar enlace"
+            >content_copy</span
+          >
         </div>
-        <div class="alarm__item alarmalunch">
-          <p class="alarm__description">Hora de Lunch:</p>
-          <p class="alarm__time" id="tiempoLunch">Sin definir</p>
+
+        <div class="header__link-wrapper">
+          <a
+            href="https://netflix.teleopticloud.com/Web/Authentication"
+            target="_blank"
+            class="header__link"
+            >Calabrio</a
+          >
+          <span
+            class="material-symbols-outlined copy-link-btn"
+            data-url="https://netflix.teleopticloud.com/Web/Authentication"
+            title="Copiar enlace"
+            >content_copy</span
+          >
+        </div>
+
+        <div class="header__link-wrapper">
+          <a
+            href="https://2mares.grupokonecta.corp/CMI360/Pages/LoginCentratel.aspx"
+            target="_blank"
+            class="header__link"
+            >2 Mares</a
+          >
+          <span
+            class="material-symbols-outlined copy-link-btn"
+            data-url="https://2mares.grupokonecta.corp/CMI360/Pages/LoginCentratel.aspx"
+            title="Copiar enlace"
+            >content_copy</span
+          >
+        </div>
+
+        <button class="material-symbols-outlined" id="themeSwitcher">invert_colors</button>
+      </nav>
+    </header>
+
+    <main class="container">
+      <div id="time" class="clock">
+        <div id="hour" class="clock__item">00</div>
+        <div id="minutes" class="clock__item">00</div>
+        <div id="seconds" class="clock__item">00</div>
+        <div id="ampm" class="clock__item">AM</div>
+      </div>
+
+      <!-- NUEVA SECCIÓN DE ALARMA AÑADIDA -->
+      <div class="alarm">
+        <!-- Añadiendo intro -->
+        <div class="alarm__intro">
+          <h2 class="alarm__titulo">Alarmas:</h2>
+          <p class="alarm__detalle">Configura tus horarios para cambiar tu estado a tiempo.</p>
+        </div>
+        <div class="alarm__body">
+          <!-- Parte Izquierda -->
+          <section class="alarm__section">
+            <div class="alarm__item">
+              <p class="alarm__description">1er Break:</p>
+              <p class="alarm__time" id="tiempoBreak1">Sin definir</p>
+            </div>
+            <div class="alarm__item alarmab2">
+              <p class="alarm__description">2do Break:</p>
+              <p class="alarm__time" id="tiempoBreak2">Sin definir</p>
+            </div>
+            <div class="alarm__item alarmalunch">
+              <p class="alarm__description">Hora Lunch:</p>
+              <p class="alarm__time" id="tiempoLunch">Sin definir</p>
+            </div>
+            <div class="alarm__item alarmalunch">
+              <p class="alarm__description" id="tituloAuxiliar">Auxiliar:</p>
+              <p class="alarm__time" id="tipoAuxiliar">Sin definir</p>
+            </div>
+          </section>
+          <!-- Parte Derecha -->
+          <div class="alarm__action">
+            <button class="alarm__btn" id="abrirModal">Editar Horario</button>
+
+            <p class="alarm__note">
+              ** Para que la alarma suene a tiempo mantén la página activa o en foco para evitar que
+              el navegador lo mande a 2do plano.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Nueva sección de Temporizador -->
+      <section class="temporizador">
+        <div class="temporizador__intro">
+          <h2 class="temporizador__titulo">Temporizador:</h2>
+          <p class="temporizador__detalle">Selecciona el tiempo y dale a play.</p>
+        </div>
+        <div class="contenedor-util">
+          <ul class="temporizador__opciones">
+            <li class="temporizador__opcion temporizador__opcion--seleccionado" data-duration="60">
+              1 Minuto
+            </li>
+            <li class="temporizador__opcion" data-duration="180">3 Minutos</li>
+            <li class="temporizador__opcion" data-duration="598">Descanso</li>
+          </ul>
+          <div class="temporizador__tiempo">
+            <div id="dot" class="dot"></div>
+            <svg>
+              <circle cx="65" cy="65" r="60"></circle>
+              <circle id="progressCircle" cx="65" cy="65" r="60"></circle>
+            </svg>
+            <div class="numero">
+              <div class="temporizador__pantalla" id="tiempoDisplay">01:00</div>
+              <span class="temporizador__control material-symbols-outlined mt-8" id="play"
+                >play_circle</span
+              >
+              <span class="temporizador__control material-symbols-outlined mt-8" id="stop"
+                >stop_circle</span
+              >
+            </div>
+          </div>
         </div>
       </section>
+    </main>
+    <!-- Elemento de audio para la alarma -->
+    <audio id="alarmSound" src="./sounds/Sound1.mp3" preload="auto"></audio>
+
+    <!-- MODALES AÑADIDOS -->
+    <div id="myModal" class="modal">
+      <form class="modal-content">
+        <span class="modal__close" id="cerrarModal">&times;</span>
+        <h2 class="modal__title">Horarios</h2>
+        <div class="modal__element">
+          <p>Añade tu hora de Break:</p>
+          <input type="time" id="breakTime" />
+        </div>
+        <div class="modal__element">
+          <p>Añade tu segundo Break:</p>
+          <input type="time" id="breakTime2" />
+        </div>
+        <div class="modal__element">
+          <p>Añade tu hora de Lunch:</p>
+          <input type="time" id="lunchTime" />
+        </div>
+        <!-- AÑADIENDO EL ELEMENTO AUXILIAR -->
+        <div class="modal__element">
+          <div class="modal__seleccionados">
+            <p>Elige tipo de auxiliar:</p>
+            <select id="auxType" class="modal__select">
+              <option value="Auxiliar">Auxiliar (Por defecto)</option>
+              <option value="Coaching">Coaching</option>
+              <option value="Meeting">Meeting</option>
+              <option value="Training">Training</option>
+            </select>
+          </div>
+          <input type="time" id="auxTime" />
+        </div>
+        <button type="button" class="modal__save" id="guardarHorarios">Guardar</button>
+      </form>
     </div>
 
-  <!-- </main> -->
-  <!-- Nueva sección de Temporizador -->
-  <section class="temporizador">
-    <div class="temporizador__intro">
-      <h2 class="temporizador__titulo">Temporizador:</h2>
-      <p class="temporizador__detalle">Selecciona el tiempo y dale a play</p>
-    </div>
-    <div class="contenedor-util">
-      <ul class="temporizador__opciones">
-        <li class="temporizador__opcion temporizador__opcion--seleccionado" data-duration="60">1 Minuto</li>
-        <li class="temporizador__opcion" data-duration="180">3 Minutos</li>
-        <li class="temporizador__opcion" data-duration="598">Descanso</li>
-      </ul>
-      <div class="temporizador__tiempo">
-        <div id="dot" class="dot"></div>
-        <svg>
-          <circle cx="65" cy="65" r="60"></circle>
-          <circle id="progressCircle" cx="65" cy="65" r="60"></circle>
-        </svg>
-        <div class="numero">
-          <div class="temporizador__pantalla" id="tiempoDisplay">01:00</div>
-          <span class="temporizador__control material-symbols-outlined mt-8" id="play">play_circle</span>
-          <span class="temporizador__control material-symbols-outlined mt-8" id="stop">stop_circle</span>
-        </div>
-      </div>
-    </div>
-  </section>
-</main>
-  <!-- Elemento de audio para la alarma -->
-  <audio id="alarmSound" src="./sounds/Sound1.mp3" preload="auto"></audio>
+    <dialog class="alert" id="alertaModal">
+      <p class="alert__msj" id="alertaMensaje"></p>
+      <p class="alert__msj--default">Por favor márcalo en el Sprinklr.</p>
+      <button id="alertaAceptarBtn">Aceptar</button>
+    </dialog>
 
-  <!-- MODALES AÑADIDOS -->
-  <div id="myModal" class="modal">
-    <form class="modal-content">
-      <span class="modal__close" id="cerrarModal">&times;</span>
-      <h2 class="modal__title">Horarios</h2>
-      <div class="modal__element">
-        <p>Añade tu hora de Break:</p>
-        <input type="time" id="breakTime">
-      </div>
-      <div class="modal__element">
-        <p>Añade tu segundo Break:</p>
-        <input type="time" id="breakTime2">
-      </div>
-      <div class="modal__element">
-        <p>Añade tu hora de Lunch:</p>
-        <input type="time" id="lunchTime">
-      </div>
-      <button type="button" class="modal__save" id="guardarHorarios">Guardar</button>
-    </form>
-  </div>
+    <!-- SECCION NOTAS -->
+    <section class="editable">
+      <article class="bloc">
+        <h3 class="bloc__title">Bloc de notas:</h3>
+        <textarea
+          class="bloc__text"
+          id="notasTextarea"
+          placeholder="Escribe tus notas aquí..."
+          spellcheck="false"
+        ></textarea>
+      </article>
 
-  <dialog class="alert" id="alertaModal">
-    <p class="alert__msj" id="alertaMensaje"></p>
-    <p class="alert__msj--default"> Por favor márcalo en el Sprinklr.</p>
-    <button id="alertaAceptarBtn">Aceptar</button>
-  </dialog>
+      <article class="kbs">
+        <h3 class="kbs__title">Mis KB's:</h3>
 
-  <!-- SECCION NOTAS -->
-  <section class="editable">
-    <article class="bloc">
-      <h3 class="bloc__title">Bloc de notas:</h3>
-      <textarea class="bloc__text" id="notasTextarea" placeholder="Escribe tus notas aquí..."
-        spellcheck="false"></textarea>
-    </article>
+        <div class="kbs__form">
+          <div class="kbs__fpart1">
+            <input type="number" class="kbs__input" id="kbInput-id" placeholder="Número" required />
+            <button class="kbs__btnAdd" id="KbBtn-add">Agregar</button>
+          </div>
 
-    <article class="kbs">
-      <h3 class="kbs__title">Mis KB's:</h3>
-
-      <div class="kbs__form">
-        <div class="kbs__fpart1">
-          <input type="number" class="kbs__input" id="kbInput-id" placeholder="Número" required>
-          <button class="kbs__btnAdd" id="KbBtn-add">Agregar</button>
+          <div class="kbs__fpart2">
+            <input
+              type="text"
+              class="kbs__input"
+              id="kbInput-des"
+              placeholder="Descripción"
+              required
+            />
+            <span class="kbs__span" id="kbs-span"></span>
+          </div>
         </div>
 
-        <div class="kbs__fpart2">
-          <input type="text" class="kbs__input" id="kbInput-des" placeholder="Descripción" required>
-          <span class="kbs__span" id="kbs-span"></span>
+        <div class="kbs__list-container">
+          <h4 class="kbs__list-title">Mis KBs Favoritos</h4>
+          <ul id="kb-list" class="kbs__list">
+            <!-- Los KBs se agregarán aquí dinámicamente -->
+          </ul>
         </div>
-      </div>
+      </article>
+    </section>
 
-      <div class="kbs__list-container">
-        <h4 class="kbs__list-title">Mis KBs Favoritos</h4>
-        <ul id="kb-list" class="kbs__list">
-          <!-- Los KBs se agregarán aquí dinámicamente -->
-        </ul>
-      </div>
-
-    </article>
-
-  </section>
-
-  <script src="app.js"></script>
-</body>
-
+    <script src="app.js"></script>
+  </body>
 </html>
