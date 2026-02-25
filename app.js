@@ -1,137 +1,53 @@
 // 1. Cachear elementos del DOM para mayor eficiencia
 const elements = {
-  hour: document.getElementById('hour'),
-  minutes: document.getElementById('minutes'),
-  seconds: document.getElementById('seconds'),
-  ampm: document.getElementById('ampm'),
   themeSwitcher: document.getElementById('themeSwitcher'), // Nuevo botón de tema
   body: document.body, // Referencia al body para cambiar el tema
-  btnMenu: document.querySelector('.header__btn'),
-  navMenu: document.getElementById('mainMenu'),
 };
 
-// ZONA PARA LA SECCION KBS
-const kbsElements = {
-  idInput: document.getElementById('kbInput-id'),
-  descriptionInput: document.getElementById('kbInput-des'),
-  spanInput: document.getElementById('kbs-span'),
-  addBtn: document.getElementById('KbBtn-add'),
-  kbList: document.getElementById('kb-list'),
-  kbs: JSON.parse(localStorage.getItem('kbs')) || [],
-};
+const MenuModule = (function () {
+  const elements = {
+    btnMenu: document.querySelector('.header__btn'),
+    navMenu: document.getElementById('mainMenu'),
+  };
 
-const renderKBs = () => {
-  kbsElements.kbList.innerHTML = '';
-  kbsElements.kbs.forEach((kb) => {
-    const kbItem = document.createElement('li');
-    kbItem.className = 'kbs__item';
-    kbItem.innerHTML = `
-        <div class="kbs__info">
-          <span class="kbs__number">${kb.id}</span>
-          <span class="kbs__description">${kb.description}</span>
-        </div>
-        <div class="kbs__actions">
-          <span class="material-symbols-outlined kb-action-btn copy-btn" data-id="${kb.id}" data-description="${kb.description}" title="Copiar">content_copy</span>
-
-          <span class="material-symbols-outlined kb-action-btn edit-btn" data-id="${kb.id}" title="Editar">edit</span>
-
-          <span class="material-symbols-outlined kb-action-btn delete-btn" data-id="${kb.id}" title="Eliminar">delete</span>
-
-      `;
-    kbsElements.kbList.appendChild(kbItem);
-  });
-};
-
-const saveKB = () => {
-  localStorage.setItem('kbs', JSON.stringify(kbsElements.kbs));
-  renderKBs();
-};
-
-const clearKbInputs = () => {
-  kbsElements.idInput.value = '';
-  kbsElements.descriptionInput.value = '';
-  kbsElements.addBtn.textContent = 'Agregar';
-  kbsElements.addBtn.style.backgroundColor = 'var(--secondary-color)';
-  kbsElements.addBtn.style.color = 'var(--text-color)';
-};
-
-kbsElements.addBtn.addEventListener('click', () => {
-  const id = kbsElements.idInput.value.trim();
-  const description = kbsElements.descriptionInput.value.trim();
-
-  if (!id || !description) {
-    // alert('Por favor, completa ambos campos.');
-    return;
-  }
-
-  const existingIndex = kbsElements.kbs.findIndex((kb) => kb.id === id);
-
-  if (existingIndex !== -1) {
-    kbsElements.kbs[existingIndex].description = description;
-  } else {
-    kbsElements.kbs.push({ id, description });
-  }
-  saveKB();
-  clearKbInputs();
-});
-// Añadiendo evento para contar caracteres en la descripción
-kbsElements.descriptionInput.addEventListener('input', (e) => {
-  kbsElements.spanInput.textContent = e.target.value.length;
-});
-
-kbsElements.kbList.addEventListener('click', async (e) => {
-  const target = e.target;
-  const id = target.dataset.id;
-
-  if (target.classList.contains('copy-btn')) {
-    try {
-      await navigator.clipboard.writeText(id);
-      console.log('Texto copiado al portapapeles:', id);
-    } catch (err) {
-      console.error('Error al copiar al portapapeles:', err);
+  function init() {
+    // 1. Lógica para abrir/cerrar menú en móvil (movido de tu código global)
+    if (elements.btnMenu) {
+      elements.btnMenu.addEventListener('click', () => {
+        elements.navMenu.classList.toggle('active');
+      });
     }
-    //return;
-  } else if (target.classList.contains('edit-btn')) {
-    const kbToEdit = kbsElements.kbs.find((kb) => kb.id === id);
-    if (kbToEdit) {
-      kbsElements.idInput.value = kbToEdit.id;
-      kbsElements.descriptionInput.value = kbToEdit.description;
-      kbsElements.addBtn.textContent = 'Guardar Cambios';
-      kbsElements.addBtn.style.backgroundColor = '#fee800';
-      kbsElements.addBtn.style.color = '#152b4a';
-    }
-  } else if (target.classList.contains('delete-btn')) {
-    // const confirmDelete = confirm('¿Estás seguro de que deseas eliminar este Kb?');
-    // if (confirmDelete) {
-    kbsElements.kbs = kbsElements.kbs.filter((kb) => kb.id !== id);
-    saveKB();
-    // }
+
+    // 2. Lógica para copiar URLs
+    elements.navMenu.addEventListener('click', async (e) => {
+      // Verificamos si el elemento clickeado tiene la clase 'copy-link-btn'
+      if (e.target.classList.contains('copy-link-btn')) {
+        const urlToCopy = e.target.getAttribute('data-url');
+
+        try {
+          // Copiamos al portapapeles
+          await navigator.clipboard.writeText(urlToCopy);
+
+          // Feedback Visual: Cambiamos el icono temporalmente
+          const originalIcon = e.target.textContent;
+          e.target.textContent = 'check'; // Cambia al icono de "check"
+          e.target.style.color = '#4caf50'; // Verde de éxito
+
+          // Después de 2 segundos, lo devolvemos a la normalidad
+          setTimeout(() => {
+            e.target.textContent = originalIcon;
+            e.target.style.color = ''; // Quita el verde para usar el color CSS por defecto
+          }, 2000);
+        } catch (err) {
+          console.error('Error al copiar el enlace: ', err);
+          // Opcional: mostrar un alert si falla
+        }
+      }
+    });
   }
-});
 
-// 3. Función auxiliar para formatear la hora (DRY)
-const formatTime = (date) => {
-  const hours = date.getHours();
-  const minutes = date.getMinutes().toString().padStart(2, '0');
-  const seconds = date.getSeconds().toString().padStart(2, '0');
-  const ampm = hours >= 12 ? 'PM' : 'AM';
-  const displayHours = (hours % 12 || 12).toString().padStart(2, '0');
-  return `${displayHours}:${minutes}:${seconds} ${ampm}`;
-};
-
-// 4. Función para actualizar el reloj principal
-const updateClock = () => {
-  const now = new Date();
-  elements.hour.textContent = (now.getHours() % 12 || 12).toString().padStart(2, '0');
-  elements.minutes.textContent = now.getMinutes().toString().padStart(2, '0');
-  elements.seconds.textContent = now.getSeconds().toString().padStart(2, '0');
-  elements.ampm.textContent = now.getHours() >= 12 ? 'PM' : 'AM';
-};
-
--(
-  // Iniciar el reloj
-  (-setInterval(updateClock, 1000))
-);
+  return { init: init };
+})();
 
 //--- Módulo del Temporizador ---
 const TimerModule = (function () {
@@ -302,18 +218,332 @@ elements.themeSwitcher.addEventListener('click', () => {
   applyTheme(newTheme);
 });
 
-/******************ZONA ALARMA Y MODAL ****************/
-const horarios = {
-  hbreak1: null,
-  hbreak2: null,
-  hlunch: null,
-};
+// --- Módulo del Reloj ---
+const ClockModule = (function () {
+  const elements = {
+    hour: document.getElementById('hour'),
+    minutes: document.getElementById('minutes'),
+    seconds: document.getElementById('seconds'),
+    ampm: document.getElementById('ampm'),
+  };
 
-let alarmasDisparadas = {
-  hbreak1: false,
-  hbreak2: false,
-  hlunch: false,
-};
+  const updateClock = () => {
+    const now = new Date();
+    elements.hour.textContent = (now.getHours() % 12 || 12).toString().padStart(2, '0');
+    elements.minutes.textContent = now.getMinutes().toString().padStart(2, '0');
+    elements.seconds.textContent = now.getSeconds().toString().padStart(2, '0');
+    elements.ampm.textContent = now.getHours() >= 12 ? 'PM' : 'AM';
+  };
+
+  function init() {
+    updateClock(); // Pintamos la hora inmediatamente al cargar
+    setInterval(updateClock, 1000); // Arrancamos el motor
+  }
+
+  return { init: init };
+})();
+
+// --- Módulo de Mis KBs ---
+const KbModule = (function () {
+  const elements = {
+    idInput: document.getElementById('kbInput-id'),
+    descriptionInput: document.getElementById('kbInput-des'),
+    spanInput: document.getElementById('kbs-span'),
+    addBtn: document.getElementById('KbBtn-add'),
+    kbList: document.getElementById('kb-list'),
+  };
+
+  // El estado ahora es privado
+  let state = {
+    kbs: JSON.parse(localStorage.getItem('kbs')) || [],
+  };
+
+  const renderKBs = () => {
+    elements.kbList.innerHTML = '';
+    state.kbs.forEach((kb) => {
+      const kbItem = document.createElement('li');
+      kbItem.className = 'kbs__item';
+      kbItem.innerHTML = `
+        <div class="kbs__info">
+          <span class="kbs__number">${kb.id}</span>
+          <span class="kbs__description">${kb.description}</span>
+        </div>
+        <div class="kbs__actions">
+          <span class="material-symbols-outlined kb-action-btn copy-btn" data-id="${kb.id}" title="Copiar">content_copy</span>
+          <span class="material-symbols-outlined kb-action-btn edit-btn" data-id="${kb.id}" title="Editar">edit</span>
+          <span class="material-symbols-outlined kb-action-btn delete-btn" data-id="${kb.id}" title="Eliminar">delete</span>
+        </div>
+      `;
+      elements.kbList.appendChild(kbItem);
+    });
+  };
+
+  const saveKB = () => {
+    localStorage.setItem('kbs', JSON.stringify(state.kbs));
+    renderKBs();
+  };
+
+  const clearKbInputs = () => {
+    elements.idInput.value = '';
+    elements.descriptionInput.value = '';
+    elements.spanInput.textContent = ''; // Limpiamos también el contador
+    elements.addBtn.textContent = 'Agregar';
+    elements.addBtn.style.backgroundColor = 'var(--secondary-color)';
+    elements.addBtn.style.color = 'var(--text-color)';
+  };
+
+  function init() {
+    renderKBs(); // Renderizar los Kbs al cargar la página
+
+    // Evento para agregar o editar
+    elements.addBtn.addEventListener('click', () => {
+      const id = elements.idInput.value.trim();
+      const description = elements.descriptionInput.value.trim();
+
+      if (!id || !description) return;
+
+      const existingIndex = state.kbs.findIndex((kb) => kb.id === id);
+
+      if (existingIndex !== -1) {
+        state.kbs[existingIndex].description = description;
+      } else {
+        state.kbs.push({ id, description });
+      }
+      saveKB();
+      clearKbInputs();
+    });
+
+    // Evento contador de caracteres
+    elements.descriptionInput.addEventListener('input', (e) => {
+      elements.spanInput.textContent = e.target.value.length;
+    });
+
+    // Evento de acciones en la lista (Delegación de eventos)
+    elements.kbList.addEventListener('click', async (e) => {
+      const target = e.target;
+      const id = target.dataset.id;
+      if (!id) return;
+
+      if (target.classList.contains('copy-btn')) {
+        try {
+          await navigator.clipboard.writeText(id);
+          // Feedback visual rápido
+          const originalText = target.textContent;
+          target.textContent = 'check';
+          target.style.color = '#04fc43';
+          setTimeout(() => {
+            target.textContent = originalText;
+            target.style.color = '';
+          }, 1500);
+        } catch (err) {
+          console.error('Error al copiar:', err);
+        }
+      } else if (target.classList.contains('edit-btn')) {
+        const kbToEdit = state.kbs.find((kb) => kb.id === id);
+        if (kbToEdit) {
+          elements.idInput.value = kbToEdit.id;
+          elements.descriptionInput.value = kbToEdit.description;
+          elements.spanInput.textContent = kbToEdit.description.length;
+          elements.addBtn.textContent = 'Guardar Cambios';
+          elements.addBtn.style.backgroundColor = '#fee800';
+          elements.addBtn.style.color = '#152b4a';
+        }
+      } else if (target.classList.contains('delete-btn')) {
+        state.kbs = state.kbs.filter((kb) => kb.id !== id);
+        saveKB();
+      }
+    });
+  }
+
+  return { init: init };
+})();
+
+/******************ZONA ALARMA Y MODAL ****************/
+const AlarmModule = (function () {
+  // 1. Estado central. Leemos el localStorage UNA SOLA VEZ al cargar la página.
+  let state = {
+    horarios: JSON.parse(localStorage.getItem('horarios')) || {
+      hbreak1: null,
+      hbreak2: null,
+      hlunch: null,
+      haux: null, // Nuevo para el tipo de auxiliar
+    },
+
+    alarmasDisparadas: JSON.parse(localStorage.getItem('alarmasDisparadas')) || {
+      hbreak1: false,
+      hbreak2: false,
+      hlunch: false,
+      haux: false, // Nuevo para el tipo de auxiliar
+    },
+
+    // Nuevo
+    tipoAuxiliar: localStorage.getItem('tipoAuxiliar') || 'Auxiliar',
+  };
+
+  // 2. CACHÉ DEL DOM: Centralizamos los IDs. Si cambian en el HTML, solo editas aquí.
+  const elements = {
+    inputs: {
+      hbreak1: document.getElementById('breakTime'),
+      hbreak2: document.getElementById('breakTime2'),
+      hlunch: document.getElementById('lunchTime'),
+      haux: document.getElementById('auxTime'), // NUEVO
+    },
+    visuals: {
+      hbreak1: document.getElementById('tiempoBreak1'),
+      hbreak2: document.getElementById('tiempoBreak2'),
+      hlunch: document.getElementById('tiempoLunch'),
+      haux: document.getElementById('tipoAuxiliar'), // NUEVO
+    },
+    // NUEVO: Referencias al select del modal y al título de la pantalla principal
+    selectAux: document.getElementById('auxType'),
+    tituloAux: document.getElementById('tituloAuxiliar'),
+  };
+  // 3. LA MAGIA DRY (Don't Repeat Yourself)
+  function saveHorarios() {
+    // Creamos un array con las "llaves" de nuestras alarmas
+    const keys = ['hbreak1', 'hbreak2', 'hlunch', 'haux']; // Agregamos 'haux'
+
+    // NUEVO: Capturamos y guardamos el texto del Select (Coaching, Meeting...)
+    state.tipoAuxiliar = elements.selectAux.value;
+    localStorage.setItem('tipoAuxiliar', state.tipoAuxiliar);
+
+    // Actualizamos el texto en la pantalla principal
+    elements.tituloAux.textContent = state.tipoAuxiliar + ':';
+
+    // En lugar de escribir el código 3 veces, iteramos sobre las llaves
+    keys.forEach((key) => {
+      const newValue = elements.inputs[key].value;
+      const oldValue = state.horarios[key];
+
+      // Actualizamos la variable en RAM
+      state.horarios[key] = newValue;
+
+      if (!newValue || newValue === '00:00') {
+        state.alarmasDisparadas[key] = false;
+        elements.visuals[key].textContent = 'Sin definir';
+        elements.visuals[key].classList.remove('alarm__time--used');
+      } else {
+        elements.visuals[key].textContent = formatHoraConIcono(newValue);
+        // Si la hora cambió respecto a la que había antes, reactivamos la alarma
+        if (oldValue !== newValue) {
+          state.alarmasDisparadas[key] = false;
+          elements.visuals[key].classList.remove('alarm__time--used');
+        }
+      }
+    });
+
+    // Guardamos en el disco duro (localStorage) UNA SOLA VEZ solo cuando el usuario hace click en "Guardar"
+    localStorage.setItem('horarios', JSON.stringify(state.horarios));
+    localStorage.setItem('alarmasDisparadas', JSON.stringify(state.alarmasDisparadas));
+
+    closeModal(); // Asumiendo que esta función sigue global por ahora
+  }
+
+  // 4. VERIFICACIÓN ULTRA RÁPIDA
+  function verificarHorario() {
+    const ahora = new Date();
+    const horaActual = `${String(ahora.getHours()).padStart(2, '0')}:${String(ahora.getMinutes()).padStart(2, '0')}`;
+
+    // Mapeamos los mensajes para cada llave para mantener el código limpio
+    const mensajes = {
+      hbreak1: '¡Es hora de tu primer Descanso! ☕️',
+      hbreak2: '¡Es hora de tu segundo Descanso! 🍎',
+      hlunch: '¡Es hora de tu Almuerzo! 🍲',
+      // NUEVO: Mensaje dinámico inyectando la variable
+      haux: `¡Es hora de tu ${state.tipoAuxiliar}! 🚀`,
+    };
+
+    // Iteramos nuevamente. ¡Cero localStorage aquí adentro!
+    Object.keys(state.horarios).forEach((key) => {
+      if (
+        state.horarios[key] &&
+        horaActual === state.horarios[key] &&
+        !state.alarmasDisparadas[key]
+      ) {
+        mostrarAlerta(mensajes[key]); // Asumiendo que mostrarAlerta sigue global
+        state.alarmasDisparadas[key] = true;
+        elements.visuals[key].classList.add('alarm__time--used');
+        localStorage.setItem('alarmasDisparadas', JSON.stringify(state.alarmasDisparadas)); // Guardamos estado de disparo
+      }
+    });
+  }
+
+  function reiniciarAlarmasDiarias() {
+    const ahora = new Date();
+    const ultimoReinicio = localStorage.getItem('ultimoReinicio');
+    if (!ultimoReinicio || ahora.getDate() !== new Date(parseInt(ultimoReinicio)).getDate()) {
+      Object.keys(state.horarios).forEach((key) => {
+        state.alarmasDisparadas[key] = false;
+        state.horarios[key] = null;
+        elements.visuals[key].classList.remove('alarm__time--used');
+        elements.visuals[key].textContent = 'Sin definir';
+      });
+      localStorage.setItem('horarios', JSON.stringify(state.horarios));
+      localStorage.setItem('alarmasDisparadas', JSON.stringify(state.alarmasDisparadas));
+      localStorage.setItem('ultimoReinicio', ahora.getTime());
+    }
+  }
+
+  // NUEVA FUNCIÓN: Sincroniza el HTML con lo que hay en memoria al cargar la página
+  function renderizarPantallaInicial() {
+    const keys = ['hbreak1', 'hbreak2', 'hlunch', 'haux'];
+
+    keys.forEach((key) => {
+      const horaGuardada = state.horarios[key];
+      const yaSono = state.alarmasDisparadas[key];
+
+      // NUEVO: Si hay una hora guardada, se la asignamos al input del modal.
+      // Si no, lo dejamos en blanco.
+      if (horaGuardada && horaGuardada !== '00:00') {
+        elements.inputs[key].value = horaGuardada;
+      } else {
+        elements.inputs[key].value = '';
+      }
+
+      // Lo que ya teníamos para la pantalla principal:
+      if (horaGuardada && horaGuardada !== '00:00') {
+        elements.visuals[key].textContent = formatHoraConIcono(horaGuardada);
+        if (yaSono) {
+          elements.visuals[key].classList.add('alarm__time--used');
+        }
+      } else {
+        elements.visuals[key].textContent = 'Sin definir';
+        elements.visuals[key].classList.remove('alarm__time--used');
+      }
+    });
+
+    // 1. Sincronizamos el select dentro del modal
+    if (elements.selectAux) {
+      elements.selectAux.value = state.tipoAuxiliar;
+    }
+
+    // 2. ¡LA LÍNEA QUE FALTABA! Sincronizamos el título en el HTML principal
+    if (elements.tituloAux) {
+      elements.tituloAux.textContent = state.tipoAuxiliar + ':';
+    }
+  }
+  function init() {
+    // 1. Pintamos los títulos del auxiliar
+    // elements.tituloAux.textContent = state.tipoAuxiliar + ':';
+    // if (elements.selectAux) {
+    //   elements.selectAux.value = state.tipoAuxiliar;
+    // }
+
+    // 2. Revisamos si es un nuevo día para borrar todo
+    reiniciarAlarmasDiarias();
+
+    // 3. ¡AQUÍ ESTÁ LA MAGIA! Pintamos las horas guardadas en el HTML
+    renderizarPantallaInicial();
+
+    // 4. Arrancamos el motor que revisa la hora cada segundo
+    setInterval(verificarHorario, 1000);
+  }
+
+  return {
+    init: init,
+    saveHorarios: saveHorarios,
+  };
+})();
 
 const alertaModal = document.getElementById('alertaModal');
 const alertaMensaje = document.getElementById('alertaMensaje');
@@ -337,7 +567,6 @@ function closeModal() {
   modal.style.display = 'none';
 }
 
-// ...existing code...
 function formatHoraConIcono(hora24) {
   if (!hora24 || hora24 === '00:00') return '';
   const [h, m] = hora24.split(':').map(Number);
@@ -348,56 +577,6 @@ function formatHoraConIcono(hora24) {
   const esDia = h >= 6 && h < 18;
   const icono = esDia ? '☀️' : '🌙';
   return `${hora12}:${minutos} ${ampm} ${icono}`;
-}
-
-function saveHorarios() {
-  horarios.hbreak1 = document.getElementById('breakTime').value;
-  horarios.hbreak2 = document.getElementById('breakTime2').value;
-  horarios.hlunch = document.getElementById('lunchTime').value;
-
-  let listHoraAntes = JSON.parse(localStorage.getItem('horarios'));
-  localStorage.setItem('horarios', JSON.stringify(horarios));
-  let listHora = JSON.parse(localStorage.getItem('horarios'));
-
-  // Para cada horario, si está vacío o "00:00", reinicia el estado de la alarma
-  if (!listHora.hbreak1 || listHora.hbreak1 === '00:00') {
-    alarmasDisparadas.hbreak1 = false;
-    visualBreak.textContent = 'Sin definir';
-    visualBreak.classList.remove('alarm__time--used');
-  } else {
-    visualBreak.textContent = formatHoraConIcono(listHora.hbreak1);
-    if (listHoraAntes.hbreak1 !== listHora.hbreak1) {
-      alarmasDisparadas.hbreak1 = false;
-      visualBreak.classList.remove('alarm__time--used');
-    }
-  }
-
-  if (!listHora.hbreak2 || listHora.hbreak2 === '00:00') {
-    alarmasDisparadas.hbreak2 = false;
-    visualBreak2.textContent = 'Sin definir';
-    visualBreak2.classList.remove('alarm__time--used');
-  } else {
-    visualBreak2.textContent = formatHoraConIcono(listHora.hbreak2);
-    if (listHoraAntes.hbreak2 !== listHora.hbreak2) {
-      alarmasDisparadas.hbreak2 = false;
-      visualBreak2.classList.remove('alarm__time--used');
-    }
-  }
-
-  if (!listHora.hlunch || listHora.hlunch === '00:00') {
-    alarmasDisparadas.hlunch = false;
-    visualLunch.textContent = 'Sin definir';
-    visualLunch.classList.remove('alarm__time--used');
-  } else {
-    visualLunch.textContent = formatHoraConIcono(listHora.hlunch);
-    if (listHoraAntes.hlunch !== listHora.hlunch) {
-      alarmasDisparadas.hlunch = false;
-      visualLunch.classList.remove('alarm__time--used');
-    }
-  }
-
-  guardarEstadoAlarmas();
-  closeModal();
 }
 
 function mostrarAlerta(mensaje) {
@@ -416,123 +595,25 @@ function stopSonidoAlarma() {
   alarmaSonido.currentTime = 0;
 }
 
-function verificarHorario() {
-  const ahora = new Date();
-  const horaActual = `${String(ahora.getHours()).padStart(2, '0')}:${String(ahora.getMinutes()).padStart(2, '0')}`;
-  const listHora = JSON.parse(localStorage.getItem('horarios'));
-
-  if (!listHora) return;
-
-  if (horaActual === listHora.hbreak1 && !alarmasDisparadas.hbreak1) {
-    mostrarAlerta('¡Es hora de tu primer Break! ☕️');
-    alarmasDisparadas.hbreak1 = true;
-    // Añadiendo por si acaso
-    visualBreak.classList.add('alarm__time--used');
-  } else if (horaActual === listHora.hbreak2 && !alarmasDisparadas.hbreak2) {
-    mostrarAlerta('¡Es hora de tu segundo Break! 🍎');
-    alarmasDisparadas.hbreak2 = true;
-    visualBreak2.classList.add('alarm__time--used');
-  } else if (horaActual === listHora.hlunch && !alarmasDisparadas.hlunch) {
-    mostrarAlerta('¡Es hora de tu Lunch! 🍲');
-    alarmasDisparadas.hlunch = true;
-    visualLunch.classList.add('alarm__time--used');
-  }
-}
-
-function guardarEstadoAlarmas() {
-  localStorage.setItem('alarmasDisparadas', JSON.stringify(alarmasDisparadas));
-}
-
-function reiniciarAlarmasDiarias() {
-  const ahora = new Date();
-  const ultimoReinicio = localStorage.getItem('ultimoReinicio');
-  if (!ultimoReinicio || ahora.getDate() !== new Date(parseInt(ultimoReinicio)).getDate()) {
-    alarmasDisparadas.hbreak1 = false;
-    alarmasDisparadas.hbreak2 = false;
-    alarmasDisparadas.hlunch = false;
-    // Quitar la hora guardada o marcada
-    horarios.hbreak1 = null;
-    horarios.hbreak2 = null;
-    horarios.hlunch = null;
-    localStorage.setItem('horarios', JSON.stringify(horarios));
-    visualBreak.classList.remove('alarm__time--used');
-    visualBreak2.classList.remove('alarm__time--used');
-    visualLunch.classList.remove('alarm__time--used');
-    // También actualiza el texto a "Sin definir"
-    visualBreak.textContent = 'Sin definir';
-    visualBreak2.textContent = 'Sin definir';
-    visualLunch.textContent = 'Sin definir';
-    guardarEstadoAlarmas();
-    localStorage.setItem('ultimoReinicio', ahora.getTime());
-  }
-}
-
-setInterval(verificarHorario, 1000);
-
-// Manejo del menú en móvil
-elements.btnMenu.addEventListener('click', () => {
-  elements.navMenu.classList.toggle('active');
-});
-
 btnOpenModal.addEventListener('click', openModal);
 btnCloseModal.addEventListener('click', closeModal);
-btnSaveHorarios.addEventListener('click', saveHorarios);
+btnSaveHorarios.addEventListener('click', AlarmModule.saveHorarios);
 
 alertaAceptarBtn.addEventListener('click', () => {
   alertaModal.close();
   stopSonidoAlarma();
-  guardarEstadoAlarmas();
 });
 
 // CÓDIGO DE INICIALIZACIÓN UNIFICADO
 document.addEventListener('DOMContentLoaded', () => {
-  // 1. Cargar tema
-  const savedTheme = localStorage.getItem('selectedTheme');
-  if (savedTheme) {
-    applyTheme(savedTheme);
-  } else {
-    applyTheme('default');
-  }
-  // 2. Inicializar el temporizador
-  // initializeTimer(60);
-  // Logica para el nuevo temporizador
+  // 1. Cargar tema global
+  const savedTheme = localStorage.getItem('selectedTheme') || 'default';
+  applyTheme(savedTheme);
+
+  // 2. Encender Módulos Independientes
+  ClockModule.init();
+  MenuModule.init();
   TimerModule.init();
-
-  // 3. Cargar horarios y estado de alarmas
-  const listHora = JSON.parse(localStorage.getItem('horarios'));
-  const estadoGuardado = JSON.parse(localStorage.getItem('alarmasDisparadas'));
-
-  if (listHora) {
-    if (listHora.hbreak1) {
-      visualBreak.textContent = formatHoraConIcono(listHora.hbreak1);
-    }
-    if (listHora.hbreak2) {
-      visualBreak2.textContent = formatHoraConIcono(listHora.hbreak2);
-    }
-    if (listHora.hlunch) {
-      visualLunch.textContent = formatHoraConIcono(listHora.hlunch);
-    }
-  }
-
-  if (estadoGuardado) {
-    console.log('Estado de alarmas cargado:', estadoGuardado);
-
-    alarmasDisparadas = estadoGuardado;
-    for (let element in alarmasDisparadas) {
-      if (alarmasDisparadas.hbreak1) {
-        visualBreak.classList.add('alarm__time--used');
-      }
-      if (alarmasDisparadas.hbreak2) {
-        visualBreak2.classList.add('alarm__time--used');
-      }
-      if (alarmasDisparadas.hlunch) {
-        visualLunch.classList.add('alarm__time--used');
-      }
-    }
-  }
-
-  // 4. Lógica para reiniciar las alarmas al inicio de un nuevo día
-  reiniciarAlarmasDiarias();
-  clearKbInputs();
-  renderKBs(); // Renderizar los Kbs al cargar la página
+  AlarmModule.init();
+  KbModule.init();
 });

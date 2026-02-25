@@ -39,28 +39,59 @@
 
       <!-- NAVEGATION -->
       <nav class="header__nav" id="mainMenu">
-        <a href="https://netflixcare.sprinklr.com/" target="_blank" class="header__link"
-          >Sprinklr</a
-        >
-        <a href="https://csmemberadmin.prod.netflix.net/" target="_blank" class="header__link"
-          >CSMA</a
-        >
-        <a
-          href="https://netflix.teleopticloud.com/Web/Authentication"
-          target="_blank"
-          class="header__link"
-          >Calabrio</a
-        >
-        <a
-          href="https://2mares.grupokonecta.corp/CMI360/Pages/LoginCentratel.aspx"
-          target="_blank"
-          class="header__link"
-          >2 Mares</a
-        >
-        <a href="https://streamu.netflix.net" target="_blank" class="header__link"
-          >Stream University</a
-        >
-        <a href="#" class="header__link">Herramientas</a>
+        <div class="header__link-wrapper">
+          <a href="https://netflixcare.sprinklr.com/" target="_blank" class="header__link"
+            >Sprinklr</a
+          >
+          <span
+            class="material-symbols-outlined copy-link-btn"
+            data-url="https://netflixcare.sprinklr.com/"
+            title="Copiar enlace"
+            >content_copy</span
+          >
+        </div>
+
+        <div class="header__link-wrapper">
+          <a href="https://csmemberadmin.prod.netflix.net/" target="_blank" class="header__link"
+            >CSMA</a
+          >
+          <span
+            class="material-symbols-outlined copy-link-btn"
+            data-url="https://csmemberadmin.prod.netflix.net/"
+            title="Copiar enlace"
+            >content_copy</span
+          >
+        </div>
+
+        <div class="header__link-wrapper">
+          <a
+            href="https://netflix.teleopticloud.com/Web/Authentication"
+            target="_blank"
+            class="header__link"
+            >Calabrio</a
+          >
+          <span
+            class="material-symbols-outlined copy-link-btn"
+            data-url="https://netflix.teleopticloud.com/Web/Authentication"
+            title="Copiar enlace"
+            >content_copy</span
+          >
+        </div>
+
+        <div class="header__link-wrapper">
+          <a
+            href="https://2mares.grupokonecta.corp/CMI360/Pages/LoginCentratel.aspx"
+            target="_blank"
+            class="header__link"
+            >2 Mares</a
+          >
+          <span
+            class="material-symbols-outlined copy-link-btn"
+            data-url="https://2mares.grupokonecta.corp/CMI360/Pages/LoginCentratel.aspx"
+            title="Copiar enlace"
+            >content_copy</span
+          >
+        </div>
 
         <button class="material-symbols-outlined" id="themeSwitcher">invert_colors</button>
       </nav>
@@ -76,29 +107,48 @@
 
       <!-- NUEVA SECCIÓN DE ALARMA AÑADIDA -->
       <div class="alarm">
-        <button class="alarm__btn" id="abrirModal">Editar Horario</button>
-        <section class="alarm__section">
-          <div class="alarm__item">
-            <p class="alarm__description">Primer Break:</p>
-            <p class="alarm__time" id="tiempoBreak1">Sin definir</p>
+        <!-- Añadiendo intro -->
+        <div class="alarm__intro">
+          <h2 class="alarm__titulo">Alarmas:</h2>
+          <p class="alarm__detalle">Configura tus horarios para cambiar tu estado a tiempo.</p>
+        </div>
+        <div class="alarm__body">
+          <!-- Parte Izquierda -->
+          <section class="alarm__section">
+            <div class="alarm__item">
+              <p class="alarm__description">1er Break:</p>
+              <p class="alarm__time" id="tiempoBreak1">Sin definir</p>
+            </div>
+            <div class="alarm__item alarmab2">
+              <p class="alarm__description">2do Break:</p>
+              <p class="alarm__time" id="tiempoBreak2">Sin definir</p>
+            </div>
+            <div class="alarm__item alarmalunch">
+              <p class="alarm__description">Hora Lunch:</p>
+              <p class="alarm__time" id="tiempoLunch">Sin definir</p>
+            </div>
+            <div class="alarm__item alarmalunch">
+              <p class="alarm__description" id="tituloAuxiliar">Auxiliar:</p>
+              <p class="alarm__time" id="tipoAuxiliar">Sin definir</p>
+            </div>
+          </section>
+          <!-- Parte Derecha -->
+          <div class="alarm__action">
+            <button class="alarm__btn" id="abrirModal">Editar Horario</button>
+
+            <p class="alarm__note">
+              ** Para que la alarma suene a tiempo mantén la página activa o en foco para evitar que
+              el navegador lo mande a 2do plano.
+            </p>
           </div>
-          <div class="alarm__item alarmab2">
-            <p class="alarm__description">Segundo Break:</p>
-            <p class="alarm__time" id="tiempoBreak2">Sin definir</p>
-          </div>
-          <div class="alarm__item alarmalunch">
-            <p class="alarm__description">Hora de Lunch:</p>
-            <p class="alarm__time" id="tiempoLunch">Sin definir</p>
-          </div>
-        </section>
+        </div>
       </div>
 
-      <!-- </main> -->
       <!-- Nueva sección de Temporizador -->
       <section class="temporizador">
         <div class="temporizador__intro">
           <h2 class="temporizador__titulo">Temporizador:</h2>
-          <p class="temporizador__detalle">Selecciona el tiempo y dale a play</p>
+          <p class="temporizador__detalle">Selecciona el tiempo y dale a play.</p>
         </div>
         <div class="contenedor-util">
           <ul class="temporizador__opciones">
@@ -146,6 +196,19 @@
         <div class="modal__element">
           <p>Añade tu hora de Lunch:</p>
           <input type="time" id="lunchTime" />
+        </div>
+        <!-- AÑADIENDO EL ELEMENTO AUXILIAR -->
+        <div class="modal__element">
+          <div class="modal__seleccionados">
+            <p>Elige tipo de auxiliar:</p>
+            <select id="auxType" class="modal__select">
+              <option value="Auxiliar">Auxiliar (Por defecto)</option>
+              <option value="Coaching">Coaching</option>
+              <option value="Meeting">Meeting</option>
+              <option value="Training">Training</option>
+            </select>
+          </div>
+          <input type="time" id="auxTime" />
         </div>
         <button type="button" class="modal__save" id="guardarHorarios">Guardar</button>
       </form>
