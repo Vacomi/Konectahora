@@ -13,8 +13,7 @@
   /* Acentos y Estados */
   --color-brand: #ff2972; /* Rosa/Magenta */
   --color-success: #04fc43; /* Verde */
-  --color-warning: #fee800; /* Amarillo */
-  --color-warning: #d4cd00; /* Amarillo fuerte*/
+  --color-warning: #ffd230; /* Amarillo fuerte*/
 
   --color-danger: #ff4757; /* Rojo */
 
@@ -38,6 +37,7 @@ body.dark-theme {
   --color-brand: #ff4d88; /* Rosa ligeramente más brillante */
   --shadow-panel: 0 8px 20px rgba(0, 0, 0, 0.6);
   --marcaagua: rgba(255, 255, 255, 0.1);
+  --marcaagua: rgba(255, 255, 255, 0.25);
   --opacidad-hover: rgba(255, 255, 255, 0.05);
 }
 
@@ -106,14 +106,14 @@ body.dark-theme {
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
-  padding: 10px 20px;
+  margin-bottom: 15px;
+  padding: 8px 16px;
   border-radius: 0 0 12px 12px; /* Esquinas solo abajo */
 }
 
 .header__logo {
   cursor: pointer;
-  font-size: 28px;
+  font-size: 24px;
   color: var(--color-brand);
 }
 
@@ -168,7 +168,7 @@ body.dark-theme {
 }
 
 .copy-link-btn {
-  font-size: 1.2rem;
+  font-size: 1.2rem !important;
   cursor: pointer;
   color: var(--text-muted);
   transition: color 0.3s ease;
@@ -183,13 +183,13 @@ body.dark-theme {
   color: var(--text-main);
   border: none;
   border-radius: 50%;
-  padding: 8px;
+  padding: 2px;
   cursor: pointer;
   transition: all 0.3s;
 }
 
 #themeSwitcher:hover {
-  color: var(--color-warning);
+  color: var(--color-brand);
   transform: scale(1.1);
 }
 
@@ -218,8 +218,8 @@ body.dark-theme {
 /* --- RELOJ --- */
 .clock {
   display: flex;
-  padding: 15px 30px;
-  font-size: 2.5em;
+  padding: 12px 24px;
+  font-size: 2.3em;
   font-weight: 600;
   border-radius: 40px;
   position: relative;
@@ -526,7 +526,7 @@ body.dark-theme {
 }
 
 .bloc {
-  padding: 20px;
+  padding: 16px;
   display: flex;
   flex-direction: column;
   height: 400px;
@@ -551,7 +551,7 @@ body.dark-theme {
 }
 
 .kbs {
-  padding: 20px;
+  padding: 16px;
 }
 .kbs__title {
   color: var(--color-brand);
