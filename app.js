@@ -398,6 +398,12 @@ const AlarmModule = (function () {
     selectAux: document.getElementById('auxType'),
     tituloAux: document.getElementById('tituloAuxiliar'),
   };
+  // EL DICCIONARIO AFUERA (Se crea solo 1 vez en la vida útil de la página)
+  const traduccionesAux = {
+    Coaching: 'Capacitación con tu Team Leader 🎯',
+    Meeting: 'Reunión 📅',
+    Training: 'Formación 📚',
+  };
   // 3. LA MAGIA DRY (Don't Repeat Yourself)
   function saveHorarios() {
     // Creamos un array con las "llaves" de nuestras alarmas
@@ -444,13 +450,16 @@ const AlarmModule = (function () {
     const ahora = new Date();
     const horaActual = `${String(ahora.getHours()).padStart(2, '0')}:${String(ahora.getMinutes()).padStart(2, '0')}`;
 
+    // Buscamos la traducción en el diccionario de arriba. Si no existe, usamos el nombre en inglés.
+    const nombreTraducido = traduccionesAux[state.tipoAuxiliar] || state.tipoAuxiliar;
+
     // Mapeamos los mensajes para cada llave para mantener el código limpio
     const mensajes = {
       hbreak1: '¡Es hora de tu primer Descanso! ☕️',
       hbreak2: '¡Es hora de tu segundo Descanso! 🍎',
       hlunch: '¡Es hora de tu Almuerzo! 🍲',
       // NUEVO: Mensaje dinámico inyectando la variable
-      haux: `¡Es hora de tu ${state.tipoAuxiliar}! 🚀`,
+      haux: `¡Es hora de tu ${nombreTraducido}!`,
     };
 
     // Iteramos nuevamente. ¡Cero localStorage aquí adentro!
@@ -604,6 +613,272 @@ alertaAceptarBtn.addEventListener('click', () => {
   stopSonidoAlarma();
 });
 
+// --- Módulo de Métricas (Calculadora CSAT, AHT, HUR) ---
+const MetricsModule = (function () {
+  let state = {
+    metas: JSON.parse(localStorage.getItem('metricas_metas')) || {
+      csat: 93.7,
+      aht: 9.0,
+      hur: 82.0,
+    },
+    llamadas: JSON.parse(localStorage.getItem('metricas_llamadas')) || [],
+  };
+
+  const elements = {
+    // Nuevos botones y contadores
+    totalCallsBadge: document.getElementById('totalCallsBadge'),
+    btnUndoCall: document.getElementById('btnUndoCall'),
+    btnExportCSV: document.getElementById('btnExportCSV'),
+    btnClearDay: document.getElementById('btnClearDay'),
+
+    // Controles de configuración
+    btnConfig: document.getElementById('btnConfigMetrics'),
+    panelConfig: document.getElementById('panelConfigMetrics'),
+    inputMetaCsat: document.getElementById('metaCsat'),
+    inputMetaAht: document.getElementById('metaAht'),
+    inputMetaHur: document.getElementById('metaHur'),
+    btnSaveMetas: document.getElementById('btnSaveMetas'),
+
+    // Textos en pantalla
+    displayMetaCsat: document.getElementById('displayMetaCsat'),
+    displayMetaAht: document.getElementById('displayMetaAht'),
+    displayMetaHur: document.getElementById('displayMetaHur'),
+    liveCsat: document.getElementById('liveCsat'),
+    liveAht: document.getElementById('liveAht'),
+    liveHur: document.getElementById('liveHur'),
+
+    // Inputs de nueva llamada
+    inputCallAht: document.getElementById('inputCallAht'),
+    inputCallCsat: document.getElementById('inputCallCsat'),
+    inputCallHur: document.getElementById('inputCallHur'),
+    btnAddCall: document.getElementById('btnAddCall'),
+
+    badgeCsat: document.getElementById('badgeCsat'),
+    badgeHur: document.getElementById('badgeHur'),
+  };
+
+  function calcularResultados() {
+    let sumaAht = 0,
+      encuestasPositivas = 0,
+      totalEncuestas = 0,
+      totalHur = 0;
+
+    state.llamadas.forEach((llamada) => {
+      sumaAht += llamada.duracion;
+      if (llamada.csat === 'csat') {
+        encuestasPositivas++;
+        totalEncuestas++;
+      } else if (llamada.csat === 'dsat') {
+        totalEncuestas++;
+      }
+      if (llamada.hur) {
+        totalHur++;
+      }
+    });
+
+    const totalLlamadas = state.llamadas.length;
+    if (totalLlamadas === 0) return { aht: '0.00', hur: '0.0', csat: '0.0' };
+
+    return {
+      aht: (sumaAht / totalLlamadas).toFixed(2),
+      hur: ((totalHur / totalLlamadas) * 100).toFixed(1),
+      csat: totalEncuestas > 0 ? ((encuestasPositivas / totalEncuestas) * 100).toFixed(1) : '0.0',
+    };
+  }
+
+  function renderDashboard() {
+    // 1. Actualizar contador visual
+    elements.totalCallsBadge.textContent = `📞 ${state.llamadas.length}`;
+
+    // 2. Pintar metas
+    elements.inputMetaCsat.value = state.metas.csat;
+    elements.inputMetaAht.value = state.metas.aht;
+    elements.inputMetaHur.value = state.metas.hur;
+    elements.displayMetaCsat.textContent = `${state.metas.csat}%`;
+    elements.displayMetaAht.textContent = state.metas.aht;
+    elements.displayMetaHur.textContent = `${state.metas.hur}%`;
+
+    // 3. Pintar resultados
+    const resultados = calcularResultados();
+    elements.liveCsat.textContent = `${resultados.csat}%`;
+    elements.liveAht.textContent = resultados.aht;
+    elements.liveHur.textContent = `${resultados.hur}%`;
+
+    // 4. Lógica del SEMÁFORO y CÁLCULO DE LLAMADAS NECESARIAS
+    if (state.llamadas.length > 0) {
+      // --- Variables base para la matemática ---
+      let P = 0,
+        S = 0,
+        H = 0,
+        C = state.llamadas.length;
+      state.llamadas.forEach((ll) => {
+        if (ll.csat === 'csat') {
+          P++;
+          S++;
+        } else if (ll.csat === 'dsat') {
+          S++;
+        }
+        if (ll.hur) {
+          H++;
+        }
+      });
+
+      // --- Evaluación CSAT ---
+      const tCsat = state.metas.csat / 100; // Convertir meta a decimal
+      if (parseFloat(resultados.csat) >= state.metas.csat) {
+        elements.liveCsat.style.color = 'var(--color-success)';
+        elements.badgeCsat.textContent = '0';
+        elements.badgeCsat.className = 'metric-card__badge'; // Verde
+      } else {
+        elements.liveCsat.style.color = 'var(--color-danger)';
+        // Matemáticas: (Meta * TotalEncuestas - Positivas) / (1 - Meta)
+        let faltanCsat = tCsat === 1 ? '∞' : Math.ceil((tCsat * S - P) / (1 - tCsat));
+        elements.badgeCsat.textContent = faltanCsat;
+        elements.badgeCsat.className = 'metric-card__badge needed'; // Rojo
+      }
+
+      // --- Evaluación HUR ---
+      const tHur = state.metas.hur / 100;
+      if (parseFloat(resultados.hur) >= state.metas.hur) {
+        elements.liveHur.style.color = 'var(--color-success)';
+        elements.badgeHur.textContent = '0';
+        elements.badgeHur.className = 'metric-card__badge'; // Verde
+      } else {
+        elements.liveHur.style.color = 'var(--color-danger)';
+        // Fórmula: (Meta * TotalLlamadas - Cortes Actuales) / (1 - Meta)
+        let faltanHur = tHur === 1 ? '∞' : Math.ceil((tHur * C - H) / (1 - tHur));
+
+        // Inyectamos el número corregido
+        elements.badgeHur.textContent = faltanHur;
+        elements.badgeHur.className = 'metric-card__badge needed'; // Rojo
+      }
+
+      // --- Evaluación AHT (Sin circulito) ---
+      elements.liveAht.style.color =
+        parseFloat(resultados.aht) <= state.metas.aht
+          ? 'var(--color-success)'
+          : 'var(--color-danger)';
+    } else {
+      // Estado inicial (0 llamadas)
+      elements.liveAht.style.color = 'var(--text-main)';
+      elements.liveHur.style.color = 'var(--text-main)';
+      elements.liveCsat.style.color = 'var(--text-main)';
+
+      elements.badgeCsat.textContent = '0';
+      elements.badgeCsat.className = 'metric-card__badge';
+      elements.badgeHur.textContent = '0';
+      elements.badgeHur.className = 'metric-card__badge';
+    }
+  }
+
+  // --- FUNCIONES DE ACCIÓN ---
+
+  function registrarLlamada() {
+    const duracion = parseFloat(elements.inputCallAht.value);
+    if (isNaN(duracion) || duracion <= 0) return alert('Ingresa una duración válida (Ej: 5.5)');
+
+    state.llamadas.push({
+      id: Date.now(),
+      duracion,
+      csat: elements.inputCallCsat.value,
+      hur: elements.inputCallHur.checked,
+      fecha: new Date().toLocaleTimeString(), // Guardamos la hora para el Excel
+    });
+
+    localStorage.setItem('metricas_llamadas', JSON.stringify(state.llamadas));
+    elements.inputCallAht.value = '';
+    elements.inputCallCsat.value = 'none';
+    elements.inputCallHur.checked = false;
+    renderDashboard();
+  }
+
+  function deshacerUltimaLlamada() {
+    if (state.llamadas.length === 0) return alert('No hay llamadas para deshacer.');
+    state.llamadas.pop(); // Elimina el último elemento del array
+    localStorage.setItem('metricas_llamadas', JSON.stringify(state.llamadas));
+    renderDashboard();
+  }
+
+  function borrarTodoElDia() {
+    if (state.llamadas.length === 0) return;
+    if (confirm('¿Estás seguro de borrar todas las llamadas de hoy? Esto no se puede deshacer.')) {
+      state.llamadas = [];
+      localStorage.setItem('metricas_llamadas', JSON.stringify(state.llamadas));
+      renderDashboard();
+    }
+  }
+
+  function exportarExcel() {
+    if (state.llamadas.length === 0) return alert('No hay datos para exportar.');
+
+    // Crear cabeceras del CSV
+    let csvContent = 'Hora,Duracion (Min),Encuesta,HUR (Cortado por asesor)\n';
+
+    // Traducir los datos técnicos a lenguaje legible
+    state.llamadas.forEach((ll) => {
+      let tipoEncuesta =
+        ll.csat === 'csat' ? 'Positiva' : ll.csat === 'dsat' ? 'Negativa' : 'Sin encuesta';
+      let esHur = ll.hur ? 'Si' : 'No';
+      csvContent += `${ll.fecha},${ll.duracion},${tipoEncuesta},${esHur}\n`;
+    });
+
+    // Truco para que Excel lea correctamente los acentos (BOM UTF-8)
+    const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+
+    // Nombrar el archivo con la fecha de hoy
+    const fechaHoy = new Date().toLocaleDateString().replace(/\//g, '-');
+    link.download = `Metricas_Vacomi_${fechaHoy}.csv`;
+    link.click();
+  }
+
+  function init() {
+    if (!elements.btnConfig) return;
+    renderDashboard();
+
+    elements.btnConfig.addEventListener('click', () => {
+      elements.panelConfig.style.display =
+        elements.panelConfig.style.display === 'none' ? 'block' : 'none';
+    });
+
+    elements.btnSaveMetas.addEventListener('click', () => {
+      state.metas = {
+        csat: parseFloat(elements.inputMetaCsat.value) || 0,
+        aht: parseFloat(elements.inputMetaAht.value) || 0,
+        hur: parseFloat(elements.inputMetaHur.value) || 0,
+      };
+      localStorage.setItem('metricas_metas', JSON.stringify(state.metas));
+      elements.panelConfig.style.display = 'none';
+      renderDashboard();
+    });
+
+    elements.btnAddCall.addEventListener('click', registrarLlamada);
+    elements.inputCallAht.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') registrarLlamada();
+    });
+
+    // Nuevos eventos
+    elements.btnUndoCall.addEventListener('click', deshacerUltimaLlamada);
+    elements.btnClearDay.addEventListener('click', borrarTodoElDia);
+    elements.btnExportCSV.addEventListener('click', exportarExcel);
+
+    // NUEVO CAMBIO 1: Automatización de HUR al seleccionar CSAT/DSAT
+    elements.inputCallCsat.addEventListener('change', (e) => {
+      const valorSeleccionado = e.target.value;
+
+      // Si elige csat o dsat, marcamos el check automáticamente
+      if (valorSeleccionado === 'csat' || valorSeleccionado === 'dsat') {
+        elements.inputCallHur.checked = true;
+      }
+      // Si vuelve a "none" (Sin encuesta), no hacemos nada con el check
+      // porque el asesor pudo haber cortado (HUR) aunque no haya encuesta.
+    });
+  }
+
+  return { init: init };
+})();
+
 // CÓDIGO DE INICIALIZACIÓN UNIFICADO
 document.addEventListener('DOMContentLoaded', () => {
   // 1. Cargar tema global
@@ -615,5 +890,6 @@ document.addEventListener('DOMContentLoaded', () => {
   MenuModule.init();
   TimerModule.init();
   AlarmModule.init();
-  KbModule.init();
+  // KbModule.init();
+  MetricsModule.init(); // ¡NUESTRO NUEVO CEREBRO!
 });

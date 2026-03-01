@@ -231,33 +231,100 @@
           spellcheck="false"
         ></textarea>
       </article>
+      
+      <article class="metrics">
+        <div class="metrics__header">
+          <div class="metrics__title-group">
+            <h3 class="metrics__title">Métricas del Día:</h3>
+            <span class="metrics__badge" id="totalCallsBadge">📞 0</span>
+          </div>
+          <div class="metrics__header-actions">
+            <button class="metrics__icon-btn" id="btnUndoCall" title="Deshacer última">
+              <span class="material-symbols-outlined">undo</span>
+            </button>
+            <button class="metrics__icon-btn" id="btnExportCSV" title="Exportar a Excel">
+              <span class="material-symbols-outlined">download</span>
+            </button>
+            <button class="metrics__icon-btn" id="btnClearDay" title="Borrar todo el día">
+              <span class="material-symbols-outlined">delete_sweep</span>
+            </button>
+            <button class="metrics__icon-btn" id="btnConfigMetrics" title="Configurar Metas">
+              <span class="material-symbols-outlined">settings</span>
+            </button>
+          </div>
+        </div>
+        </div>
 
-      <article class="kbs">
-        <h3 class="kbs__title">Mis KB's:</h3>
+        <div class="metrics__config" id="panelConfigMetrics" style="display: none">
+          <p class="metrics__config-title">Configurar Metas (Maqueta)</p>
+          <div class="metrics__config-grid">
+            <div class="metrics__input-group">
+              <label>CSAT (%)</label>
+              <input type="number" id="metaCsat" step="0.1" value="93.7" />
+            </div>
+            <div class="metrics__input-group">
+              <label>AHT (Min)</label>
+              <input type="number" id="metaAht" step="0.1" value="9.0" />
+            </div>
+            <div class="metrics__input-group">
+              <label>HUR (%)</label>
+              <input type="number" id="metaHur" step="0.1" value="82.0" />
+            </div>
+          </div>
+          <button class="metrics__btn-save" id="btnSaveMetas">Guardar Metas</button>
+        </div>
 
-        <div class="kbs__form">
-          <div class="kbs__fpart1">
-            <input type="number" class="kbs__input" id="kbInput-id" placeholder="Número" required />
-            <button class="kbs__btnAdd" id="KbBtn-add">Agregar</button>
+        <div class="metrics__dashboard">
+          <div class="metric-card">
+            <div class="metric-card__header">
+              <span class="metric-card__title">CSAT</span>
+              <span class="metric-card__badge" id="badgeCsat" title="Encuestas positivas necesarias">0</span>
+            </div>
+            <span class="metric-card__actual" id="liveCsat">0.0%</span>
+            <span class="metric-card__target">Meta: <span id="displayMetaCsat">93.7%</span></span>
           </div>
 
-          <div class="kbs__fpart2">
-            <input
-              type="text"
-              class="kbs__input"
-              id="kbInput-des"
-              placeholder="Descripción"
-              required
-            />
-            <span class="kbs__span" id="kbs-span"></span>
+          <div class="metric-card">
+            <span class="metric-card__title">AHT</span>
+            <span class="metric-card__actual" id="liveAht">0.00</span>
+            <span class="metric-card__target">Meta: <span id="displayMetaAht">9.0</span></span>
+          </div>
+          <div class="metric-card">
+            <div class="metric-card__header">
+              <span class="metric-card__title">HUR</span>
+              <span class="metric-card__badge" id="badgeHur" title="Llamadas sin cortar necesarias">0</span>
+            </div>
+            <span class="metric-card__actual" id="liveHur">0.0%</span>
+            <span class="metric-card__target">Meta: <span id="displayMetaHur">82.0%</span></span>
           </div>
         </div>
 
-        <div class="kbs__list-container">
-          <h4 class="kbs__list-title">Mis KBs Favoritos</h4>
-          <ul id="kb-list" class="kbs__list">
-            <!-- Los KBs se agregarán aquí dinámicamente -->
-          </ul>
+        <div class="metrics__new-call">
+          <h4 class="metrics__new-title">Registrar Llamada</h4>
+          <div class="new-call-form">
+            <div class="form-item">
+              <label>Duración (Min)</label>
+              <input type="number" id="inputCallAht" placeholder="Ej: 8.5" step="0.1" />
+            </div>
+
+            <div class="form-item">
+              <label>¿Encuesta?</label>
+              <select id="inputCallCsat">
+                <option value="none">Sin encuesta</option>
+                <option value="csat">CSAT (Positiva)</option>
+                <option value="dsat">DSAT (Negativa)</option>
+              </select>
+            </div>
+
+            <div class="form-item form-item--checkbox">
+              <label>
+                <input type="checkbox" id="inputCallHur" />
+                Yo corté la llamada (HUR)
+              </label>
+            </div>
+
+            <button class="metrics__btn-add" id="btnAddCall">Agregar</button>
+          </div>
         </div>
       </article>
     </section>
