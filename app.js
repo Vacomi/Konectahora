@@ -655,6 +655,16 @@ const MetricsModule = (function () {
 
     badgeCsat: document.getElementById('badgeCsat'),
     badgeHur: document.getElementById('badgeHur'),
+
+    // Nuevo para los errores de input
+    inputCallId: document.getElementById('inputCallId'), // Asegúrate de tener este
+    errorCallId: document.getElementById('errorCallId'),
+    errorCallAht: document.getElementById('errorCallAht'),
+
+    // NUEVO: Elementos del visor de última llamada
+    lastCallViewer: document.getElementById('lastCallViewer'),
+    lastCallTime: document.getElementById('lastCallTime'),
+    lastCallData: document.getElementById('lastCallData'),
   };
 
   function calcularResultados() {
@@ -769,16 +779,77 @@ const MetricsModule = (function () {
       elements.badgeHur.textContent = '0';
       elements.badgeHur.className = 'metric-card__badge';
     }
+
+    // 5. VISOR DE ÚLTIMA LLAMADA
+    if (state.llamadas.length > 0) {
+      // Extraemos el último elemento del arreglo
+      const ultimaLlamada = state.llamadas[state.llamadas.length - 1];
+
+      // Formateo de la hora: Quitamos los segundos (ej. "17:12:11" -> "17:12")
+      const horaOriginal = ultimaLlamada.fecha ? ultimaLlamada.fecha : '--:--';
+      const horaVisual = horaOriginal.replace(/(:\d{2}):\d{2}/, '$1');
+
+      // Formateamos los textos para que se vean geniales
+      const idVisual = ultimaLlamada.idSprinklr ? ultimaLlamada.idSprinklr : 'Sin ID';
+      const tipoEncuesta =
+        ultimaLlamada.csat === 'csat' ? 'CSAT' : ultimaLlamada.csat === 'dsat' ? 'DSAT' : 'Ninguna';
+      const esHur = ultimaLlamada.hur ? 'Sí' : 'No';
+
+      // Lo inyectamos en el HTML (¡Ahora con la hora al inicio!)
+      elements.lastCallTime.textContent = `(${horaVisual})`;
+      elements.lastCallData.innerHTML = `ID: <b>${idVisual}</b> | Duración: ${ultimaLlamada.duracion}m | Encuesta: ${tipoEncuesta} | Corte: ${esHur}`;
+
+      // Mostramos la barra
+      elements.lastCallViewer.style.display = 'flex';
+    } else {
+      // Si borraron el día o no hay llamadas, ocultamos la barra
+      elements.lastCallViewer.style.display = 'none';
+    }
   }
 
   // --- FUNCIONES DE ACCIÓN ---
 
   function registrarLlamada() {
+    const idSprinklr = elements.inputCallId.value.trim();
     const duracion = parseFloat(elements.inputCallAht.value);
-    if (isNaN(duracion) || duracion <= 0) return alert('Ingresa una duración válida (Ej: 5.5)');
+    let hayError = false;
+
+    // 1. Limpiamos errores anteriores por si el usuario ya los corrigió
+    elements.inputCallId.classList.remove('input-error');
+    elements.errorCallId.classList.remove('active');
+    elements.inputCallAht.classList.remove('input-error');
+    elements.errorCallAht.classList.remove('active');
+
+    // 2. Validamos el ID Sprinklr (ejemplo: que no esté vacío)
+    const regexSprinklr = /^\d{8}$/;
+
+    if (!idSprinklr) {
+      elements.inputCallId.classList.add('input-error');
+      elements.errorCallId.textContent = 'Ingresa el ID del caso';
+      elements.errorCallId.classList.add('active');
+      hayError = true;
+    } else if (!regexSprinklr.test(idSprinklr)) {
+      // Si tiene letras, o tiene 7 números, o tiene 9 números, entra aquí
+      elements.inputCallId.classList.add('input-error');
+      elements.errorCallId.textContent = 'El ID debe tener exactamente 8 números';
+      elements.errorCallId.classList.add('active');
+      hayError = true;
+    }
+
+    // 3. Validamos la duración
+    if (isNaN(duracion) || duracion <= 0) {
+      elements.inputCallAht.classList.add('input-error');
+      elements.errorCallAht.textContent = 'Ingresa una duración válida';
+      elements.errorCallAht.classList.add('active');
+      hayError = true;
+    }
+
+    // Si hay algún error, detenemos la función aquí
+    if (hayError) return;
 
     state.llamadas.push({
       id: Date.now(),
+      idSprinklr,
       duracion,
       csat: elements.inputCallCsat.value,
       hur: elements.inputCallHur.checked,
@@ -786,6 +857,7 @@ const MetricsModule = (function () {
     });
 
     localStorage.setItem('metricas_llamadas', JSON.stringify(state.llamadas));
+    elements.inputCallId.value = '';
     elements.inputCallAht.value = '';
     elements.inputCallCsat.value = 'none';
     elements.inputCallHur.checked = false;
@@ -812,14 +884,16 @@ const MetricsModule = (function () {
     if (state.llamadas.length === 0) return alert('No hay datos para exportar.');
 
     // Crear cabeceras del CSV
-    let csvContent = 'Hora,Duracion (Min),Encuesta,HUR (Cortado por asesor)\n';
+    let csvContent = 'Hora,ID Sprinklr,Duracion (Min),Encuesta,HUR (Cortado por asesor)\n';
 
     // Traducir los datos técnicos a lenguaje legible
     state.llamadas.forEach((ll) => {
       let tipoEncuesta =
         ll.csat === 'csat' ? 'Positiva' : ll.csat === 'dsat' ? 'Negativa' : 'Sin encuesta';
       let esHur = ll.hur ? 'Si' : 'No';
-      csvContent += `${ll.fecha},${ll.duracion},${tipoEncuesta},${esHur}\n`;
+      let idSprinklr = ll.idSprinklr ? ll.idSprinklr : 'N/A'; // Por si hay llamadas viejas
+
+      csvContent += `${ll.fecha},${idSprinklr},${ll.duracion},${tipoEncuesta},${esHur}\n`;
     });
 
     // Truco para que Excel lea correctamente los acentos (BOM UTF-8)
@@ -890,6 +964,5 @@ document.addEventListener('DOMContentLoaded', () => {
   MenuModule.init();
   TimerModule.init();
   AlarmModule.init();
-  // KbModule.init();
   MetricsModule.init(); // ¡NUESTRO NUEVO CEREBRO!
 });

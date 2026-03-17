@@ -517,7 +517,7 @@ body.dark-theme {
   grid-template-columns: 1fr;
   gap: 10px;
   width: 100%;
-  max-width: 800px;
+  max-width: 900px;
   margin: 10px auto;
 }
 @media (min-width: 768px) {
@@ -530,20 +530,22 @@ body.dark-theme {
   padding: 16px;
   display: flex;
   flex-direction: column;
-  height: 400px;
+  min-height: 120px;
+  /* height: 400px; */
 }
 .bloc__title {
   color: var(--color-brand);
   margin-bottom: 10px;
 }
 .bloc__text {
-  flex: 1;
+  /* flex: 1; */
   background-color: var(--bg-body);
   color: var(--text-main);
   border: 1px solid var(--text-muted);
   border-radius: 8px;
   padding: 10px;
-  resize: none;
+  resize: vertical;
+  overflow: auto;
   font-family: inherit;
   outline: none;
 }
@@ -555,10 +557,10 @@ body.dark-theme {
    NUEVO: SECCIÓN DE MÉTRICAS (Calculadora)
 ========================================= */
 .metrics {
-  padding: 16px;
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 10px;
+  padding: 16px;
 }
 
 .metrics__header {
@@ -566,7 +568,7 @@ body.dark-theme {
   justify-content: space-between;
   align-items: center;
   border-bottom: 2px solid var(--text-muted);
-  padding-bottom: 10px;
+  padding-bottom: 5px;
 }
 
 .metrics__title-group {
@@ -583,7 +585,6 @@ body.dark-theme {
 /* La píldora del contador de llamadas */
 .metrics__badge {
   background-color: var(--color-warning);
-  /* color: #fff; */
   color: #152b4a;
   padding: 3px 10px;
   border-radius: 12px;
@@ -638,13 +639,13 @@ body.dark-theme {
 .metrics__config-title {
   font-size: 0.9rem;
   font-weight: bold;
-  margin-bottom: 10px;
   color: var(--color-warning);
 }
 
+/* Arreglo de la Configuración de Metas */
 .metrics__config-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: 1fr; /* Móvil: 1 sola columna para no desbordar */
   gap: 10px;
   margin-bottom: 10px;
 }
@@ -678,7 +679,7 @@ body.dark-theme {
 .metrics__dashboard {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
+  gap: 15px;
 }
 
 .metric-card {
@@ -729,7 +730,6 @@ body.dark-theme {
   font-size: 1.4rem;
   font-weight: bold;
   color: var(--text-main);
-  margin: 5px 0;
 }
 
 .metric-card__target {
@@ -737,11 +737,48 @@ body.dark-theme {
   color: var(--text-muted);
 }
 
+/* Última llamada registrada */
+.metrics__last-call {
+  background-color: var(--opacidad-hover);
+  border-left: 3px solid var(--color-warning);
+  padding: 8px 12px;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  color: var(--text-main);
+  animation: fadeIn 0.3s ease-in;
+}
+
+.last-call__label {
+  font-size: 0.75rem;
+  font-weight: bold;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.last-call__data {
+  font-family: monospace;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* Formulario Nueva Llamada */
 .metrics__new-call {
-  margin-top: 10px;
   background-color: var(--bg-body);
-  padding: 15px;
+  padding: 10px;
   border-radius: 8px;
   border-left: 4px solid var(--color-success);
 }
@@ -752,6 +789,7 @@ body.dark-theme {
   margin-bottom: 10px;
 }
 
+/* 3. Arreglo del Formulario Nueva Llamada */
 .new-call-form {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -770,7 +808,8 @@ body.dark-theme {
 }
 
 .form-item input[type='number'],
-.form-item select {
+.form-item select,
+#inputCallId {
   padding: 8px;
   border-radius: 6px;
   border: 1px solid var(--text-muted);
@@ -780,15 +819,63 @@ body.dark-theme {
 }
 
 .form-item--checkbox {
-  grid-column: span 2;
+  grid-column: span 1;
   flex-direction: row;
-  align-items: center;
+  align-items: end;
   cursor: pointer;
+  margin-bottom: 5px;
+}
+.form-item--checkbox label {
+  display: flex;
+  gap: 10px;
+  cursor: pointer;
+  user-select: none; /* Evita que el texto se sombree si le das doble clic rápido */
+  color: var(--text-main);
+  transition: color 0.3s;
 }
 
-.form-item--checkbox input {
-  margin-right: 8px;
+.form-item--checkbox input[type='checkbox'] {
+  appearance: none;
+  -webkit-appearance: none; /* Soporte para Safari */
+  width: 22px;
+  height: 22px;
+  background-color: var(--bg-panel);
+  border: 2px solid var(--text-muted);
+  border-radius: 6px;
   cursor: pointer;
+  position: relative;
+  transition: all 0.3s ease;
+  margin: 0;
+}
+
+/* 3. Efecto al pasar el ratón por encima (Hover) */
+.form-item--checkbox input[type='checkbox']:hover {
+  border-color: var(--color-success);
+  transform: scale(1.05); /* Pequeño efecto de zoom */
+}
+
+/* 4. Cuando el usuario hace clic (Estado Marcado) */
+.form-item--checkbox input[type='checkbox']:checked {
+  border-color: var(--color-success);
+  box-shadow: 0 0 10px rgba(4, 252, 45, 0.3);
+}
+
+/* 5. Dibujando la "Palomita" (Check) con CSS puro */
+.form-item--checkbox input[type='checkbox']:checked::after {
+  content: '';
+  position: absolute;
+  left: 6px;
+  top: 2px;
+  width: 6px;
+  height: 12px;
+  border: solid var(--color-success);
+  border-width: 0 3px 3px 0;
+  transform: rotate(45deg);
+}
+
+/* Opcional: Que el texto también brille un poco cuando está marcado */
+.form-item--checkbox:has(input:checked) label {
+  font-weight: bold;
 }
 
 .metrics__btn-add {
@@ -807,6 +894,54 @@ body.dark-theme {
   opacity: 0.8;
 }
 
+/* 4. LA MAGIA RESPONSIVA (Solo para pantallas grandes) */
+@media (min-width: 768px) {
+  .editable {
+    grid-template-columns: 40% 60%;
+  }
+  .metrics__config-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .new-call-form {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Estilo del texto de error (oculto por defecto) */
+.form-item__error {
+  color: var(--color-danger);
+  font-size: 0.75rem;
+  font-weight: 600;
+  /* margin-top: 2px; */
+  min-height: 15px; /* Mantiene el espacio para que el formulario no salte */
+  display: none; /* Lo ocultamos hasta que JS diga lo contrario */
+}
+
+/* Clase que JS activará cuando haya un error */
+.form-item__error.active {
+  display: block;
+  animation: shake 0.3s ease-in-out; /* Un pequeño temblor para llamar la atención */
+}
+
+/* Clase para pintar el borde del input de rojo */
+.form-item input.input-error {
+  border-color: var(--color-danger) !important;
+  box-shadow: 0 0 5px rgba(255, 71, 87, 0.3);
+}
+
+/* Animación del temblor */
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-3px);
+  }
+  75% {
+    transform: translateX(3px);
+  }
+}
 /* =========================================
    6. MODALES Y ALERTAS
 ========================================= */
