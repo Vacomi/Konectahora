@@ -311,11 +311,11 @@ body.dark-theme {
 .alarm__section {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 3px;
   width: 50%;
 }
 .alarm__action {
-  width: 45%;
+  width: 50%;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -388,6 +388,20 @@ body.dark-theme {
   margin-bottom: 15px;
   padding-bottom: 5px;
   display: flex;
+  justify-content: space-between; /* Separa los textos de la flecha */
+  align-items: center;
+  cursor: pointer;
+  list-style: none; /* Quita el triángulo feo en Firefox */
+  user-select: none; /* Evita que el texto se sombree al dar clic rápido */
+}
+
+/* Quita el triángulo nativo en Chrome/Safari/Edge */
+.temporizador__intro::-webkit-details-marker {
+  display: none;
+}
+/* Agrupamos los textos para que mantengan tu diseño original */
+.temporizador__text-group {
+  display: flex;
   align-items: baseline;
   column-gap: 5px;
 }
@@ -399,7 +413,24 @@ body.dark-theme {
   font-size: 0.85rem;
   color: var(--text-muted);
 }
+/* El icono de la flecha que gira */
+.temporizador__toggle-icon {
+  color: var(--text-muted);
+  transition: transform 0.3s ease; /* Animación de giro */
+}
 
+/* LA MAGIA: Cuando el details está abierto, rotamos la flecha 180 grados */
+details[open] .temporizador__toggle-icon {
+  transform: rotate(180deg);
+  color: var(--color-brand);
+}
+
+/* Opcional: Quitamos el borde inferior de la intro si está cerrado para que se vea más limpio */
+details:not([open]) .temporizador__intro {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
 .contenedor-util {
   display: flex;
   justify-content: space-around;
