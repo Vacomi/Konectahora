@@ -780,6 +780,7 @@ details:not([open]) .temporizador__intro {
   gap: 10px;
   color: var(--text-main);
   animation: fadeIn 0.3s ease-in;
+  width: 100%;
 }
 
 .last-call__label {
@@ -791,8 +792,10 @@ details:not([open]) .temporizador__intro {
 
 .last-call__data {
   font-family: monospace;
-  font-size: 0.85rem;
+  font-size: 0.7rem;
   letter-spacing: 0.5px;
+  word-break: break-word; /* MAGIA: Fuerza al texto a saltar de línea si no cabe */
+  line-height: 1.4;
 }
 
 @keyframes fadeIn {
@@ -847,20 +850,23 @@ details:not([open]) .temporizador__intro {
   background-color: var(--bg-panel);
   color: var(--text-main);
   outline: none;
+  width: 100%;
 }
 
 .form-item--checkbox {
   grid-column: span 1;
   flex-direction: row;
+  /* justify-content: center; */
   align-items: end;
   cursor: pointer;
   margin-bottom: 5px;
 }
 .form-item--checkbox label {
   display: flex;
-  gap: 10px;
+  gap: 6px;
   cursor: pointer;
   user-select: none; /* Evita que el texto se sombree si le das doble clic rápido */
+  align-items: flex-end;
   color: var(--text-main);
   transition: color 0.3s;
 }

@@ -797,7 +797,7 @@ const MetricsModule = (function () {
 
       // Lo inyectamos en el HTML (¡Ahora con la hora al inicio!)
       elements.lastCallTime.textContent = `(${horaVisual})`;
-      elements.lastCallData.innerHTML = `ID: <b>${idVisual}</b> | Duración: ${ultimaLlamada.duracion}m | Encuesta: ${tipoEncuesta} | Corte: ${esHur}`;
+      elements.lastCallData.innerHTML = `ID:<b>${idVisual}</b> | Duración:${ultimaLlamada.duracion}m | Encuesta:${tipoEncuesta} | Corte:${esHur}`;
 
       // Mostramos la barra
       elements.lastCallViewer.style.display = 'flex';
