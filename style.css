@@ -1081,3 +1081,541 @@ details:not([open]) .temporizador__intro {
   cursor: pointer;
   font-weight: bold;
 }
+
+/* =========================================
+   7. SECCIÓN SIMULADOR INTERACTIVO (NETFLIX MOCK)
+========================================= */
+
+/* --- 7.1 Componentes de Estructura y Hardware --- */
+.simulator {
+  width: 100%;
+  max-width: 900px;
+  background-color: var(--bg-panel);
+  box-shadow: var(--shadow-panel);
+  border-radius: 12px;
+  padding: 20px;
+  margin: 10px auto 30px auto;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.simulator__header {
+  border-bottom: 2px solid var(--text-muted);
+  padding-bottom: 5px;
+}
+
+.simulator__title {
+  color: var(--color-brand);
+  font-size: 1.2rem;
+}
+
+.simulator__subtitle {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.simulator__controls {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  row-gap: 10px;
+}
+
+.simulator__group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.simulator__label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.simulator__radio-group {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* Ocultar botones radiales nativos */
+.simulator__icon-btn input[type='radio'] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* Botón circular de los iconos de control */
+.simulator__icon-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  cursor: pointer;
+  background-color: var(--bg-body);
+  transition: all 0.3s ease;
+}
+
+.simulator__icon-btn span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.4rem;
+  padding: 0.5rem;
+  color: var(--text-muted);
+  transition: color 0.3s ease;
+}
+
+.simulator__icon-btn:has(input:checked) {
+  background-color: var(--color-brand);
+  box-shadow: 0 0 10px rgba(255, 41, 114, 0.3);
+}
+
+.simulator__icon-btn:has(input:checked) span {
+  color: #ffffff;
+}
+
+.simulator__icon-btn.disabled {
+  opacity: 0.25;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+#simDeviceName {
+  grid-column: span 2;
+  border-top: 1px dashed var(--text-muted);
+  padding-top: 8px;
+}
+
+.simulator__display-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 0;
+  background: rgba(0, 0, 0, 0.03);
+  border-radius: 8px;
+}
+
+/* Armazones de los Dispositivos */
+.device-mock {
+  background-color: #333;
+  border: 12px solid #222;
+  border-radius: 36px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  transition: all 0.4s ease;
+  width: 280px;
+  height: 520px;
+  overflow: hidden;
+  position: relative;
+}
+
+.device-mock--tv {
+  width: 640px;
+  height: 360px;
+  border-radius: 12px;
+  border-width: 14px 14px 25px 14px;
+}
+.device-mock--tablet {
+  width: 550px;
+  height: 380px;
+  border-radius: 24px;
+  border-width: 16px;
+}
+
+.device-mock__screen {
+  width: 100%;
+  height: 100%;
+  background-color: #000;
+  color: #fff;
+  font-family: Helvetica, Arial, sans-serif;
+  overflow-y: auto;
+  padding: 15px;
+  /* NUEVO: Forzamos a la pantalla a ser un contenedor vertical estricto */
+  display: flex;
+  flex-direction: column;
+  row-gap: 50px;
+}
+
+/* --- 7.2 Estilos de la App de Netflix (Estructura Común) --- */
+.nf-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0; /* Evita que la cabecera se aplaste */
+  /* background-color: pink; */
+}
+.spacioinicio {
+  justify-content: flex-start;
+}
+.nf-logo,
+.nf-logo-android,
+.nf-btn-options,
+.nf-nav-options,
+.nf-back {
+  cursor: pointer;
+}
+.nf-logo {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #e50914;
+}
+
+.nf-nav-options {
+  font-size: 0.7rem;
+  color: #eee;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.nf-btn-options {
+  font-size: 0.8rem;
+  color: #fff;
+  transition: color 0.3s ease;
+}
+
+.nf-btn-login {
+  color: #fff;
+  background-color: rgba(228, 228, 228, 0.2);
+  padding: 5px 10px;
+  font-size: 0.75rem;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.nf-back {
+  font-size: 1rem !important;
+  color: #fff;
+  display: inline-block;
+  margin-right: 15px;
+  transition: color 0.2s;
+}
+
+/* Cuerpos de Pantallas */
+.nf-body-welcome {
+  text-align: center;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  row-gap: 20px;
+  /* background-color: chartreuse; */
+}
+
+.nf-body-login {
+  display: flex;
+  flex-direction: column;
+  row-gap: 20px;
+  height: 80%;
+}
+
+.nf-title-welcome {
+  font-size: 1.3rem;
+  font-weight: bold;
+  letter-spacing: -0.5px;
+}
+
+.nf-login-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-align: left;
+}
+
+/* Controles Reutilizables de Entrada/Botones */
+.nf-input {
+  background: #333;
+  border: 1px solid #7b7b7b;
+  padding: 10px;
+  color: var(--bg-body);
+  font-size: 0.8rem;
+}
+
+.nf-btn-primary {
+  background-color: #e50914;
+  color: white;
+  padding: 10px;
+  border-radius: 4px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+.nf-text-roll {
+  cursor: pointer;
+  font-size: 0.75rem;
+  display: flex;
+  align-items: center;
+}
+/* Nuevo estilo para la caja del código de 4 dígitos - previo a perfiles*/
+.nf-code-container {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 15px 0;
+}
+.nf-code-box {
+  width: 40px;
+  height: 45px;
+  background: #333;
+  border: 1px solid #7b7b7b;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #fff;
+}
+.nf-code-textAlert {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: #fff;
+  background-color: rgba(150, 150, 150, 0.8);
+  padding: 8px;
+  border-radius: 2px;
+}
+.enlaceGenerico {
+  color: #fff;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* Modulo de perfiles */
+.nf-profiles-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  height: 100%;
+  /* background-color: var(--color-warning); */
+}
+
+.nf-profiles-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  width: 100%;
+}
+.device-mock--tv .nf-profiles-grid {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.nf-profile-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  /* background-color: purple; */
+  width: 100%;
+}
+.nf-avatar {
+  width: 100%;
+  height: 65px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1.4rem;
+  color: white;
+  background-color: red;
+}
+
+.nf-profile-name {
+  font-size: 0.75rem;
+  color: #aaa;
+  margin-top: 5px;
+}
+
+/* Contenedor de Catálogo Home */
+.nf-home-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.nf-hero-card {
+  background: linear-gradient(to bottom, #555, #111);
+  height: 130px;
+  border-radius: 6px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+.device-mock--tv .nf-hero-card {
+  height: 160px;
+}
+.nf-row-movies {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+.nf-poster {
+  background: #222;
+  border: 1px solid #333;
+  width: 70px;
+  height: 100px;
+  border-radius: 4px;
+}
+.nf-mobile-nav {
+  margin-top: auto;
+  background: #121212;
+  display: flex;
+  justify-content: space-around;
+  padding: 10px 0;
+  border-top: 1px solid #222;
+  font-size: 0.65rem;
+  color: #666;
+}
+.nf-mobile-nav .active {
+  color: white;
+}
+.nf-tv-sidebar {
+  width: 30%;
+  background: #111;
+  padding: 10px;
+  font-size: 0.7rem;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border-right: 1px solid #222;
+}
+
+/* --- 7.3 Personalizaciones Específicas por Contexto --- */
+
+/* CONTEXTO ESPECIAL: iOS (iPhone) */
+.ctx-ios .nf-nav {
+  color: #e50914;
+  font-size: 1.2rem;
+}
+.ctx-ios .nf-btn-options {
+  font-size: 1.4rem;
+  color: #fff;
+}
+.ctx-ios .nf-body-welcome {
+  justify-content: flex-end;
+} /* Empuja el aviso de cuenta hacia abajo */
+
+.ctx-ios .nf-create-account {
+  border-radius: 10px;
+  border: 1px solid #e50914;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(229, 9, 20, 0.08);
+}
+.ctx-ios .nf-create-account p {
+  margin: 0;
+  font-size: 0.8rem;
+}
+.ctx-ios .nf-create-account a {
+  text-decoration: none;
+  color: rgb(75, 108, 255);
+  font-weight: bold;
+}
+
+/* Estilos de Login Exclusivos para iOS (¡Listos para que los uses!) */
+
+.ctx-ios .nf-input {
+  /* border-radius: 8px; */
+  border-radius: 4px;
+}
+.ctx-ios .nf-btn-secondary-login {
+  background-color: transparent;
+  border: 1px solid #555;
+  color: white;
+  padding: 10px;
+  border-radius: 8px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+.ctx-ios .nf-recaptcha,
+.ctx-android .nf-recaptcha {
+  font-size: 0.7rem;
+  color: #777;
+  margin-top: 10px;
+}
+
+/* CONTEXTO ESPECIAL: Android (Teléfono / Tablet) */
+.ctx-android .nf-logo-android {
+  font-size: 2.2rem;
+  color: #e50914;
+  font-weight: 600;
+}
+.ctx-android .nf-body-welcome {
+  /* justify-content: center; */
+  justify-content: flex-end;
+}
+
+/* CONTEXTO ESPECIAL: Smart TV */
+.ctx-tv .nf-nav {
+  color: #e50914;
+  font-size: 1.5rem;
+}
+
+/* Menú y Home */
+.nf-home-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.nf-hero-card {
+  background: linear-gradient(to bottom, #444, #111);
+  height: 130px;
+  border-radius: 6px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.device-mock--tv .nf-hero-card {
+  height: 160px;
+}
+
+.nf-row-movies {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.nf-poster {
+  background: #222;
+  border: 1px solid #333;
+  width: 70px;
+  height: 100px;
+  border-radius: 4px;
+}
+
+/* Barra inferior móvil */
+.nf-mobile-nav {
+  margin-top: auto;
+  background: #121212;
+  display: flex;
+  justify-content: space-around;
+  padding: 10px 0;
+  border-top: 1px solid #222;
+  font-size: 0.65rem;
+  color: #666;
+}
+.nf-mobile-nav .active {
+  color: white;
+}
+
+/* Menú Lateral TV (Falso desplegable con la flecha izquierda) */
+.nf-tv-sidebar {
+  width: 30%;
+  background: #111;
+  padding: 10px;
+  font-size: 0.7rem;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border-right: 1px solid #222;
+}

@@ -20,7 +20,7 @@
       href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
       rel="stylesheet"
     />
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <!-- <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" /> -->
   </head>
 
   <body>
@@ -359,6 +359,59 @@
       </article>
     </section>
 
+    <!-- Simulador de Dispositivos -->
+    <section class="simulator">
+      <div class="simulator__header">
+        <h2 class="simulator__title">Guía Visual de Dispositivos (Netflix)</h2>
+        <p class="simulator__subtitle">Navega e interactúa para replicar lo que ve el cliente.</p>
+      </div>
+
+      <div class="simulator__controls">
+        <div class="simulator__group">
+          <span class="simulator__label">Dispositivo:</span>
+          <div class="simulator__radio-group">
+            <label class="simulator__icon-btn" title="Smartphone">
+              <input type="radio" name="simDevice" value="phone" checked />
+              <span class="material-symbols-outlined">mobile_3</span>
+            </label>
+            <label class="simulator__icon-btn" title="Smart TV (TCL Android)">
+              <input type="radio" name="simDevice" value="tv" />
+              <span class="material-symbols-outlined">tv_gen</span>
+            </label>
+            <label class="simulator__icon-btn" title="Tablet (Samsung Android)">
+              <input type="radio" name="simDevice" value="tablet" />
+              <span class="material-symbols-outlined">tablet</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="simulator__group" id="simOsGroup">
+          <span class="simulator__label">Sistema Operativo:</span>
+          <div class="simulator__radio-group">
+            <label class="simulator__icon-btn" id="lblAndroid" title="Android">
+              <input type="radio" name="simOs" value="android" />
+              <span class="material-symbols-outlined">android</span>
+            </label>
+            <label class="simulator__icon-btn" id="lblIos" title="iOS">
+              <input type="radio" name="simOs" value="ios" checked />
+              <span class="material-symbols-outlined">ios</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="simulator__group" id="simDeviceName">
+          <span class="simulator__label" id="txtTargetModel"
+            >Modelo Específico: iPhone 17 | Versión de app 18.33.0</span
+          >
+        </div>
+      </div>
+
+      <div class="simulator__display-wrapper">
+        <div id="deviceMockup" class="device-mock">
+          <div class="device-mock__screen" id="simulatorContent"></div>
+        </div>
+      </div>
+    </section>
     <script src="app.js"></script>
   </body>
 </html>

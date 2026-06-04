@@ -566,6 +566,327 @@ elements.themeSwitcher?.addEventListener('click', () => {
   applyTheme(elements.body.dataset.theme === 'dark' ? 'default' : 'dark');
 });
 
+//--- Módulo de Simulación Interactiva de Interfaces (Netflix) ---
+const SimulatorModule = (function () {
+  const elements = {
+    osGroup: document.getElementById('simOsGroup'),
+    mockup: document.getElementById('deviceMockup'),
+    content: document.getElementById('simulatorContent'),
+    txtModel: document.getElementById('txtTargetModel'),
+    lblIos: document.getElementById('lblIos'),
+    lblAndroid: document.getElementById('lblAndroid'),
+  };
+
+  let state = {
+    currentStep: 'welcome', // Pasos del simulador: welcome, login, profiles, home
+  };
+
+  // Fichas informativas para el visualizador del modelo
+  const hardwareSpecs = {
+    phone_ios: 'Modelo Específico: iPhone 17 | Versión de app 18.33.0',
+    phone_android: 'Modelo Específico: Samsung Galaxy S26 | Versión de app 18.31.2',
+    tv_android: 'Modelo Específico: Smart TV TCL (Android TV) | Versión de app 7.2.1',
+    tablet_android: 'Modelo Específico: Tablet Samsung Galaxy Tab S10 | Versión de app 10.5.0',
+  };
+
+  // Diccionario de Pantallas Interactivas
+  const screens = {
+    // 1. BIENVENIDA
+    welcome: (device, os) => {
+      if (device === 'phone' && os === 'ios') {
+        return `
+          <div class="nf-nav">
+            <span class="nf-logo json-trigger" data-step="welcome">NETFLIX</span>
+            <span class="nf-btn-options material-symbols-outlined">more_vert</span>
+            <span class="nf-btn-login json-trigger" data-step="login">Iniciar sesión</span>
+          </div>
+          <div class="nf-body-welcome">
+            <h2 class="nf-title-welcome">Películas, series y juegos al alcance de tu mano</h2>
+            <div class="nf-create-account">
+              <p>Crea una cuenta de Netflix y mucho más.</p>
+              <p>Visita <a href="#">netflix.com/more</a></p>
+            </div>
+          </div>`;
+      }
+
+      // Interfaz por defecto (Android, TV, Tablet)
+      return `
+        <div class="nf-nav">
+          <span class="nf-logo-android json-trigger" data-step="welcome">N</span>
+          <div class="nf-nav-options">
+            <span>Privacidad</span>
+            <span class="json-trigger" data-step="login">Iniciar Sesion</span>
+            <span class="nf-btn-options material-symbols-outlined">more_vert</span>
+          </div>
+        </div>
+        <div class="nf-body-welcome">
+          <h2 class="nf-title-welcome">Series y películas ilimitadas y mucho más</h2>
+          <div class="nf-btn-primary json-trigger" data-step="login">Comienza ya</div>
+        </div>`;
+    },
+
+    // 2. INICIO DE SESIÓN (LOGIN)
+    login: (device, os) => {
+      // ---> AQUÍ EDITAS SMARTPHONE CON iOS <---
+      if (device === 'phone' && os === 'ios') {
+        return `
+          <div class="nf-nav spacioinicio">
+            <span class="material-symbols-outlined nf-back json-trigger" data-step="welcome">
+              arrow_back_ios_new
+            </span>
+            <span class="nf-logo json-trigger" data-step="welcome">NETFLIX</span>
+          </div>
+          <div class="nf-body-login">
+            <h2 class="nf-login-title">Ingresa tu info para iniciar sesión</h2>
+            <div class="nf-input">Email o número de celular</div>
+            
+            <div class="nf-btn-primary json-trigger" data-step="verifyCode">
+              Continuar
+            </div>
+            <p class="nf-text-roll">
+              Obtener ayuda<span  class="material-symbols-outlined">keyboard_arrow_down</span>
+            </p>
+            
+            <span class="nf-recaptcha">Está página está protegida por Google reCAPTCHA para comprobar que no eres un robot.</span>
+          </div>`;
+      }
+
+      // Si el dispositivo interactivo seleccionado es TV
+      if (device === 'tv') {
+        return `
+          <span class="nf-back json-trigger" data-step="welcome">← Atrás</span>
+          <div class="nf-nav">
+            <span class="nf-logo json-trigger" data-step="welcome">NETFLIX</span>
+          </div>
+          <div class="nf-body-login" style="flex-direction:row; gap:15px;">
+            <div style="width: 50%; background: #111; padding: 10px; border-radius: 4px; font-size:0.7rem;">
+              <p>Opción rápida por código Web:</p>
+              <div style="font-size: 1.2rem; font-weight: bold; color: var(--color-warning); text-align: center; margin: 10px 0;">7391-0284</div>
+            </div>
+            <div style="width: 50%; display: flex; flex-direction: column; gap: 8px;">
+              <div class="nf-input">Usuario o correo</div>
+              <div class="nf-input">Contraseña</div>
+              <div class="nf-btn-primary json-trigger" data-step="profiles">Iniciar Sesión</div>
+            </div>
+          </div>`;
+      }
+
+      // Por defecto para Android o Tablet
+      return `
+        <div class="nf-nav spacioinicio">
+          <span class="nf-back json-trigger material-symbols-outlined" data-step="welcome">arrow_back</span>
+          <span class="nf-logo json-trigger" data-step="welcome">NETFLIX</span>
+        </div>
+
+        <div class="nf-body-login">
+          <h2 class="nf-login-title">¿Quieres ver Netflix ya?</h2>
+          <p>Ingresa tu información para iniciar sesión o comienza con una cuenta nueva.</p>
+          <div class="nf-input">Email o número de celular</div>
+          <div class="nf-btn-primary json-trigger" data-step="verifyCode">Continuar</div>
+          <p class="nf-text-roll">
+            Obtener ayuda<span  class="material-symbols-outlined">keyboard_arrow_down</span>
+          </p>
+            
+          <span class="nf-recaptcha">Está página está protegida por Google reCAPTCHA para comprobar que no eres un robot.</span>
+        </div>`;
+    },
+    // NUEVO PASO INTERMEDIO: ENTRADA DEL CÓDIGO DE 4 DÍGITOS
+    verifyCode: (device, os) => `
+      <div class="nf-nav spacioinicio">
+        <span class="material-symbols-outlined nf-back json-trigger" data-step="login">arrow_back_ios_new</span>
+
+        <span class="nf-logo json-trigger" data-step="welcome">NETFLIX</span>
+      </div>
+      <div class="nf-body-login">
+        <h2 class="nf-login-title">Ingresa el código que te enviamos a tu email</h2>
+
+        <div class="nf-code-textAlert">
+          <p>correoingresado@mail.com</p>
+          <span class="enlaceGenerico json-trigger" data-step="login">Cambiar</span>
+        </div>
+
+        
+        <div class="nf-code-container">
+          <div class="nf-code-box json-trigger" data-step="profiles">4</div>
+          <div class="nf-code-box json-trigger" data-step="profiles">8</div>
+          <div class="nf-code-box json-trigger" data-step="profiles">2</div>
+          <div class="nf-code-box json-trigger" data-step="profiles">9</div>
+        </div>
+        
+        <p style="font-size:0.75rem; color:#aaa;">Este código vence en 15 minutos.</p>
+        <p style="font-size:0.75rem; color:#aaa;">¿No recibiste el código? <span class="enlaceGenerico json-trigger">Solicita el reenvío.</span></p>
+
+        <p class="nf-text-roll">
+          Obtener ayuda<span  class="material-symbols-outlined">keyboard_arrow_down</span>
+        </p>
+
+      </div>`,
+    // 3. SELECTOR DE PERFILES
+    profiles: (device, os) => `
+      <div class="nf-profiles-container">
+        <p style="font-size: 0.95rem; font-weight: bold; text-align: center; margin-bottom: 5px;">Elige tu perfil</p>
+        <div class="nf-profiles-grid">
+          <div class="nf-profile-item json-trigger" data-step="home">
+            <div class="nf-avatar">👤</div>
+            <span class="nf-profile-name">Perfil 1</span>
+          </div>
+          <div class="nf-profile-item json-trigger" data-step="home">
+            <div class="nf-avatar">👤</div>
+            <span class="nf-profile-name">Perfil 2</span>
+          </div>
+          <div class="nf-profile-item json-trigger" data-step="home">
+            <div class="nf-avatar">👤</div>
+            <span class="nf-profile-name">Perfil 3</span>
+          </div>
+          <div class="nf-profile-item json-trigger" data-step="home">
+            <div class="nf-avatar">🐱</div>
+            <span class="nf-profile-name">Niños</span>
+          </div>
+          <div class="nf-profile-item json-trigger" data-step="home">
+            <div class="nf-avatar">
+              <span class="material-symbols-outlined">add</span>
+            </div>
+            <span class="nf-profile-name">Agregar</span>
+          </div>
+          <div class="nf-profile-item json-trigger" data-step="home">
+            <div class="nf-avatar">
+            <span class="material-symbols-outlined">edit</span>
+            </div>
+            <span class="nf-profile-name">Editar</span>
+          </div>
+
+        </div>
+      </div>`,
+
+    // 4. HOME / CATÁLOGO
+    home: (device, os) => {
+      if (device === 'phone' && os === 'ios') {
+        return `
+          <div class="nf-home-layout">
+            <div class="nf-nav">
+              <span class="nf-logo json-trigger" data-step="profiles" style="font-size: 1rem;">🍿 Perfiles</span>
+              <div style="display: flex; gap: 15px; font-size: 0.75rem; color: #ccc;">
+                <span>Series</span>
+                <span>Películas</span>
+              </div>
+            </div>
+            <div class="nf-hero-card">
+              <span style="font-size: 0.85rem; font-weight: bold;">Exclusivo de iOS</span>
+            </div>
+            <p style="font-size: 0.7rem; font-weight: bold; margin-top: 15px;">Mi Lista:</p>
+            <div class="nf-row-movies"><div class="nf-poster"></div><div class="nf-poster"></div></div>
+            <div class="nf-mobile-nav">
+              <span class="active">🏠 Inicio</span>
+              <span>🎮 Juegos</span>
+              <span>✨ Novedades</span>
+              <span class="json-trigger" data-step="profiles">👤 Mi Netflix</span>
+            </div>
+          </div>`;
+      }
+      if (device === 'tv') {
+        return `
+          <div class="nf-home-layout" style="flex-direction: row; margin: -15px;">
+            <div class="nf-tv-sidebar">
+              <span style="color: #e50914; font-weight: bold;">🏠 Inicio</span>
+              <span style="color: #aaa;" class="json-trigger" data-step="profiles">🔄 Perfiles</span>
+            </div>
+            <div style="flex: 1; padding: 15px; display: flex; flex-direction: column; gap: 10px;">
+              <div class="nf-hero-card"><span style="font-size: 0.8rem; font-weight: bold;">Contenido Destacado TV</span></div>
+            </div>
+          </div>`;
+      }
+      return `
+        <div class="nf-home-layout">
+          <div class="nf-nav">
+            <span class="nf-logo-android json-trigger" data-step="profiles" style="font-size: 1rem;">🍿 Perfiles</span>
+          </div>
+          <div class="nf-hero-card"><span style="font-size: 0.8rem; font-weight: bold;">Serie del Momento Android</span></div>
+          <div class="nf-mobile-nav">
+            <span class="active">🏠 Inicio</span>
+            <span class="json-trigger" data-step="profiles">👤 Mi App</span>
+          </div>
+        </div>`;
+    },
+  };
+
+  function getSelectedRadio(name) {
+    return document.querySelector(`input[name="${name}"]:checked`)?.value;
+  }
+
+  function setSelectedRadio(name, value) {
+    const radio = document.querySelector(`input[name="${name}"][value="${value}"]`);
+    if (radio) radio.checked = true;
+  }
+
+  function renderScreen() {
+    let activeDevice = getSelectedRadio('simDevice');
+    let activeOs = getSelectedRadio('simOs');
+
+    if (activeDevice === 'tv' || activeDevice === 'tablet') {
+      if (elements.lblIos) elements.lblIos.classList.add('disabled');
+      setSelectedRadio('simOs', 'android');
+      activeOs = 'android';
+    } else {
+      if (elements.lblIos) elements.lblIos.classList.remove('disabled');
+    }
+
+    if (elements.mockup) {
+      elements.mockup.className = 'device-mock';
+      if (activeDevice === 'tv') elements.mockup.classList.add('device-mock--tv');
+      if (activeDevice === 'tablet') elements.mockup.classList.add('device-mock--tablet');
+    }
+
+    if (elements.content) {
+      elements.content.className = 'device-mock__screen';
+      if (activeDevice === 'tv') elements.content.classList.add('ctx-tv');
+      if (activeDevice === 'tablet') elements.content.classList.add('ctx-tablet');
+      if (activeDevice === 'phone') {
+        elements.content.classList.add(activeOs === 'ios' ? 'ctx-ios' : 'ctx-android');
+      }
+    }
+
+    const specsKey = `${activeDevice}_${activeOs}`;
+    if (elements.txtModel) {
+      elements.txtModel.textContent = hardwareSpecs[specsKey] || 'Modelo Desconocido';
+    }
+
+    const currentRender = screens[state.currentStep];
+    if (currentRender && elements.content) {
+      elements.content.innerHTML = currentRender(activeDevice, activeOs);
+    }
+  }
+
+  function init() {
+    if (!elements.content) return;
+
+    document.querySelectorAll('input[name="simDevice"]').forEach((radio) => {
+      radio.addEventListener('change', () => {
+        state.currentStep = 'welcome';
+        renderScreen();
+      });
+    });
+
+    document.querySelectorAll('input[name="simOs"]').forEach((radio) => {
+      radio.addEventListener('change', renderScreen);
+    });
+
+    elements.content.addEventListener('click', (e) => {
+      const trigger = e.target.closest('.json-trigger');
+      if (trigger) {
+        const nextStep = trigger.dataset.step;
+        if (nextStep) {
+          state.currentStep = nextStep;
+          renderScreen();
+        }
+      }
+    });
+
+    renderScreen();
+  }
+
+  return { init: init };
+})();
+
 // INICIALIZACIÓN UNIFICADA DE LA WEB
 document.addEventListener('DOMContentLoaded', () => {
   applyTheme(localStorage.getItem('selectedTheme') || 'default');
@@ -574,4 +895,5 @@ document.addEventListener('DOMContentLoaded', () => {
   TimerModule.init();
   AlarmModule.init();
   MetricsModule.init();
+  SimulatorModule.init(); // ¡AQUÍ ENCIENDES EL MÓDULO NUEVO!
 });
