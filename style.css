@@ -14,12 +14,10 @@
   --color-brand: #ff2972; /* Rosa/Magenta */
   --color-success: #04fc43; /* Verde */
   --color-warning: #ffd230; /* Amarillo fuerte*/
-
   --color-danger: #ff4757; /* Rojo */
 
   /* Efectos y Otros */
   --shadow-panel: 0 8px 20px rgba(21, 43, 74, 0.08);
-  --marcaagua: rgba(21, 43, 74, 0.1);
   --marcaagua: rgba(8, 15, 26, 0.2);
   --opacidad-hover: rgba(21, 43, 74, 0.05);
 }
@@ -66,10 +64,8 @@ body {
 }
 
 body.dark-theme {
-  background-image: none; /* Quitamos el patrón en oscuro */
+  background-image: none;
 }
-
-/* Contenedor principal para centrar */
 .container {
   display: flex;
   flex-direction: column;
@@ -77,11 +73,15 @@ body.dark-theme {
   gap: 10px;
   padding: 0 10px;
 }
+.no-seleccionable {
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
 
 /* =========================================
    3. ESTILOS COMPARTIDOS (Paneles)
 ========================================= */
-/* Aplicamos el mismo fondo, borde y sombra a todas las "tarjetas" de tu app */
 .header,
 .clock,
 .temporizador,
@@ -98,7 +98,6 @@ body.dark-theme {
     background-color 0.5s ease,
     box-shadow 0.5s ease;
 }
-
 /* =========================================
    4. HEADER Y NAVEGACIÓN
 ========================================= */
@@ -1215,7 +1214,20 @@ details:not([open]) .temporizador__intro {
   height: 360px;
   border-radius: 12px;
   border-width: 14px 14px 25px 14px;
+  position: relative;
 }
+.device-mock--tv::after {
+  content: 'TCL';
+  color: rgb(175, 175, 175);
+  font-weight: bold;
+  font-size: 0.75rem;
+  position: absolute;
+  bottom: 2px;
+  /* bottom: 0; */
+  left: 50%;
+  transform: translateX(-50%);
+}
+
 .device-mock--tablet {
   width: 550px;
   height: 380px;
@@ -1229,7 +1241,8 @@ details:not([open]) .temporizador__intro {
   background-color: #000;
   color: #fff;
   font-family: Helvetica, Arial, sans-serif;
-  overflow-y: auto;
+  /* Comentado el overflow, solo para no afectar el tamaño vertical en el home */
+  /* overflow-y: auto; */
   padding: 15px;
   /* NUEVO: Forzamos a la pantalla a ser un contenedor vertical estricto */
   display: flex;
@@ -1248,8 +1261,9 @@ details:not([open]) .temporizador__intro {
 .spacioinicio {
   justify-content: flex-start;
 }
-.nf-logo,
-.nf-logo-android,
+.spaciofin {
+  justify-content: flex-end;
+}
 .nf-btn-options,
 .nf-nav-options,
 .nf-back {
@@ -1365,6 +1379,10 @@ details:not([open]) .temporizador__intro {
   font-size: 1.3rem;
   font-weight: bold;
   color: #fff;
+  cursor: pointer;
+}
+.nf-code-box:hover {
+  border-color: red;
 }
 .nf-code-textAlert {
   display: flex;
@@ -1377,8 +1395,42 @@ details:not([open]) .temporizador__intro {
 }
 .enlaceGenerico {
   color: #fff;
-  text-decoration: underline;
   cursor: pointer;
+  font-size: 0.75rem;
+}
+.enlaceGenericoTitulo {
+  font-size: 0.95rem;
+  color: white;
+  font-weight: bold;
+}
+.categorias-sidebar {
+  display: flex;
+  column-gap: 5px;
+  overflow-x: auto; /* habilita scroll horizontal */
+  overflow-y: hidden; /* evita scroll vertical */
+  -webkit-overflow-scrolling: touch; /* suaviza en móviles */
+  scrollbar-width: none; /* oculta scroll en Firefox */
+  padding: 10px 0;
+}
+.categorias-sidebar::-webkit-scrollbar {
+  display: none; /* oculta scroll en Chrome/Safari */
+}
+.categorias-btn {
+  background-color: transparent;
+  border: 1px solid #555;
+  color: white;
+  padding: 6px 10px;
+  border-radius: 8px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 0.75rem;
+  height: 30px;
+  cursor: pointer;
+  flex: 0 0 auto; /* evita que los botones se estiren */
+}
+.categorias-btn:last-child {
+  display: flex;
+  align-items: center;
 }
 
 /* Modulo de perfiles */
@@ -1432,38 +1484,58 @@ details:not([open]) .temporizador__intro {
 .nf-home-layout {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  /* height: 100%; */
 }
 .nf-hero-card {
   background: linear-gradient(to bottom, #555, #111);
   height: 130px;
+  height: 250px;
   border-radius: 6px;
   padding: 12px;
   display: flex;
   flex-direction: column;
+  row-gap: 10px;
   justify-content: flex-end;
+  flex-shrink: 0; /* Evita que la tarjeta se aplaste verticalmente */
+}
+.nf-hero-card button {
+  padding: 8px 12px;
+  border-radius: 4px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+.nf-hero-card :nth-child(1) {
+  background-color: white;
+}
+.nf-hero-card :nth-child(2) {
+  background-color: #555;
+  color: white;
 }
 .device-mock--tv .nf-hero-card {
   height: 160px;
 }
 .nf-row-movies {
   display: flex;
-  gap: 10px;
+  column-gap: 10px;
   margin-top: 10px;
 }
 .nf-poster {
   background: #222;
   border: 1px solid #333;
   width: 70px;
-  height: 100px;
-  border-radius: 4px;
+  height: 55px;
+  border-radius: 4px 4px 0 0;
 }
 .nf-mobile-nav {
+  list-style: none;
   margin-top: auto;
   background: #121212;
+  /* background-color: gold; */
   display: flex;
-  justify-content: space-around;
-  padding: 10px 0;
+  justify-content: space-between;
+  padding: 5px 0;
   border-top: 1px solid #222;
   font-size: 0.65rem;
   color: #666;
@@ -1471,6 +1543,14 @@ details:not([open]) .temporizador__intro {
 .nf-mobile-nav .active {
   color: white;
 }
+.nf-mobile-nav li {
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+}
+
 .nf-tv-sidebar {
   width: 30%;
   background: #111;
@@ -1482,6 +1562,111 @@ details:not([open]) .temporizador__intro {
   border-right: 1px solid #222;
 }
 
+/* sección de mi Netflix */
+.nf-panel-downloads {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  background-color: #222;
+  /* background: #333; */
+  border: 1px solid #7b7b7b;
+  padding: 10px;
+  border-radius: 4px;
+  display: flex;
+  column-gap: 10px;
+  cursor: pointer;
+}
+.mi-lista__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+}
+.mi-lista__body {
+  background-color: #222;
+  padding: 10px;
+  font-size: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 10px;
+  text-align: center;
+}
+.mi-lista__body button {
+  padding: 8px 12px;
+  border-radius: 4px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 0.75rem;
+  cursor: pointer;
+  border: none;
+}
+
+/* Administrar Cuenta Sección */
+.nf-manage-perfil {
+  background-color: #222;
+  padding: 15px;
+  border-radius: 8px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+.nf-manage-perfil span {
+  justify-self: end;
+}
+
+.nf-manage-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  column-gap: 5px;
+}
+
+.nf-manage-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  width: 100%;
+}
+
+.nf-manage-item .nf-avatar {
+  height: 50px;
+}
+
+.nf-manage-btn {
+  margin-bottom: 20px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 0.75rem;
+  cursor: pointer;
+  border: none;
+  color: #fff;
+  background-color: #222;
+  align-self: center;
+}
+.nf-management-list {
+  display: flex;
+  flex-direction: column;
+  border: none;
+  row-gap: 5px;
+  width: 100%;
+}
+.nf-management-row {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  column-gap: 10px;
+  padding: 10px 8px;
+  background-color: #222;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.nf-management-row span {
+  font-size: 1rem;
+}
+.nf-management-row span:last-child {
+  font-size: 0.7rem;
+}
 /* --- 7.3 Personalizaciones Específicas por Contexto --- */
 
 /* CONTEXTO ESPECIAL: iOS (iPhone) */
@@ -1520,7 +1705,6 @@ details:not([open]) .temporizador__intro {
 /* Estilos de Login Exclusivos para iOS (¡Listos para que los uses!) */
 
 .ctx-ios .nf-input {
-  /* border-radius: 8px; */
   border-radius: 4px;
 }
 .ctx-ios .nf-btn-secondary-login {
@@ -1540,6 +1724,11 @@ details:not([open]) .temporizador__intro {
   color: #777;
   margin-top: 10px;
 }
+.ctx-ios .nf-logo-android {
+  font-size: 2.2rem;
+  text-decoration: none;
+  font-weight: bold;
+}
 
 /* CONTEXTO ESPECIAL: Android (Teléfono / Tablet) */
 .ctx-android .nf-logo-android {
@@ -1552,60 +1741,45 @@ details:not([open]) .temporizador__intro {
   justify-content: flex-end;
 }
 
+.ctx-android .nf-panel-mi-lista {
+  background-color: #222;
+  border: 1px solid #7b7b7b;
+  padding: 15px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 10px;
+}
+.ctx-android .nf-panel-mi-lista p {
+  font-size: 0.75rem;
+  color: #aaa;
+  margin: 0;
+}
+.ctx-android .nf-panel-mi-lista button {
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: bold;
+  padding: 6px 8px;
+  background-color: #555;
+  border-radius: 4px;
+}
+
 /* CONTEXTO ESPECIAL: Smart TV */
 .ctx-tv .nf-nav {
   color: #e50914;
   font-size: 1.5rem;
 }
 
-/* Menú y Home */
-.nf-home-layout {
+/* Menú y Home para ios*/
+.ctx-ios .nf-hero-card {
   display: flex;
-  flex-direction: column;
-  height: 100%;
+  flex-direction: row;
+  column-gap: 10px;
+  align-items: end;
 }
-
-.nf-hero-card {
-  background: linear-gradient(to bottom, #444, #111);
-  height: 130px;
-  border-radius: 6px;
-  padding: 12px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-}
-
-.device-mock--tv .nf-hero-card {
-  height: 160px;
-}
-
-.nf-row-movies {
-  display: flex;
-  gap: 10px;
-  margin-top: 10px;
-}
-
-.nf-poster {
-  background: #222;
-  border: 1px solid #333;
-  width: 70px;
-  height: 100px;
-  border-radius: 4px;
-}
-
-/* Barra inferior móvil */
-.nf-mobile-nav {
-  margin-top: auto;
-  background: #121212;
-  display: flex;
-  justify-content: space-around;
-  padding: 10px 0;
-  border-top: 1px solid #222;
-  font-size: 0.65rem;
-  color: #666;
-}
-.nf-mobile-nav .active {
-  color: white;
+.ctx-ios .nf-hero-card button {
+  flex: 1;
 }
 
 /* Menú Lateral TV (Falso desplegable con la flecha izquierda) */
@@ -1618,4 +1792,208 @@ details:not([open]) .temporizador__intro {
   flex-direction: column;
   gap: 12px;
   border-right: 1px solid #222;
+}
+
+/* --- 7.4 Herramientas de Gestión de Perfiles (Añadido) --- */
+
+/* Texto alineado para botones de cabecera Cancelar/Guardar */
+.text-navigation {
+  font-size: 0.85rem;
+  color: #fff;
+  font-weight: normal;
+}
+
+/* Contenedor del formulario de agregar/editar */
+.nf-body-management {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  flex: 1;
+}
+
+.scrollable-panel {
+  overflow-y: auto;
+  width: 100%;
+  padding-right: 2px;
+  scrollbar-width: none; /* Firefox */
+}
+
+.scrollable-panel::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}
+
+/* Avatar con lápiz de edición flotante */
+.nf-avatar-editable {
+  position: relative;
+  cursor: pointer;
+}
+.avatar-edit-icon {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.75);
+  color: #fff;
+  border-radius: 50%;
+  padding: 4px;
+  font-size: 1rem !important;
+  border: 1px solid #555;
+}
+
+/* Filas con switch horizontal */
+.nf-switch-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  background: #191919;
+  padding: 10px;
+  border-radius: 6px;
+}
+
+/* Menú de opciones de edición en fila */
+.nf-menu-list {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border-top: 1px solid #222;
+}
+
+.nf-menu-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 4px;
+  border-bottom: 1px solid #222;
+  font-size: 0.7rem;
+  color: #eee;
+  cursor: pointer;
+}
+.nf-menu-row span:last-child {
+  color: #666;
+  font-size: 1.1rem !important;
+}
+
+/* El botón rojo de eliminar al fondo */
+.nf-delete-profile-btn {
+  color: #e50914;
+  font-size: 0.85rem;
+  font-weight: bold;
+  text-align: center;
+  /* margin: 25px 0 10px 0; */
+  cursor: pointer;
+  width: 100%;
+}
+.nf-delete-profile-btn:hover {
+  text-decoration: underline;
+}
+
+/* --- 7.5 El Interruptor Switch Estilo Netflix --- */
+.nf-toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 42px;
+  height: 24px;
+  flex-shrink: 0;
+}
+.nf-toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.nf-toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #555;
+  transition: 0.3s;
+  border-radius: 24px;
+}
+.nf-toggle-slider::before {
+  position: absolute;
+  content: '';
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: 0.3s;
+  border-radius: 50%;
+}
+.nf-toggle-switch input:checked + .nf-toggle-slider {
+  background-color: #00bf43;
+}
+.nf-toggle-switch input:checked + .nf-toggle-slider::before {
+  transform: translateX(18px);
+}
+
+/* --- 7.6 Estilos Visuales del Estado de Edición --- */
+.nf-profiles-grid .edit-badge {
+  display: none; /* Oculto en modo normal */
+}
+
+/* Cuando se activa la clase de edición vía JS */
+.nf-profiles-grid--editing .nf-profile-item:not(.dynamic-edit-toggle) {
+  opacity: 0.5; /* Opaca los perfiles */
+}
+.nf-profiles-grid--editing .nf-profile-item:not(.dynamic-edit-toggle):hover {
+  opacity: 0.9;
+}
+.nf-profiles-grid--editing .nf-profile-item:not(.dynamic-edit-toggle) .nf-avatar {
+  position: relative;
+}
+/* Muestra el lápiz superpuesto encima del avatar */
+.nf-profiles-grid--editing .nf-profile-item:not(.dynamic-edit-toggle) .edit-badge {
+  display: flex;
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem !important;
+  color: #fff;
+  border-radius: 4px;
+}
+
+/* Inhabilita el botón de agregar si se está editando */
+.disabled-item {
+  opacity: 0.15 !important;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+/* --- 7.8 Marcador de Posición para la TV (Próximamente) --- */
+.tv-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+  row-gap: 12px;
+  color: var(--text-muted);
+  padding: 20px;
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+.tv-placeholder__icon {
+  font-size: 3.5rem !important;
+  color: var(--color-brand); /* Usa tu color Magenta/Rosa corporativo */
+}
+
+.tv-placeholder__title {
+  font-size: 1.4rem;
+  color: #fff; /* Se mantiene blanco para contrastar con el fondo negro de la pantalla */
+  font-weight: bold;
+  letter-spacing: -0.5px;
+}
+
+.tv-placeholder__text {
+  font-size: 0.8rem;
+  max-width: 75%;
+  line-height: 1.4;
+  color: #aaa;
 }
